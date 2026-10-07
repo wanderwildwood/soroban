@@ -66,10 +66,10 @@ fun ProgrammerScreen(vm: ProgrammerViewModel, onLeave: () -> Unit) {
         Keypad(
             listOf(
                 listOf(
-                    Key(s.size.name, vm::cycleSize, small = true, description = stringResource(R.string.cd_word_size, s.size.name)),
-                    Key(stringResource(R.string.key_bits), { bits = !bits }, small = true, bold = bits),
-                    Key(stringResource(if (ops) R.string.key_digits else R.string.key_ops), { ops = !ops; bits = false }, small = true),
-                    Key(stringResource(R.string.key_numbers), onLeave, small = true, description = stringResource(R.string.cd_leave_programmer)),
+                    Key(s.size.name, vm::cycleSize, mode = true, description = stringResource(R.string.cd_word_size, s.size.name)),
+                    Key(stringResource(R.string.key_bits), { bits = !bits }, mode = true, bold = bits),
+                    Key(stringResource(if (ops) R.string.key_digits else R.string.key_ops), { ops = !ops; bits = false }, mode = true),
+                    Key(stringResource(R.string.key_numbers), onLeave, mode = true, description = stringResource(R.string.cd_leave_programmer)),
                 ),
             ),
             Modifier.height(44.dp),
