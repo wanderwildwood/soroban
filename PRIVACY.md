@@ -14,7 +14,11 @@ That is the whole policy. The rest of this page is the evidence for it.
 android.permission.INTERNET
 ```
 
-It is used for the exchange rates and nothing else. Every connection the app makes is in
+The built APK also lists `com.wanderwildwood.soroban.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`,
+which AndroidX adds so that the app's own internal broadcasts stay private to it; it lets
+nothing in or out.
+
+`INTERNET` is used for the exchange rates and nothing else. Every connection the app makes is in
 `convert/Rates.kt`: a plain request for one file,
 
 ```
