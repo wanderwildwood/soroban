@@ -42,6 +42,8 @@ data class Key(
     /** Words and functions, smaller than the digits so "sin⁻¹" fits its key. */
     val small: Boolean = false,
     val enabled: Boolean = true,
+    /** A mode that is on, said in bold. */
+    val bold: Boolean = false,
 )
 
 /**
@@ -112,7 +114,7 @@ private fun KeyFace(key: Key, color: Color) {
             // A key's figure is an instrument's, like a speedometer's, and is sized to the key
             // rather than to the type scale: 30sp digits are what stock calculators use here.
             fontSize = if (key.small) 22.sp else 30.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = if (key.bold) FontWeight.Bold else FontWeight.Medium,
             style = MaterialTheme.typography.bodyLarge,
         )
     }
