@@ -78,7 +78,7 @@ fun CalculatorScreen(vm: CalculatorViewModel, onHistory: () -> Unit) {
 
         val add: (String) -> Unit = { vm.addTokens(it) }
         val keys = if (!functions) {
-            numberPage(vm, add, onFunctions = { functions = true })
+            numberPage(vm, add, settings.symbols.fractional, onFunctions = { functions = true })
         } else {
             functionPage(
                 vm = vm,
@@ -107,7 +107,7 @@ fun CalculatorScreen(vm: CalculatorViewModel, onHistory: () -> Unit) {
 }
 
 @Composable
-private fun numberPage(vm: CalculatorViewModel, add: (String) -> Unit, onFunctions: () -> Unit): List<List<Key?>> {
+private fun numberPage(vm: CalculatorViewModel, add: (String) -> Unit, point: String, onFunctions: () -> Unit): List<List<Key?>> {
     val backspace = stringResource(R.string.cd_backspace)
     val clear = stringResource(R.string.key_clear)
     return listOf(
@@ -129,7 +129,8 @@ private fun numberPage(vm: CalculatorViewModel, add: (String) -> Unit, onFunctio
         listOf(
             Key(stringResource(R.string.key_functions), onFunctions, small = true),
             digit("0", add),
-            Key(".", { add(Token.Digit.DOT) }),
+            // The key says the decimal mark as the numbers are written: "." or ",".
+            Key(point, { add(Token.Digit.DOT) }),
             Key("=", { vm.onEqualClick() }, filled = true),
         ),
     )

@@ -25,6 +25,8 @@
     <!-- Calculator keys. The rest are symbols: 7 + × sin π … -->
 
     <string name="key_clear">C</string>
+    <!-- Clear, where "C" would read as the hexadecimal digit beside it -->
+    <string name="key_clear_word">Clear</string>
     <!-- Turns the keypad to the scientific functions -->
     <string name="key_functions">fx</string>
     <!-- Turns the keypad back to the digits -->

@@ -129,7 +129,7 @@ fun UnitPicker(vm: ConverterViewModel, choosingTo: Boolean, onBack: () -> Unit) 
                 shown.forEach { unit ->
                     item(key = unit.id) {
                         val (name, short) = names.getValue(unit.id)
-                        val answer = conversions[unit.id]?.let { answerText(it, settings) }
+                        val answer = conversions[unit.id]?.let { answerText(it, settings, money = group == UnitGroup.CURRENCY) }
                         Column(
                             Modifier.fillMaxWidth().clickable {
                                 if (choosingTo) vm.selectTo(unit) else vm.selectFrom(unit)

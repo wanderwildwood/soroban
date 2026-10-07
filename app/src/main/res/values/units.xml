@@ -702,7 +702,7 @@
     <string name="unit_group_length">Length</string>
     <string name="unit_group_luminance">Luminance</string>
     <string name="unit_group_mass">Mass</string>
-    <string name="unit_group_number_base">Base</string>
+    <string name="unit_group_number_base">Number base</string>
     <string name="unit_group_power">Power</string>
     <string name="unit_group_prefix">Prefix</string>
     <string name="unit_group_pressure">Pressure</string>

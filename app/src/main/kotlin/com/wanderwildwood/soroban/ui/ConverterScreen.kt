@@ -76,7 +76,7 @@ fun ConverterScreen(
     val typed = vm.input.text.toString()
     val numberBase = group == UnitGroup.NUMBER_BASE
     val typedShown = if (numberBase) typed.uppercase() else Numbers.show(typed, settings.symbols)
-    val answer = answerText(result, settings)
+    val answer = answerText(result, settings, money = group == UnitGroup.CURRENCY)
 
     Column(Modifier.fillMaxSize()) {
         Row(
@@ -112,7 +112,7 @@ fun ConverterScreen(
         HorizontalDividerMMD()
 
         Keypad(
-            if (numberBase) baseKeys(vm, pair.first) else numberKeys(vm),
+            if (numberBase) baseKeys(vm, pair.first) else numberKeys(vm, settings.symbols.fractional),
             Modifier.weight(1f),
         )
     }
@@ -134,11 +134,15 @@ fun ConverterScreen(
 /** An answer as text for another app, without the unit-pair layout around it. */
 private fun plain(s: String) = s.trim()
 
-/** What a converted value is written as: rounded, separated, and for feet or pounds split. */
+/**
+ * What a converted value is written as: rounded, separated, and for feet or pounds split.
+ * Money is rounded to cents, or for a coin worth less, to its first figure that is not 0,
+ * whatever the decimal places set: 44.58 euros, not 44.5836775.
+ */
 @Composable
-fun answerText(result: ConverterResult?, settings: Settings): String? = when (result) {
+fun answerText(result: ConverterResult?, settings: Settings, money: Boolean = false): String? = when (result) {
     null, ConverterResult.Loading -> null
-    is ConverterResult.Default -> Numbers.show(result.value, settings)
+    is ConverterResult.Default -> Numbers.show(result.value, if (money) settings.copy(precision = minOf(settings.precision, 2)) else settings)
     is ConverterResult.NumberBase -> result.value.uppercase()
     is ConverterResult.FootInch -> stringResource(
         R.string.convert_feet_inches,
@@ -222,7 +226,7 @@ private fun Note(group: UnitGroup, rates: RatesView, result: ConverterResult?, v
     } else {
         text = null
     }
-    if (text == null) return
+    // The line is always there, empty or not, so the keypad never moves under the thumb.
     Box(
         Modifier
             .fillMaxWidth()
@@ -231,7 +235,7 @@ private fun Note(group: UnitGroup, rates: RatesView, result: ConverterResult?, v
             .padding(horizontal = 16.dp),
         contentAlignment = Alignment.CenterEnd,
     ) {
-        TextMMD(text = text, style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        TextMMD(text = text ?: "", style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -248,13 +252,14 @@ private fun timeText(t: ConverterResult.Time): String? {
         t.nanosecond to R.string.time_nanoseconds,
         t.attosecond to R.string.time_attoseconds,
     ).filter { !it.first.isEqualTo(KBigDecimal.ZERO) }
-    if (parts.isEmpty()) return null
+    // "1 h" beside "1 hour" says nothing new; "1 d 2 h 30 min" does.
+    if (parts.size < 2) return null
     val words = parts.map { (n, res) -> stringResource(res, n.trimZeros().toPlainString()) }
     return (if (t.negative) Token.Operator.MINUS else "") + words.joinToString(" ")
 }
 
 @Composable
-private fun numberKeys(vm: ConverterViewModel): List<List<Key?>> {
+private fun numberKeys(vm: ConverterViewModel, point: String): List<List<Key?>> {
     val add: (String) -> Unit = { vm.key(it) }
     fun d(t: String) = Key(t, { add(t) })
     return listOf(
@@ -267,7 +272,7 @@ private fun numberKeys(vm: ConverterViewModel): List<List<Key?>> {
         listOf(d("7"), d("8"), d("9"), d(Token.Operator.DIVIDE)),
         listOf(d("4"), d("5"), d("6"), d(Token.Operator.MULTIPLY)),
         listOf(d("1"), d("2"), d("3"), d(Token.Operator.MINUS)),
-        listOf(Key(".", { add(Token.Digit.DOT) }), d("0"), Key("xʸ", { add(Token.Operator.POWER) }, small = true), d(Token.Operator.PLUS)),
+        listOf(Key(point, { add(Token.Digit.DOT) }), d("0"), Key("xʸ", { add(Token.Operator.POWER) }, small = true), d(Token.Operator.PLUS)),
     )
 }
 
@@ -278,7 +283,7 @@ private fun baseKeys(vm: ConverterViewModel, from: BasicUnit): List<List<Key?>> 
     fun d(t: String) = Key(t, { vm.key(t) }, enabled = Character.digit(t[0], base) >= 0)
     return listOf(
         listOf(d("D"), d("E"), d("F"), Key("", vm::delete, icon = Icons.Backspace, description = stringResource(R.string.cd_backspace))),
-        listOf(d("A"), d("B"), d("C"), Key(stringResource(R.string.key_clear), vm::clear, small = true)),
+        listOf(d("A"), d("B"), d("C"), Key(stringResource(R.string.key_clear_word), vm::clear, small = true)),
         listOf(d("7"), d("8"), d("9"), null),
         listOf(d("4"), d("5"), d("6"), null),
         listOf(d("1"), d("2"), d("3"), d("0")),

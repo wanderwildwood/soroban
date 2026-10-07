@@ -100,6 +100,8 @@ class Rates(private val dir: File, private val addresses: List<String> = ADDRESS
             connection.connectTimeout = TIMEOUT_MS
             connection.readTimeout = TIMEOUT_MS
             connection.setRequestProperty("Accept", "application/json")
+            // Android's own default names the phone's model and build; this names only the app.
+            connection.setRequestProperty("User-Agent", "soroban")
             val code = connection.responseCode
             if (code != HttpURLConnection.HTTP_OK) error("HTTP $code")
             return connection.inputStream.bufferedReader().use { it.readText() }
