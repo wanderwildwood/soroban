@@ -2,8 +2,9 @@
 
 算盤 *soroban*
 
-A calculator, a unit and currency converter, and a date calculator, drawn for an E Ink screen:
-big plain keys, a large answer, and nothing that moves.
+A calculator with scientific and programmer's modes, a graph of up to three functions, a unit
+and currency converter, and a date calculator, drawn for an E Ink screen: big plain keys, a
+large answer, and nothing that moves.
 
 Built for the [Mudita Kompakt](https://mudita.com/products/kompakt/), whose 4.3" panel has
 sixteen greys, a slow redraw, and is read outdoors as often as indoors.
@@ -27,8 +28,23 @@ sixteen greys, a slow redraw, and is read outdoors as often as indoors.
   switch between degrees and radians. A function goes into the sum and turns the page back, so
   sin 30 is fx, sin, 3, 0. The keys stay the size they are rather than shrinking to fit both
   pages on one screen.
+- **Programmer**, behind **hex** on the functions page: whole numbers shown in HEX, DEC, OCT
+  and BIN at once; press one to type in it, and only its digits are live. QWORD, DWORD, WORD or
+  BYTE, signed two's complement, and overflow wraps to the word as Windows Calculator's does.
+  AND, OR, XOR, NOT, NAND and NOR, shifts left and right (the right shift keeps the sign) and
+  rotates, on a second page of keys. **Bits** puts the value's 64 bits in place of the keys,
+  eight to a row in nibbles, and pressing one flips it. **123** goes back to the calculator.
 - **The tape.** The last sum worked out sits above the one being typed; press it for the last
   hundred, newest first, and press any of them to carry on from its answer.
+- **Graph** up to three functions of x, told apart by line: solid, dashed and dotted. Write
+  one with the calculator's keys and an x; degrees or radians as the calculator is set. Drag
+  to move, pinch or − and + to zoom; the graph is drawn again once the fingers lift, not while
+  they move. A curve with a gap, tan at 90° or 1/x at 0, is drawn in pieces, never joined
+  across it, and where a function has no value nothing is drawn. Press a curve for x and y
+  there. **Points** lists the roots, highest and lowest points and the places curves meet in
+  the part on screen, and marks one when pressed; points closer together than the graph's
+  resolution can be missed. **Table** gives each function's value from a chosen x, a chosen
+  step at a time.
 - **Convert** between 24 kinds of unit: length, currency, mass, speed, temperature, area, time,
   volume, data, pressure, acceleration, energy, power, angle, data transfer, flux, number base,
   capacitance, prefix, force, torque, flow rate, luminance and fuel consumption. Press either
@@ -56,7 +72,7 @@ day's reference rates, not what a bank or a card will charge.
 
 ## What it does not do
 
-No graphing, and no programmer's calculator with bit operations and word sizes, yet. No time
+No 3D or polar graphs, and the programmer's calculator works in whole numbers only. No time
 zones or body mass, which Unitto has. No widgets, history across phones, or themes: it is black
 on white.
 

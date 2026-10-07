@@ -41,7 +41,8 @@ being converted: every rate is worked out on the phone from the one list.
 **It is fetched only while currency is open**, and once it has arrived, not again that day; a
 fetch that fails is tried again the next time currency is opened, or when the line saying so
 is pressed. There is no background work, no scheduled job and no notification. Calculating,
-every other kind of unit, number bases and dates never touch the network.
+the programmer's calculator, graphs, every other kind of unit, number bases and dates never
+touch the network.
 
 ## What it keeps
 
@@ -49,8 +50,8 @@ All in the app's own storage, which no other app can read:
 
 - the last hundred sums worked out with =, for the tape (`history.json`);
 - the last exchange rates fetched, and the day they were fetched (`rates/`);
-- the settings, the page last open, and the units last used in each kind
-  (`SharedPreferences`).
+- the settings, the page last open, the units last used in each kind, the graph's functions
+  and window, and the programmer's base and word size (`SharedPreferences`).
 
 Clearing the tape is the last row of the tape. Uninstalling the app removes all of it.
 
