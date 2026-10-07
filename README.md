@@ -1,64 +1,112 @@
-<p align="middle">
-    <img src="./fastlane/metadata/android/en-US/images/featureGraphic.png" width="97%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone1.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone2.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone3.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone4.png" width="19%" />
-    <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/phone5.png" width="19%" />
-</p>
+# Calculator
 
-# 📲 Download
+算盤 *soroban*
 
-<p align="middle">
-    <a href="https://sadellie.github.io/unitto/app"><img alt="Web app" src="./content/web-app.svg" height="60"/></a>
-    <a href="https://play.google.com/store/search?q=unitto"><img alt="Play Store" src="./content/gplay.svg" height="60"/></a>
-    <a href="https://f-droid.org/packages/com.sadellie.unitto"><img alt="F-Droid" src="./content/fdroid.svg" height="60"/></a>
-    <a href="https://github.com/sadellie/unitto/releases/latest"><img alt="GitHub" src="./content/github.svg" height="60"/></a>
-    <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.sadellie.unitto%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fsadellie%2Funitto%22%2C%22author%22%3A%22sadellie%22%2C%22name%22%3A%22Calculator%22%2C%22preferredApkIndex%22%3A0%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%2C%5C%22fallbackToOlderReleases%5C%22%3Atrue%2C%5C%22filterReleaseTitlesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22filterReleaseNotesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22verifyLatestTag%5C%22%3Afalse%2C%5C%22dontSortReleasesList%5C%22%3Afalse%2C%5C%22useLatestAssetDateAsReleaseDate%5C%22%3Afalse%2C%5C%22releaseTitleAsVersion%5C%22%3Afalse%2C%5C%22trackOnly%5C%22%3Afalse%2C%5C%22versionExtractionRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22matchGroupToUse%5C%22%3A%5C%22%5C%22%2C%5C%22versionDetection%5C%22%3Atrue%2C%5C%22releaseDateAsVersion%5C%22%3Afalse%2C%5C%22useVersionCodeAsOSVersion%5C%22%3Atrue%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22invertAPKFilter%5C%22%3Afalse%2C%5C%22autoApkFilterByArch%5C%22%3Atrue%2C%5C%22appName%5C%22%3A%5C%22%5C%22%2C%5C%22shizukuPretendToBeGooglePlay%5C%22%3Afalse%2C%5C%22allowInsecure%5C%22%3Afalse%2C%5C%22exemptFromBackgroundUpdates%5C%22%3Afalse%2C%5C%22skipUpdateNotifications%5C%22%3Afalse%2C%5C%22about%5C%22%3A%5C%22%5C%22%2C%5C%22github-creds%5C%22%3A%5C%22%5C%22%7D%22%2C%22overrideSource%22%3A%22GitHub%22%7D"><img alt="Obtainium" src="./content/obtainium.svg" height="60"/></a>
-    <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.sadellie.unitto%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Fsadellie%2Funitto%22%2C%22author%22%3A%22sadellie%22%2C%22name%22%3A%22Calculator%22%2C%22preferredApkIndex%22%3A0%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Atrue%2C%5C%22fallbackToOlderReleases%5C%22%3Atrue%2C%5C%22filterReleaseTitlesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22filterReleaseNotesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22verifyLatestTag%5C%22%3Afalse%2C%5C%22dontSortReleasesList%5C%22%3Afalse%2C%5C%22useLatestAssetDateAsReleaseDate%5C%22%3Afalse%2C%5C%22releaseTitleAsVersion%5C%22%3Afalse%2C%5C%22trackOnly%5C%22%3Afalse%2C%5C%22versionExtractionRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22matchGroupToUse%5C%22%3A%5C%22%5C%22%2C%5C%22versionDetection%5C%22%3Atrue%2C%5C%22releaseDateAsVersion%5C%22%3Afalse%2C%5C%22useVersionCodeAsOSVersion%5C%22%3Atrue%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22invertAPKFilter%5C%22%3Afalse%2C%5C%22autoApkFilterByArch%5C%22%3Atrue%2C%5C%22appName%5C%22%3A%5C%22%5C%22%2C%5C%22shizukuPretendToBeGooglePlay%5C%22%3Afalse%2C%5C%22allowInsecure%5C%22%3Afalse%2C%5C%22exemptFromBackgroundUpdates%5C%22%3Afalse%2C%5C%22skipUpdateNotifications%5C%22%3Afalse%2C%5C%22about%5C%22%3A%5C%22%5C%22%2C%5C%22github-creds%5C%22%3A%5C%22%5C%22%7D%22%2C%22overrideSource%22%3A%22GitHub%22%7D"><img alt="Obtainium (Preview channel)" src="./content/obtainium-preview.svg" height="60"/></a>
-</p>
+A calculator, a unit and currency converter, and a date calculator, drawn for an E Ink screen:
+big plain keys, a large answer, and nothing that moves.
 
-- F-Droid users may receive updates from Preview channel
+Built for the [Mudita Kompakt](https://mudita.com/products/kompakt/), whose 4.3" panel has
+sixteen greys, a slow redraw, and is read outdoors as often as indoors.
 
-# 💁‍♀️ Contribute
-<p align="middle">
-    <img src="./content/based.png" width="97%" />
-</p>
+## Screenshots
 
-<p align="middle">
-    <a href="https://github.com/sadellie/unitto/issues/new"><img alt="Issues" src="./content/issue.svg" height="60"/></a>
-    <a href="https://github.com/sadellie/unitto/discussions/new/choose"><img alt="Discussions" src="./content/discussion.svg" height="60"/></a>
-</p>
+| | | | |
+|---|---|---|---|
+| ![The calculator](screenshots/1-calculate.png) | ![Its functions](screenshots/2-functions.png) | ![Converting currency](screenshots/3-convert.png) | ![A unit list with the answer in each](screenshots/4-units.png) |
 
-1. Read [CONTRIBUTING.md](./CONTRIBUTING.md)
-2. Hard forks and alterations of Unitto are **NOT** welcomed. Use a _Fork_ button so that commits' author is not lost
-3. Do **NOT** use branding materials (app name, icons, descriptions, screenshots and other materials)
+## What it does
 
-# ⚠ Security
-Read [this](./SECURITY.md).
+- **Calculate.** Type a whole sum, brackets and all; the answer so far shows under it as you go,
+  and = puts it in the sum's place to carry on from. An operator after = carries on from the
+  answer; a digit or a function starts afresh. Where the answer is a simple fraction it is
+  shown as one too, 0.375 as 3⁄8. The arithmetic is done in decimal rather than in binary
+  floating point, so 0.1 + 0.2 is 0.3, and an answer is rounded only at the end, to the decimal
+  places set.
+- **Functions** are a second page of the same keys, behind **fx**: sin, cos and tan and their
+  inverses, ln, log, eˣ, 10ˣ, square and any power, roots, factorial, modulo, π and e, and the
+  switch between degrees and radians. A function goes into the sum and turns the page back, so
+  sin 30 is fx, sin, 3, 0. The keys stay the size they are rather than shrinking to fit both
+  pages on one screen.
+- **The tape.** The last sum worked out sits above the one being typed; press it for the last
+  hundred, newest first, and press any of them to carry on from its answer.
+- **Convert** between 24 kinds of unit: length, currency, mass, speed, temperature, area, time,
+  volume, data, pressure, acceleration, energy, power, angle, data transfer, flux, number base,
+  capacitance, prefix, force, torque, flow rate, luminance and fuel consumption. Press either
+  unit for the list of its kind, with a search by name or symbol; the list to convert *to* shows
+  what the number comes to in every unit, so it is an answer in itself. What is typed can be a
+  sum too. Feet come out as feet and inches, pounds as pounds and ounces, and a length of time
+  also in days, hours and minutes.
+- **Number bases** from binary to hexadecimal, with only the digits the base has on the keypad.
+- **Dates**: how long between two days, in years, months and days and in days and weeks; or
+  which day it is so many years, months and days on from another, or back.
+- **Hold** the sum or a value to copy it, share it as text, or paste a number in its place.
+- **Settings**: decimal places, how numbers are written (1,234.5 or 1.234,5 and the spaced
+  forms; it starts as the phone's language has it), every digit or E for very large and small
+  numbers, and the fraction on or off.
 
-SHA-256 digest: b2d9938c97fa77df78142c311d234aae9e706f10ccba167f2a2a3e33528c1dcf 
+## Currency
 
-<sup>TL;DR: the app is legit, no cap fr fr</sup>
+Exchange rates come from [Fawaz Ahmed's currency API](https://github.com/fawazahmed0/exchange-api),
+which publishes one file a day of over 200 currencies, metals and coins. They are fetched only
+while currency is open in the converter, at most once a day, and kept on the phone: with no
+signal the converter uses the last rates it has and says which day they are from. A phone that
+has never been online has no rates at all, and says that instead. Amounts are shown to the cent
+(a coin worth less, to its first figure), whatever the decimal places are set to. They are a
+day's reference rates, not what a bank or a card will charge.
 
+## What it does not do
 
-## 🌐 State of Unitto Web (Alpha)
-- Main features are on par with Android version (including accuracy of calculations)
-- Physical keyboard support is implemented with almost no limitations
-- User interface adapts to bigger screens
-- Language support is limited
-- Theming support is limited
-- User data is not restored on page reload
-- Clipboard features are not implemented
+No graphing, and no programmer's calculator with bit operations and word sizes, yet. No time
+zones or body mass, which Unitto has. No widgets, history across phones, or themes: it is black
+on white.
 
-### Web version uses additional licensed code
-- wasm port of [kt-math](https://github.com/gciatto/kt-math) with additional fixes. Files in `kt-math` folder are [licensed under GPL-2.0](./kt-math/LICENSE-kt-math)
-- incomplete port of [big-math](https://github.com/eobermuhlner/big-math) with additional fixes. Files in `core/common/wasmJsMain` folder are [licensed under MIT](./core/common/LICENSE-big-math.txt)
+## Building
 
-## 🤖 Custom ROM developers
-Leave.
+```
+./gradlew assembleRelease
+```
 
-## 🔎 Additional
-- Terms and Conditions: https://sadellie.github.io/unitto/terms
-- Privacy Policy: https://sadellie.github.io/unitto/privacy
-- Help: https://sadellie.github.io/unitto/help
+A release is signed by a keystore in `signing/`, which is not in this repository. Without
+it the release APK builds **unsigned** and will not install anywhere — there is no
+fallback key by design.
+
+## Getting it, and keeping it
+
+Download <https://github.com/wanderwildwood/soroban/releases/latest/download/soroban.apk>
+and sideload it. That address always points at the newest release, and every release
+publishes a `.sha256` beside the APK.
+
+For updates without doing this by hand, add this repository to
+[Obtainium](https://github.com/ImranR98/Obtainium):
+
+    https://github.com/wanderwildwood/soroban
+
+## Credit
+
+A fork of [Unitto](https://github.com/sadellie/unitto) by Elshan Agaev, GNU General Public
+License v3 or later, whose history this repository keeps. The expression evaluator, the
+arbitrary-precision arithmetic, the number formatting, every unit and conversion, the
+calculator's editing rules and fraction finder, and their tests are Unitto's, under
+`app/src/main/kotlin/com/sadellie` and `io/github/sadellie`. The screens are written fresh in
+Jetpack Compose against [MMD](https://github.com/mudita/MMD), Mudita's E Ink component library.
+Unitto's name, icon and look are not used, as its README asks.
+
+Arithmetic beyond + − × ÷ is [big-math](https://github.com/eobermuhlner/big-math), MIT. Icons
+are [Material Symbols](https://fonts.google.com/icons), Apache License 2.0.
+
+## Licence
+
+GPL-3.0-only for what is written here. See [LICENSE](LICENSE). Unitto's own files keep the
+licence they came under, GPL-3.0-or-later.
+
+Copyright (C) 2026 wander wildwood
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, version 3.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If
+not, see <https://www.gnu.org/licenses/>.
