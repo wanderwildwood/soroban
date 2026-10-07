@@ -38,6 +38,9 @@ import com.wanderwildwood.soroban.Numbers
 import com.wanderwildwood.soroban.R
 import com.wanderwildwood.soroban.calc.CalculationResult
 import com.wanderwildwood.soroban.calc.CalculatorViewModel
+import com.wanderwildwood.soroban.Prefs
+import com.wanderwildwood.soroban.prog.ProgrammerViewModel
+import androidx.compose.runtime.mutableIntStateOf
 
 /**
  * The calculator: the sum and its answer over a keypad of big plain keys.
@@ -48,13 +51,23 @@ import com.wanderwildwood.soroban.calc.CalculatorViewModel
  * stay the size they are rather than shrinking to fit both pages on one screen.
  */
 @Composable
-fun CalculatorScreen(vm: CalculatorViewModel, onHistory: () -> Unit) {
+fun CalculatorScreen(vm: CalculatorViewModel, programmer: ProgrammerViewModel, prefs: Prefs, onHistory: () -> Unit) {
+    // 0 the numbers, 1 the functions, 2 the programmer's calculator; kept between visits.
+    var mode by rememberSaveable { mutableIntStateOf(prefs.calcMode) }
+    val setMode = { m: Int ->
+        mode = m
+        prefs.calcMode = m
+    }
+    if (mode == 2) {
+        ProgrammerScreen(programmer, onLeave = { setMode(0) })
+        return
+    }
+    val functions = mode == 1
     val context = LocalContext.current
     val settings by vm.settings.collectAsStateWithLifecycle()
     val result by vm.result.collectAsStateWithLifecycle()
     val equalled by vm.equalled.collectAsStateWithLifecycle()
     val lines by vm.lines.collectAsStateWithLifecycle()
-    var functions by rememberSaveable { mutableStateOf(false) }
     var actions by rememberSaveable { mutableStateOf(false) }
 
     val text = vm.input.text.toString()
@@ -78,16 +91,17 @@ fun CalculatorScreen(vm: CalculatorViewModel, onHistory: () -> Unit) {
 
         val add: (String) -> Unit = { vm.addTokens(it) }
         val keys = if (!functions) {
-            numberPage(vm, add, settings.symbols.fractional, onFunctions = { functions = true })
+            numberPage(vm, add, settings.symbols.fractional, onFunctions = { setMode(1) })
         } else {
             functionPage(
                 vm = vm,
                 radians = settings.radians,
                 insert = { token ->
                     vm.addTokens(token)
-                    functions = false
+                    setMode(0)
                 },
-                onNumbers = { functions = false },
+                onNumbers = { setMode(0) },
+                onProgrammer = { setMode(2) },
             )
         }
         HorizontalDividerMMD()
@@ -142,6 +156,7 @@ private fun functionPage(
     radians: Boolean,
     insert: (String) -> Unit,
     onNumbers: () -> Unit,
+    onProgrammer: () -> Unit,
 ): List<List<Key?>> {
     val backspace = stringResource(R.string.cd_backspace)
     val clear = stringResource(R.string.key_clear)
@@ -185,7 +200,8 @@ private fun functionPage(
         ),
         listOf(
             Key(stringResource(R.string.key_numbers), onNumbers, small = true),
-            Key(Token.Operator.SQRT, { insert(Token.Operator.SQRT) }),
+            // The programmer's calculator, in HEX, DEC, OCT and BIN; √ is on the first page.
+            Key(stringResource(R.string.key_programmer), onProgrammer, small = true, description = stringResource(R.string.cd_programmer)),
             Key("xʸ", { insert(Token.Operator.POWER) }, small = true),
             Key("=", {
                 vm.onEqualClick()

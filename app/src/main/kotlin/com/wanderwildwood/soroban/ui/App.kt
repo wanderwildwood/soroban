@@ -1,7 +1,17 @@
 package com.wanderwildwood.soroban.ui
 
 import android.app.Application
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,20 +29,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mudita.mmd.components.tabs.PrimaryTabRowMMD
-import com.mudita.mmd.components.tabs.TabMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.soroban.Prefs
 import com.wanderwildwood.soroban.R
 import com.wanderwildwood.soroban.calc.CalculatorViewModel
 import com.wanderwildwood.soroban.convert.ConverterViewModel
+import com.wanderwildwood.soroban.graph.GraphViewModel
+import com.wanderwildwood.soroban.prog.ProgrammerViewModel
 
 /** What is open over the three pages, if anything. */
-private enum class Over { NONE, SETTINGS, HISTORY, GROUPS, FROM, TO }
+private enum class Over { NONE, SETTINGS, HISTORY, GROUPS, FROM, TO, EDIT, POINTS, TABLE }
 
 /**
- * The whole app: three pages under one top bar — calculate, convert, dates — with the
+ * The whole app: four pages under one top bar — calculate, graph, convert, dates — with the
  * settings, the tape and the unit lists opening over them. The page last open is the one the
  * app opens on.
  */
@@ -43,6 +53,9 @@ fun SorobanApp() {
     val prefs = Prefs.get(context)
     val calc: CalculatorViewModel = viewModel(factory = CalculatorViewModel.factory(app))
     val convert: ConverterViewModel = viewModel(factory = ConverterViewModel.factory(app))
+    val graph: GraphViewModel = viewModel(factory = GraphViewModel.factory(app))
+    val programmer: ProgrammerViewModel = viewModel(factory = ProgrammerViewModel.factory(app))
+    var editing by rememberSaveable { mutableIntStateOf(0) }
     var page by rememberSaveable { mutableIntStateOf(prefs.page) }
     var over by rememberSaveable { mutableStateOf(Over.NONE) }
     var about by rememberSaveable { mutableStateOf(false) }
@@ -73,6 +86,9 @@ fun SorobanApp() {
         }
         Over.FROM -> UnitPicker(convert, choosingTo = false, onBack = close)
         Over.TO -> UnitPicker(convert, choosingTo = true, onBack = close)
+        Over.EDIT -> FunctionEditor(graph, editing, onBack = close)
+        Over.POINTS -> PointsScreen(graph, onBack = close)
+        Over.TABLE -> TableScreen(graph, prefs, onBack = close)
         Over.NONE -> Scaffold(
             containerColor = MaterialTheme.colorScheme.surface,
             topBar = {
@@ -86,28 +102,27 @@ fun SorobanApp() {
             },
         ) { padding ->
             Column(Modifier.padding(padding).fillMaxSize()) {
-                PrimaryTabRowMMD(selectedTabIndex = page) {
-                    listOf(R.string.tab_calculate, R.string.tab_convert, R.string.tab_dates).forEachIndexed { i, label ->
-                        TabMMD(
-                            selected = page == i,
-                            onClick = {
-                                page = i
-                                prefs.page = i
-                            },
-                            text = {
-                                TextMMD(
-                                    text = stringResource(label),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    fontWeight = if (page == i) FontWeight.Bold else FontWeight.Normal,
-                                )
-                            },
-                        )
-                    }
-                }
+                Tabs(
+                    labels = listOf(R.string.tab_calculate, R.string.tab_graph, R.string.tab_convert, R.string.tab_dates).map { stringResource(it) },
+                    selected = page,
+                    onSelect = { i ->
+                        page = i
+                        prefs.page = i
+                    },
+                )
                 Box(Modifier.weight(1f)) {
                     when (page) {
-                        0 -> CalculatorScreen(calc, onHistory = { over = Over.HISTORY })
-                        1 -> ConverterScreen(
+                        0 -> CalculatorScreen(calc, programmer, prefs, onHistory = { over = Over.HISTORY })
+                        1 -> GraphScreen(
+                            graph,
+                            onEdit = {
+                                editing = it
+                                over = Over.EDIT
+                            },
+                            onPoints = { over = Over.POINTS },
+                            onTable = { over = Over.TABLE },
+                        )
+                        2 -> ConverterScreen(
                             convert,
                             onGroups = { over = Over.GROUPS },
                             onPickFrom = { over = Over.FROM },
@@ -121,4 +136,35 @@ fun SorobanApp() {
     }
 
     if (about) AboutDialog(onDismiss = { about = false })
+}
+
+/**
+ * The pages, in a row of equal parts, the one open in bold over a solid bar. MMD's own tab row
+ * draws the same, but pads each label by 16dp a side, and at four tabs on a 480px panel that
+ * broke "Calculate" over two lines.
+ */
+@Composable
+private fun Tabs(labels: List<String>, selected: Int, onSelect: (Int) -> Unit) {
+    Column(Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth().height(48.dp)) {
+            labels.forEachIndexed { i, label ->
+                Box(
+                    Modifier.weight(1f).fillMaxHeight().clickable { onSelect(i) },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    TextMMD(
+                        text = label,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = if (i == selected) FontWeight.Bold else FontWeight.Normal,
+                        maxLines = 1,
+                        softWrap = false,
+                    )
+                    if (i == selected) {
+                        Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().padding(horizontal = 10.dp).height(3.dp).background(Color.Black))
+                    }
+                }
+            }
+        }
+        HorizontalDividerMMD()
+    }
 }

@@ -81,13 +81,51 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
         state.value = next
     }
 
+    /**
+     * The tab last open: 0 calculate, 1 graph, 2 convert, 3 dates. 0.1.0 kept it under
+     * another key without the graph, so its convert (1) and dates (2) move up one.
+     */
     var page: Int
-        get() = prefs.getInt(PAGE, 0)
-        set(value) = prefs.edit().putInt(PAGE, value).apply()
+        get() = if (prefs.contains(TAB)) prefs.getInt(TAB, 0) else when (val old = prefs.getInt(PAGE, 0)) {
+            0 -> 0
+            else -> old + 1
+        }
+        set(value) = prefs.edit().putInt(TAB, value).apply()
 
     var group: String?
         get() = prefs.getString(GROUP, null)
         set(value) = prefs.edit().putString(GROUP, value).apply()
+
+    /** Which keys the calculator shows: 0 the numbers, 1 the functions, 2 programmer. */
+    var calcMode: Int
+        get() = prefs.getInt(CALC_MODE, 0)
+        set(value) = prefs.edit().putInt(CALC_MODE, value).apply()
+
+    /** The graph's functions, in calculator tokens with x as "X". Up to three. */
+    var functions: List<String>
+        get() = prefs.getString(FUNCTIONS, null)?.split('\n')?.filter { it.isNotEmpty() }.orEmpty()
+        set(value) = prefs.edit().putString(FUNCTIONS, value.joinToString("\n")).apply()
+
+    /** The graph's window as "xMin,xMax,yMin,yMax", or null before the graph is first drawn. */
+    var viewport: List<Double>?
+        get() = prefs.getString(VIEWPORT, null)?.split(',')?.mapNotNull { it.toDoubleOrNull() }?.takeIf { it.size == 4 }
+        set(value) = prefs.edit().putString(VIEWPORT, value?.joinToString(",")).apply()
+
+    var tableStart: String
+        get() = prefs.getString(TABLE_START, "0") ?: "0"
+        set(value) = prefs.edit().putString(TABLE_START, value).apply()
+
+    var tableStep: String
+        get() = prefs.getString(TABLE_STEP, "1") ?: "1"
+        set(value) = prefs.edit().putString(TABLE_STEP, value).apply()
+
+    var progBase: String?
+        get() = prefs.getString(PROG_BASE, null)
+        set(value) = prefs.edit().putString(PROG_BASE, value).apply()
+
+    var progSize: String?
+        get() = prefs.getString(PROG_SIZE, null)
+        set(value) = prefs.edit().putString(PROG_SIZE, value).apply()
 
     /** The pair of units last used in a group, as "fromId>toId". */
     fun pair(group: String): Pair<String, String>? =
@@ -112,9 +150,17 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
         private const val FRACTIONS = "fractions"
         private const val RADIANS = "radians"
         private const val PAGE = "page"
+        private const val TAB = "tab"
         private const val GROUP = "group"
         private const val PAIR = "pair_"
         private const val RECENT_KEY = "recent_"
+        private const val CALC_MODE = "calc_mode"
+        private const val FUNCTIONS = "graph_functions"
+        private const val VIEWPORT = "graph_viewport"
+        private const val TABLE_START = "table_start"
+        private const val TABLE_STEP = "table_step"
+        private const val PROG_BASE = "prog_base"
+        private const val PROG_SIZE = "prog_size"
         private const val RECENT = 6
 
         @Volatile private var instance: Prefs? = null

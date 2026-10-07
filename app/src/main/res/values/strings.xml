@@ -18,6 +18,7 @@
 
     <!-- The three pages, under the top bar -->
     <string name="tab_calculate">Calculate</string>
+    <string name="tab_graph">Graph</string>
     <string name="tab_convert">Convert</string>
     <string name="tab_dates">Dates</string>
 
@@ -34,6 +35,63 @@
     <!-- Angles are in degrees; shown on the key that changes it -->
     <string name="key_degrees">deg</string>
     <string name="key_radians">rad</string>
+
+    <!-- On the functions page: opens the programmer's calculator -->
+    <string name="key_programmer">hex</string>
+    <string name="cd_programmer">Programmer: hexadecimal, binary and bit operations</string>
+
+    <!-- ============================================================ -->
+    <!-- Programmer -->
+
+    <!-- Shows the value's bits, to flip one at a time -->
+    <string name="key_bits">Bits</string>
+    <!-- Turns the keys to the bit operations, and back to the digits -->
+    <string name="key_ops">Bitwise</string>
+    <string name="key_digits">A–F</string>
+    <!-- %1$s is QWORD, DWORD, WORD or BYTE -->
+    <string name="cd_word_size">Word size %1$s. Press for the next.</string>
+    <string name="cd_leave_programmer">Back to the ordinary calculator</string>
+
+    <!-- ============================================================ -->
+    <!-- Graph -->
+
+    <string name="graph_add">Add a function</string>
+    <string name="graph_empty">Add a function of x to draw it.</string>
+    <string name="graph_hint">Press a curve for its value; drag to move, pinch to zoom.</string>
+    <!-- %1$s the curve (y₁), %2$s x, %3$s y -->
+    <string name="graph_point">%1$s: x = %2$s, y = %3$s</string>
+    <string name="graph_reset">Reset</string>
+    <string name="graph_points">Points</string>
+    <string name="graph_table">Table</string>
+    <string name="graph_done">Draw</string>
+    <string name="graph_write_hint">a sum with x in it</string>
+    <string name="graph_not_a_function">That cannot be drawn yet: a bracket or a number is missing.</string>
+    <string name="cd_zoom_in">Zoom in</string>
+    <string name="cd_zoom_out">Zoom out</string>
+
+    <!-- %1$s the curve, %2$s x -->
+    <string name="found_root">%1$s is 0 at x = %2$s</string>
+    <!-- %1$s the curve, %2$s x, %3$s y -->
+    <string name="found_min">Lowest on %1$s: x = %2$s, y = %3$s</string>
+    <string name="found_max">Highest on %1$s: x = %2$s, y = %3$s</string>
+    <!-- %1$s and %2$s the curves, %3$s x, %4$s y -->
+    <string name="found_meet">%1$s meets %2$s: x = %3$s, y = %4$s</string>
+
+    <string name="points_title">Points</string>
+    <string name="points_looking">Looking along the curves in view.</string>
+    <string name="points_none">No roots, highest or lowest points, or meetings in view. Move or zoom the graph to look elsewhere.</string>
+    <string name="points_note">In the part of the graph on screen, left to right. Press one to mark it.</string>
+    <!-- %1$s the curve -->
+    <string name="points_root">Root of %1$s</string>
+    <string name="points_min">Lowest on %1$s</string>
+    <string name="points_max">Highest on %1$s</string>
+    <!-- %1$s and %2$s the curves -->
+    <string name="points_meet">%1$s meets %2$s</string>
+
+    <string name="table_title">Table</string>
+    <string name="table_start">x from</string>
+    <string name="table_step">a step of</string>
+    <string name="table_bad_step">A starting x and a step above 0, as numbers.</string>
 
     <string name="calc_divide_by_zero">Cannot divide by 0</string>
     <string name="calc_error">There is no answer to that</string>
