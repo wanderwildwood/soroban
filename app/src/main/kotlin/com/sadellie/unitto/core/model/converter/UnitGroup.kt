@@ -18,57 +18,33 @@
 
 package com.sadellie.unitto.core.model.converter
 
-import org.jetbrains.compose.resources.StringResource
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_group_acceleration
-import unitto.core.common.generated.resources.unit_group_angle
-import unitto.core.common.generated.resources.unit_group_area
-import unitto.core.common.generated.resources.unit_group_currency
-import unitto.core.common.generated.resources.unit_group_data
-import unitto.core.common.generated.resources.unit_group_data_transfer
-import unitto.core.common.generated.resources.unit_group_electrostatic_capacitance
-import unitto.core.common.generated.resources.unit_group_energy
-import unitto.core.common.generated.resources.unit_group_flow_rate
-import unitto.core.common.generated.resources.unit_group_flux
-import unitto.core.common.generated.resources.unit_group_force
-import unitto.core.common.generated.resources.unit_group_fuel_consumption
-import unitto.core.common.generated.resources.unit_group_length
-import unitto.core.common.generated.resources.unit_group_luminance
-import unitto.core.common.generated.resources.unit_group_mass
-import unitto.core.common.generated.resources.unit_group_number_base
-import unitto.core.common.generated.resources.unit_group_power
-import unitto.core.common.generated.resources.unit_group_prefix
-import unitto.core.common.generated.resources.unit_group_pressure
-import unitto.core.common.generated.resources.unit_group_speed
-import unitto.core.common.generated.resources.unit_group_temperature
-import unitto.core.common.generated.resources.unit_group_time
-import unitto.core.common.generated.resources.unit_group_torque
-import unitto.core.common.generated.resources.unit_group_volume
+import androidx.annotation.StringRes
+import com.wanderwildwood.soroban.R
 
-enum class UnitGroup(val res: StringResource) {
+enum class UnitGroup(val res: Int) {
   // NOTE: This order is used as default for new users
-  LENGTH(res = Res.string.unit_group_length),
-  CURRENCY(res = Res.string.unit_group_currency),
-  MASS(res = Res.string.unit_group_mass),
-  SPEED(res = Res.string.unit_group_speed),
-  TEMPERATURE(res = Res.string.unit_group_temperature),
-  AREA(res = Res.string.unit_group_area),
-  TIME(res = Res.string.unit_group_time),
-  VOLUME(res = Res.string.unit_group_volume),
-  DATA(res = Res.string.unit_group_data),
-  PRESSURE(res = Res.string.unit_group_pressure),
-  ACCELERATION(res = Res.string.unit_group_acceleration),
-  ENERGY(res = Res.string.unit_group_energy),
-  POWER(res = Res.string.unit_group_power),
-  ANGLE(res = Res.string.unit_group_angle),
-  DATA_TRANSFER(res = Res.string.unit_group_data_transfer),
-  FLUX(res = Res.string.unit_group_flux),
-  NUMBER_BASE(res = Res.string.unit_group_number_base),
-  ELECTROSTATIC_CAPACITANCE(res = Res.string.unit_group_electrostatic_capacitance),
-  PREFIX(res = Res.string.unit_group_prefix),
-  FORCE(res = Res.string.unit_group_force),
-  TORQUE(res = Res.string.unit_group_torque),
-  FLOW_RATE(res = Res.string.unit_group_flow_rate),
-  LUMINANCE(res = Res.string.unit_group_luminance),
-  FUEL_CONSUMPTION(res = Res.string.unit_group_fuel_consumption),
+  LENGTH(res = R.string.unit_group_length),
+  CURRENCY(res = R.string.unit_group_currency),
+  MASS(res = R.string.unit_group_mass),
+  SPEED(res = R.string.unit_group_speed),
+  TEMPERATURE(res = R.string.unit_group_temperature),
+  AREA(res = R.string.unit_group_area),
+  TIME(res = R.string.unit_group_time),
+  VOLUME(res = R.string.unit_group_volume),
+  DATA(res = R.string.unit_group_data),
+  PRESSURE(res = R.string.unit_group_pressure),
+  ACCELERATION(res = R.string.unit_group_acceleration),
+  ENERGY(res = R.string.unit_group_energy),
+  POWER(res = R.string.unit_group_power),
+  ANGLE(res = R.string.unit_group_angle),
+  DATA_TRANSFER(res = R.string.unit_group_data_transfer),
+  FLUX(res = R.string.unit_group_flux),
+  NUMBER_BASE(res = R.string.unit_group_number_base),
+  ELECTROSTATIC_CAPACITANCE(res = R.string.unit_group_electrostatic_capacitance),
+  PREFIX(res = R.string.unit_group_prefix),
+  FORCE(res = R.string.unit_group_force),
+  TORQUE(res = R.string.unit_group_torque),
+  FLOW_RATE(res = R.string.unit_group_flow_rate),
+  LUMINANCE(res = R.string.unit_group_luminance),
+  FUEL_CONSUMPTION(res = R.string.unit_group_fuel_consumption),
 }

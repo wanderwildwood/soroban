@@ -23,22 +23,16 @@ import com.sadellie.unitto.core.common.setMaxScale
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
-import org.jetbrains.compose.resources.StringResource
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_celsius
-import unitto.core.common.generated.resources.unit_celsius_short
-import unitto.core.common.generated.resources.unit_fahrenheit
-import unitto.core.common.generated.resources.unit_fahrenheit_short
-import unitto.core.common.generated.resources.unit_kelvin
-import unitto.core.common.generated.resources.unit_kelvin_short
+import androidx.annotation.StringRes
+import com.wanderwildwood.soroban.R
 
 internal val temperatureCollection: List<BasicUnit> by lazy {
   val celsius =
     object : BasicUnit.Default {
       override val id: String = UnitID.celsius
       override val group: UnitGroup = UnitGroup.TEMPERATURE
-      override val displayName: StringResource = Res.string.unit_celsius
-      override val shortName: StringResource = Res.string.unit_celsius_short
+      override val displayName: Int = R.string.unit_celsius
+      override val shortName: Int = R.string.unit_celsius_short
       override val factor: KBigDecimal = KBigDecimal.ONE
       override val backward: Boolean = false
 
@@ -60,8 +54,8 @@ internal val temperatureCollection: List<BasicUnit> by lazy {
     object : BasicUnit.Default {
       override val id: String = UnitID.fahrenheit
       override val group: UnitGroup = UnitGroup.TEMPERATURE
-      override val displayName: StringResource = Res.string.unit_fahrenheit
-      override val shortName: StringResource = Res.string.unit_fahrenheit_short
+      override val displayName: Int = R.string.unit_fahrenheit
+      override val shortName: Int = R.string.unit_fahrenheit_short
       override val factor: KBigDecimal = KBigDecimal.ONE
       override val backward: Boolean = false
 
@@ -90,8 +84,8 @@ internal val temperatureCollection: List<BasicUnit> by lazy {
     object : BasicUnit.Default {
       override val id: String = UnitID.kelvin
       override val group: UnitGroup = UnitGroup.TEMPERATURE
-      override val displayName: StringResource = Res.string.unit_kelvin
-      override val shortName: StringResource = Res.string.unit_kelvin_short
+      override val displayName: Int = R.string.unit_kelvin
+      override val shortName: Int = R.string.unit_kelvin_short
       override val factor: KBigDecimal = KBigDecimal.ONE
       override val backward: Boolean = false
 

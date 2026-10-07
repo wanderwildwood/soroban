@@ -23,17 +23,7 @@ import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_attowatt
-import unitto.core.common.generated.resources.unit_attowatt_short
-import unitto.core.common.generated.resources.unit_horse_power_mechanical
-import unitto.core.common.generated.resources.unit_horse_power_mechanical_short
-import unitto.core.common.generated.resources.unit_kilowatt
-import unitto.core.common.generated.resources.unit_kilowatt_short
-import unitto.core.common.generated.resources.unit_megawatt
-import unitto.core.common.generated.resources.unit_megawatt_short
-import unitto.core.common.generated.resources.unit_watt
-import unitto.core.common.generated.resources.unit_watt_short
+import com.wanderwildwood.soroban.R
 
 internal val powerCollection: List<BasicUnit> by lazy {
   listOf(
@@ -41,36 +31,36 @@ internal val powerCollection: List<BasicUnit> by lazy {
       UnitID.attowatt,
       KBigDecimal("1"),
       UnitGroup.POWER,
-      Res.string.unit_attowatt,
-      Res.string.unit_attowatt_short,
+      R.string.unit_attowatt,
+      R.string.unit_attowatt_short,
     ),
     NormalUnit(
       UnitID.watt,
       KBigDecimal("1000000000000000000"),
       UnitGroup.POWER,
-      Res.string.unit_watt,
-      Res.string.unit_watt_short,
+      R.string.unit_watt,
+      R.string.unit_watt_short,
     ),
     NormalUnit(
       UnitID.kilowatt,
       KBigDecimal("1000000000000000000000"),
       UnitGroup.POWER,
-      Res.string.unit_kilowatt,
-      Res.string.unit_kilowatt_short,
+      R.string.unit_kilowatt,
+      R.string.unit_kilowatt_short,
     ),
     NormalUnit(
       UnitID.megawatt,
       KBigDecimal("1000000000000000000000000"),
       UnitGroup.POWER,
-      Res.string.unit_megawatt,
-      Res.string.unit_megawatt_short,
+      R.string.unit_megawatt,
+      R.string.unit_megawatt_short,
     ),
     NormalUnit(
       UnitID.horse_power_mechanical,
       KBigDecimal("745699871582285700000"),
       UnitGroup.POWER,
-      Res.string.unit_horse_power_mechanical,
-      Res.string.unit_horse_power_mechanical_short,
+      R.string.unit_horse_power_mechanical,
+      R.string.unit_horse_power_mechanical_short,
     ),
   )
 }

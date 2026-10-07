@@ -23,41 +23,7 @@ import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_dyne_centimeter
-import unitto.core.common.generated.resources.unit_dyne_centimeter_short
-import unitto.core.common.generated.resources.unit_dyne_meter
-import unitto.core.common.generated.resources.unit_dyne_meter_short
-import unitto.core.common.generated.resources.unit_dyne_millimeter
-import unitto.core.common.generated.resources.unit_dyne_millimeter_short
-import unitto.core.common.generated.resources.unit_gram_force_centimeter
-import unitto.core.common.generated.resources.unit_gram_force_centimeter_short
-import unitto.core.common.generated.resources.unit_gram_force_meter
-import unitto.core.common.generated.resources.unit_gram_force_meter_short
-import unitto.core.common.generated.resources.unit_gram_force_millimeter
-import unitto.core.common.generated.resources.unit_gram_force_millimeter_short
-import unitto.core.common.generated.resources.unit_kilogram_force_centimeter
-import unitto.core.common.generated.resources.unit_kilogram_force_centimeter_short
-import unitto.core.common.generated.resources.unit_kilogram_force_meter
-import unitto.core.common.generated.resources.unit_kilogram_force_meter_short
-import unitto.core.common.generated.resources.unit_kilogram_force_millimeter
-import unitto.core.common.generated.resources.unit_kilogram_force_millimeter_short
-import unitto.core.common.generated.resources.unit_kilonewton_meter
-import unitto.core.common.generated.resources.unit_kilonewton_meter_short
-import unitto.core.common.generated.resources.unit_newton_centimeter
-import unitto.core.common.generated.resources.unit_newton_centimeter_short
-import unitto.core.common.generated.resources.unit_newton_meter
-import unitto.core.common.generated.resources.unit_newton_meter_short
-import unitto.core.common.generated.resources.unit_newton_millimeter
-import unitto.core.common.generated.resources.unit_newton_millimeter_short
-import unitto.core.common.generated.resources.unit_ounce_force_foot
-import unitto.core.common.generated.resources.unit_ounce_force_foot_short
-import unitto.core.common.generated.resources.unit_ounce_force_inch
-import unitto.core.common.generated.resources.unit_ounce_force_inch_short
-import unitto.core.common.generated.resources.unit_pound_force_foot
-import unitto.core.common.generated.resources.unit_pound_force_foot_short
-import unitto.core.common.generated.resources.unit_pound_force_inch
-import unitto.core.common.generated.resources.unit_pound_force_inch_short
+import com.wanderwildwood.soroban.R
 
 val torqueCollection: List<BasicUnit> by lazy {
   listOf(
@@ -65,120 +31,120 @@ val torqueCollection: List<BasicUnit> by lazy {
       UnitID.dyne_millimeter,
       KBigDecimal("1"),
       UnitGroup.TORQUE,
-      Res.string.unit_dyne_millimeter,
-      Res.string.unit_dyne_millimeter_short,
+      R.string.unit_dyne_millimeter,
+      R.string.unit_dyne_millimeter_short,
     ),
     NormalUnit(
       UnitID.dyne_centimeter,
       KBigDecimal("10"),
       UnitGroup.TORQUE,
-      Res.string.unit_dyne_centimeter,
-      Res.string.unit_dyne_centimeter_short,
+      R.string.unit_dyne_centimeter,
+      R.string.unit_dyne_centimeter_short,
     ),
     NormalUnit(
       UnitID.dyne_meter,
       KBigDecimal("1000"),
       UnitGroup.TORQUE,
-      Res.string.unit_dyne_meter,
-      Res.string.unit_dyne_meter_short,
+      R.string.unit_dyne_meter,
+      R.string.unit_dyne_meter_short,
     ),
     NormalUnit(
       UnitID.newton_millimeter,
       KBigDecimal("100000"),
       UnitGroup.TORQUE,
-      Res.string.unit_newton_millimeter,
-      Res.string.unit_newton_millimeter_short,
+      R.string.unit_newton_millimeter,
+      R.string.unit_newton_millimeter_short,
     ),
     NormalUnit(
       UnitID.newton_centimeter,
       KBigDecimal("1000000"),
       UnitGroup.TORQUE,
-      Res.string.unit_newton_centimeter,
-      Res.string.unit_newton_centimeter_short,
+      R.string.unit_newton_centimeter,
+      R.string.unit_newton_centimeter_short,
     ),
     NormalUnit(
       UnitID.newton_meter,
       KBigDecimal("100000000"),
       UnitGroup.TORQUE,
-      Res.string.unit_newton_meter,
-      Res.string.unit_newton_meter_short,
+      R.string.unit_newton_meter,
+      R.string.unit_newton_meter_short,
     ),
     NormalUnit(
       UnitID.kilonewton_meter,
       KBigDecimal("100000000000"),
       UnitGroup.TORQUE,
-      Res.string.unit_kilonewton_meter,
-      Res.string.unit_kilonewton_meter_short,
+      R.string.unit_kilonewton_meter,
+      R.string.unit_kilonewton_meter_short,
     ),
     NormalUnit(
       UnitID.gram_force_millimeter,
       KBigDecimal("980.665"),
       UnitGroup.TORQUE,
-      Res.string.unit_gram_force_millimeter,
-      Res.string.unit_gram_force_millimeter_short,
+      R.string.unit_gram_force_millimeter,
+      R.string.unit_gram_force_millimeter_short,
     ),
     NormalUnit(
       UnitID.gram_force_centimeter,
       KBigDecimal("9806.65"),
       UnitGroup.TORQUE,
-      Res.string.unit_gram_force_centimeter,
-      Res.string.unit_gram_force_centimeter_short,
+      R.string.unit_gram_force_centimeter,
+      R.string.unit_gram_force_centimeter_short,
     ),
     NormalUnit(
       UnitID.kilogram_force_millimeter,
       KBigDecimal("980665"),
       UnitGroup.TORQUE,
-      Res.string.unit_kilogram_force_millimeter,
-      Res.string.unit_kilogram_force_millimeter_short,
+      R.string.unit_kilogram_force_millimeter,
+      R.string.unit_kilogram_force_millimeter_short,
     ),
     NormalUnit(
       UnitID.gram_force_meter,
       KBigDecimal("980665"),
       UnitGroup.TORQUE,
-      Res.string.unit_gram_force_meter,
-      Res.string.unit_gram_force_meter_short,
+      R.string.unit_gram_force_meter,
+      R.string.unit_gram_force_meter_short,
     ),
     NormalUnit(
       UnitID.kilogram_force_centimeter,
       KBigDecimal("9806650"),
       UnitGroup.TORQUE,
-      Res.string.unit_kilogram_force_centimeter,
-      Res.string.unit_kilogram_force_centimeter_short,
+      R.string.unit_kilogram_force_centimeter,
+      R.string.unit_kilogram_force_centimeter_short,
     ),
     NormalUnit(
       UnitID.kilogram_force_meter,
       KBigDecimal("980665000"),
       UnitGroup.TORQUE,
-      Res.string.unit_kilogram_force_meter,
-      Res.string.unit_kilogram_force_meter_short,
+      R.string.unit_kilogram_force_meter,
+      R.string.unit_kilogram_force_meter_short,
     ),
     NormalUnit(
       UnitID.ounce_force_foot,
       KBigDecimal("8473862.4"),
       UnitGroup.TORQUE,
-      Res.string.unit_ounce_force_foot,
-      Res.string.unit_ounce_force_foot_short,
+      R.string.unit_ounce_force_foot,
+      R.string.unit_ounce_force_foot_short,
     ),
     NormalUnit(
       UnitID.ounce_force_inch,
       KBigDecimal("706155.2"),
       UnitGroup.TORQUE,
-      Res.string.unit_ounce_force_inch,
-      Res.string.unit_ounce_force_inch_short,
+      R.string.unit_ounce_force_inch,
+      R.string.unit_ounce_force_inch_short,
     ),
     NormalUnit(
       UnitID.pound_force_foot,
       KBigDecimal("135581800"),
       UnitGroup.TORQUE,
-      Res.string.unit_pound_force_foot,
-      Res.string.unit_pound_force_foot_short,
+      R.string.unit_pound_force_foot,
+      R.string.unit_pound_force_foot_short,
     ),
     NormalUnit(
       UnitID.pound_force_inch,
       KBigDecimal("11298483.333333334"),
       UnitGroup.TORQUE,
-      Res.string.unit_pound_force_inch,
-      Res.string.unit_pound_force_inch_short,
+      R.string.unit_pound_force_inch,
+      R.string.unit_pound_force_inch_short,
     ),
   )
 }

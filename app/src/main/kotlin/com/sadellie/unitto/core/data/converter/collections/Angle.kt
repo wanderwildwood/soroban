@@ -23,19 +23,7 @@ import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_angle_minute
-import unitto.core.common.generated.resources.unit_angle_minute_short
-import unitto.core.common.generated.resources.unit_angle_second
-import unitto.core.common.generated.resources.unit_angle_second_short
-import unitto.core.common.generated.resources.unit_degree
-import unitto.core.common.generated.resources.unit_degree_short
-import unitto.core.common.generated.resources.unit_radian
-import unitto.core.common.generated.resources.unit_radian_short
-import unitto.core.common.generated.resources.unit_sextant
-import unitto.core.common.generated.resources.unit_sextant_short
-import unitto.core.common.generated.resources.unit_turn
-import unitto.core.common.generated.resources.unit_turn_short
+import com.wanderwildwood.soroban.R
 
 internal val angleCollection: List<BasicUnit> by lazy {
   listOf(
@@ -43,43 +31,43 @@ internal val angleCollection: List<BasicUnit> by lazy {
       UnitID.angle_second,
       KBigDecimal("1"),
       UnitGroup.ANGLE,
-      Res.string.unit_angle_second,
-      Res.string.unit_angle_second_short,
+      R.string.unit_angle_second,
+      R.string.unit_angle_second_short,
     ),
     NormalUnit(
       UnitID.angle_minute,
       KBigDecimal("60"),
       UnitGroup.ANGLE,
-      Res.string.unit_angle_minute,
-      Res.string.unit_angle_minute_short,
+      R.string.unit_angle_minute,
+      R.string.unit_angle_minute_short,
     ),
     NormalUnit(
       UnitID.degree,
       KBigDecimal("3600"),
       UnitGroup.ANGLE,
-      Res.string.unit_degree,
-      Res.string.unit_degree_short,
+      R.string.unit_degree,
+      R.string.unit_degree_short,
     ),
     NormalUnit(
       UnitID.radian,
       KBigDecimal("206264.8062471"),
       UnitGroup.ANGLE,
-      Res.string.unit_radian,
-      Res.string.unit_radian_short,
+      R.string.unit_radian,
+      R.string.unit_radian_short,
     ),
     NormalUnit(
       UnitID.sextant,
       KBigDecimal("216000"),
       UnitGroup.ANGLE,
-      Res.string.unit_sextant,
-      Res.string.unit_sextant_short,
+      R.string.unit_sextant,
+      R.string.unit_sextant_short,
     ),
     NormalUnit(
       UnitID.turn,
       KBigDecimal("1296000"),
       UnitGroup.ANGLE,
-      Res.string.unit_turn,
-      Res.string.unit_turn_short,
+      R.string.unit_turn,
+      R.string.unit_turn_short,
     ),
   )
 }

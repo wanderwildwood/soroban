@@ -23,27 +23,7 @@ import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_attosecond
-import unitto.core.common.generated.resources.unit_attosecond_short
-import unitto.core.common.generated.resources.unit_day
-import unitto.core.common.generated.resources.unit_day_short
-import unitto.core.common.generated.resources.unit_hour
-import unitto.core.common.generated.resources.unit_hour_short
-import unitto.core.common.generated.resources.unit_jiffy
-import unitto.core.common.generated.resources.unit_jiffy_short
-import unitto.core.common.generated.resources.unit_microsecond
-import unitto.core.common.generated.resources.unit_microsecond_short
-import unitto.core.common.generated.resources.unit_millisecond
-import unitto.core.common.generated.resources.unit_millisecond_short
-import unitto.core.common.generated.resources.unit_minute
-import unitto.core.common.generated.resources.unit_minute_short
-import unitto.core.common.generated.resources.unit_nanosecond
-import unitto.core.common.generated.resources.unit_nanosecond_short
-import unitto.core.common.generated.resources.unit_second
-import unitto.core.common.generated.resources.unit_second_short
-import unitto.core.common.generated.resources.unit_week
-import unitto.core.common.generated.resources.unit_week_short
+import com.wanderwildwood.soroban.R
 
 internal val timeCollection: List<BasicUnit> by lazy {
   listOf(
@@ -51,71 +31,71 @@ internal val timeCollection: List<BasicUnit> by lazy {
       UnitID.attosecond,
       KBigDecimal("1"),
       UnitGroup.TIME,
-      Res.string.unit_attosecond,
-      Res.string.unit_attosecond_short,
+      R.string.unit_attosecond,
+      R.string.unit_attosecond_short,
     ),
     NormalUnit(
       UnitID.nanosecond,
       KBigDecimal("1000000000"),
       UnitGroup.TIME,
-      Res.string.unit_nanosecond,
-      Res.string.unit_nanosecond_short,
+      R.string.unit_nanosecond,
+      R.string.unit_nanosecond_short,
     ),
     NormalUnit(
       UnitID.microsecond,
       KBigDecimal("1000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_microsecond,
-      Res.string.unit_microsecond_short,
+      R.string.unit_microsecond,
+      R.string.unit_microsecond_short,
     ),
     NormalUnit(
       UnitID.millisecond,
       KBigDecimal("1000000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_millisecond,
-      Res.string.unit_millisecond_short,
+      R.string.unit_millisecond,
+      R.string.unit_millisecond_short,
     ),
     NormalUnit(
       UnitID.jiffy,
       KBigDecimal("10000000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_jiffy,
-      Res.string.unit_jiffy_short,
+      R.string.unit_jiffy,
+      R.string.unit_jiffy_short,
     ),
     NormalUnit(
       UnitID.second,
       KBigDecimal("1000000000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_second,
-      Res.string.unit_second_short,
+      R.string.unit_second,
+      R.string.unit_second_short,
     ),
     NormalUnit(
       UnitID.minute,
       KBigDecimal("60000000000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_minute,
-      Res.string.unit_minute_short,
+      R.string.unit_minute,
+      R.string.unit_minute_short,
     ),
     NormalUnit(
       UnitID.hour,
       KBigDecimal("3600000000000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_hour,
-      Res.string.unit_hour_short,
+      R.string.unit_hour,
+      R.string.unit_hour_short,
     ),
     NormalUnit(
       UnitID.day,
       KBigDecimal("86400000000000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_day,
-      Res.string.unit_day_short,
+      R.string.unit_day,
+      R.string.unit_day_short,
     ),
     NormalUnit(
       UnitID.week,
       KBigDecimal("604800000000000000000000"),
       UnitGroup.TIME,
-      Res.string.unit_week,
-      Res.string.unit_week_short,
+      R.string.unit_week,
+      R.string.unit_week_short,
     ),
   )
 }

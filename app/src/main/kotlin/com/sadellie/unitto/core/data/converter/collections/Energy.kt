@@ -23,33 +23,7 @@ import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_attojoule
-import unitto.core.common.generated.resources.unit_attojoule_short
-import unitto.core.common.generated.resources.unit_calorie_th
-import unitto.core.common.generated.resources.unit_calorie_th_short
-import unitto.core.common.generated.resources.unit_electron_volt
-import unitto.core.common.generated.resources.unit_electron_volt_short
-import unitto.core.common.generated.resources.unit_energy_horse_power_metric
-import unitto.core.common.generated.resources.unit_energy_horse_power_metric_short
-import unitto.core.common.generated.resources.unit_energy_ton
-import unitto.core.common.generated.resources.unit_energy_ton_short
-import unitto.core.common.generated.resources.unit_gigajoule
-import unitto.core.common.generated.resources.unit_gigajoule_short
-import unitto.core.common.generated.resources.unit_gigaton
-import unitto.core.common.generated.resources.unit_gigaton_short
-import unitto.core.common.generated.resources.unit_joule
-import unitto.core.common.generated.resources.unit_joule_short
-import unitto.core.common.generated.resources.unit_kilocalorie_th
-import unitto.core.common.generated.resources.unit_kilocalorie_th_short
-import unitto.core.common.generated.resources.unit_kilojoule
-import unitto.core.common.generated.resources.unit_kilojoule_short
-import unitto.core.common.generated.resources.unit_kiloton
-import unitto.core.common.generated.resources.unit_kiloton_short
-import unitto.core.common.generated.resources.unit_megajoule
-import unitto.core.common.generated.resources.unit_megajoule_short
-import unitto.core.common.generated.resources.unit_megaton
-import unitto.core.common.generated.resources.unit_megaton_short
+import com.wanderwildwood.soroban.R
 
 internal val energyCollection: List<BasicUnit> by lazy {
   listOf(
@@ -57,92 +31,92 @@ internal val energyCollection: List<BasicUnit> by lazy {
       UnitID.electron_volt,
       KBigDecimal("0.160217733"),
       UnitGroup.ENERGY,
-      Res.string.unit_electron_volt,
-      Res.string.unit_electron_volt_short,
+      R.string.unit_electron_volt,
+      R.string.unit_electron_volt_short,
     ),
     NormalUnit(
       UnitID.attojoule,
       KBigDecimal("1.00"),
       UnitGroup.ENERGY,
-      Res.string.unit_attojoule,
-      Res.string.unit_attojoule_short,
+      R.string.unit_attojoule,
+      R.string.unit_attojoule_short,
     ),
     NormalUnit(
       UnitID.joule,
       KBigDecimal("1000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_joule,
-      Res.string.unit_joule_short,
+      R.string.unit_joule,
+      R.string.unit_joule_short,
     ),
     NormalUnit(
       UnitID.kilojoule,
       KBigDecimal("1000000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_kilojoule,
-      Res.string.unit_kilojoule_short,
+      R.string.unit_kilojoule,
+      R.string.unit_kilojoule_short,
     ),
     NormalUnit(
       UnitID.megajoule,
       KBigDecimal("1000000000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_megajoule,
-      Res.string.unit_megajoule_short,
+      R.string.unit_megajoule,
+      R.string.unit_megajoule_short,
     ),
     NormalUnit(
       UnitID.gigajoule,
       KBigDecimal("1000000000000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_gigajoule,
-      Res.string.unit_gigajoule_short,
+      R.string.unit_gigajoule,
+      R.string.unit_gigajoule_short,
     ),
     NormalUnit(
       UnitID.energy_ton,
       KBigDecimal("4184000000000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_energy_ton,
-      Res.string.unit_energy_ton_short,
+      R.string.unit_energy_ton,
+      R.string.unit_energy_ton_short,
     ),
     NormalUnit(
       UnitID.kiloton,
       KBigDecimal("4184000000000000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_kiloton,
-      Res.string.unit_kiloton_short,
+      R.string.unit_kiloton,
+      R.string.unit_kiloton_short,
     ),
     NormalUnit(
       UnitID.megaton,
       KBigDecimal("4184000000000000000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_megaton,
-      Res.string.unit_megaton_short,
+      R.string.unit_megaton,
+      R.string.unit_megaton_short,
     ),
     NormalUnit(
       UnitID.gigaton,
       KBigDecimal("4184000000000000000000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_gigaton,
-      Res.string.unit_gigaton_short,
+      R.string.unit_gigaton,
+      R.string.unit_gigaton_short,
     ),
     NormalUnit(
       UnitID.energy_horse_power_metric,
       KBigDecimal("2647795500000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_energy_horse_power_metric,
-      Res.string.unit_energy_horse_power_metric_short,
+      R.string.unit_energy_horse_power_metric,
+      R.string.unit_energy_horse_power_metric_short,
     ),
     NormalUnit(
       UnitID.calorie_th,
       KBigDecimal("4184000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_calorie_th,
-      Res.string.unit_calorie_th_short,
+      R.string.unit_calorie_th,
+      R.string.unit_calorie_th_short,
     ),
     NormalUnit(
       UnitID.kilocalorie_th,
       KBigDecimal("4184000000000000000000"),
       UnitGroup.ENERGY,
-      Res.string.unit_kilocalorie_th,
-      Res.string.unit_kilocalorie_th_short,
+      R.string.unit_kilocalorie_th,
+      R.string.unit_kilocalorie_th_short,
     ),
   )
 }

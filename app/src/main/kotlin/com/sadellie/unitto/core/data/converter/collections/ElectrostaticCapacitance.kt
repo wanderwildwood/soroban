@@ -23,31 +23,7 @@ import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_attofarad
-import unitto.core.common.generated.resources.unit_attofarad_short
-import unitto.core.common.generated.resources.unit_exafarad
-import unitto.core.common.generated.resources.unit_exafarad_short
-import unitto.core.common.generated.resources.unit_farad
-import unitto.core.common.generated.resources.unit_farad_short
-import unitto.core.common.generated.resources.unit_gigafarad
-import unitto.core.common.generated.resources.unit_gigafarad_short
-import unitto.core.common.generated.resources.unit_kilofarad
-import unitto.core.common.generated.resources.unit_kilofarad_short
-import unitto.core.common.generated.resources.unit_megafarad
-import unitto.core.common.generated.resources.unit_megafarad_short
-import unitto.core.common.generated.resources.unit_microfarad
-import unitto.core.common.generated.resources.unit_microfarad_short
-import unitto.core.common.generated.resources.unit_millifarad
-import unitto.core.common.generated.resources.unit_millifarad_short
-import unitto.core.common.generated.resources.unit_nanofarad
-import unitto.core.common.generated.resources.unit_nanofarad_short
-import unitto.core.common.generated.resources.unit_petafarad
-import unitto.core.common.generated.resources.unit_petafarad_short
-import unitto.core.common.generated.resources.unit_picofarad
-import unitto.core.common.generated.resources.unit_picofarad_short
-import unitto.core.common.generated.resources.unit_statfarad
-import unitto.core.common.generated.resources.unit_statfarad_short
+import com.wanderwildwood.soroban.R
 
 internal val electrostaticCapacitance: List<BasicUnit> by lazy {
   listOf(
@@ -55,85 +31,85 @@ internal val electrostaticCapacitance: List<BasicUnit> by lazy {
       UnitID.attofarad,
       KBigDecimal("1"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_attofarad,
-      Res.string.unit_attofarad_short,
+      R.string.unit_attofarad,
+      R.string.unit_attofarad_short,
     ),
     NormalUnit(
       UnitID.picofarad,
       KBigDecimal("1000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_picofarad,
-      Res.string.unit_picofarad_short,
+      R.string.unit_picofarad,
+      R.string.unit_picofarad_short,
     ),
     NormalUnit(
       UnitID.statfarad,
       KBigDecimal("1112650.0561"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_statfarad,
-      Res.string.unit_statfarad_short,
+      R.string.unit_statfarad,
+      R.string.unit_statfarad_short,
     ),
     NormalUnit(
       UnitID.nanofarad,
       KBigDecimal("1000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_nanofarad,
-      Res.string.unit_nanofarad_short,
+      R.string.unit_nanofarad,
+      R.string.unit_nanofarad_short,
     ),
     NormalUnit(
       UnitID.microfarad,
       KBigDecimal("1000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_microfarad,
-      Res.string.unit_microfarad_short,
+      R.string.unit_microfarad,
+      R.string.unit_microfarad_short,
     ),
     NormalUnit(
       UnitID.millifarad,
       KBigDecimal("1000000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_millifarad,
-      Res.string.unit_millifarad_short,
+      R.string.unit_millifarad,
+      R.string.unit_millifarad_short,
     ),
     NormalUnit(
       UnitID.farad,
       KBigDecimal("1000000000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_farad,
-      Res.string.unit_farad_short,
+      R.string.unit_farad,
+      R.string.unit_farad_short,
     ),
     NormalUnit(
       UnitID.kilofarad,
       KBigDecimal("1000000000000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_kilofarad,
-      Res.string.unit_kilofarad_short,
+      R.string.unit_kilofarad,
+      R.string.unit_kilofarad_short,
     ),
     NormalUnit(
       UnitID.megafarad,
       KBigDecimal("1000000000000000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_megafarad,
-      Res.string.unit_megafarad_short,
+      R.string.unit_megafarad,
+      R.string.unit_megafarad_short,
     ),
     NormalUnit(
       UnitID.gigafarad,
       KBigDecimal("1000000000000000000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_gigafarad,
-      Res.string.unit_gigafarad_short,
+      R.string.unit_gigafarad,
+      R.string.unit_gigafarad_short,
     ),
     NormalUnit(
       UnitID.petafarad,
       KBigDecimal("1000000000000000000000000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_petafarad,
-      Res.string.unit_petafarad_short,
+      R.string.unit_petafarad,
+      R.string.unit_petafarad_short,
     ),
     NormalUnit(
       UnitID.exafarad,
       KBigDecimal("1000000000000000000000000000000000000"),
       UnitGroup.ELECTROSTATIC_CAPACITANCE,
-      Res.string.unit_exafarad,
-      Res.string.unit_exafarad_short,
+      R.string.unit_exafarad,
+      R.string.unit_exafarad_short,
     ),
   )
 }

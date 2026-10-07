@@ -20,73 +20,18 @@ package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.setMaxScale
-import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
-import com.sadellie.unitto.core.database.UnitsDaoInMemory
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class UnitRepositoryConvertFootInch {
-  private val fakeCurrencyApiService = FakeCurrencyApiService()
-  private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
-  private val fakeUnitsDao = UnitsDaoInMemory()
-  private val unitsRepository = UnitsRepository(fakeUnitsDao)
-  private val unitConverterRepo =
-    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
+  private val converter = Converter { _, _ -> null }
 
   @Test
-  fun convert_footInchOutput() = runTest {
+  fun convert_footInchOutput() {
     val expected =
       ConverterResult.FootInch(foot = KBigDecimal("6").setMaxScale(), inch = KBigDecimal("0"))
     val actual =
-      unitConverterRepo.convert(
-        unitFromId = UnitID.inch,
-        unitToId = UnitID.foot,
-        value1 = "72",
-        value2 = "",
-        formatTime = false,
-        apiUrl = "",
-      )
-
-    assertEquals(expected, actual)
-  }
-
-  @Test
-  fun convert_footInchInput() = runTest {
-    val expected =
-      ConverterResult.Default(
-        value = KBigDecimal("870").setMaxScale(),
-        calculation = KBigDecimal("72.5").setMaxScale(),
-      )
-    val actual =
-      unitConverterRepo.convert(
-        unitFromId = UnitID.foot,
-        unitToId = UnitID.inch,
-        value1 = "72",
-        value2 = "6",
-        formatTime = false,
-        apiUrl = "",
-      )
-
-    assertEquals(expected, actual)
-  }
-
-  @Test
-  fun convert_footInchInputAndOutput() = runTest {
-    val expected =
-      ConverterResult.FootInch(
-        foot = KBigDecimal("72").setMaxScale(),
-        inch = KBigDecimal("6").setMaxScale(),
-      )
-    val actual =
-      unitConverterRepo.convert(
-        unitFromId = UnitID.foot,
-        unitToId = UnitID.foot,
-        value1 = "72",
-        value2 = "6",
-        formatTime = false,
-        apiUrl = "",
-      )
+      converter.convert(Units.byId(UnitID.inch)!!, Units.byId(UnitID.foot)!!, "72")
 
     assertEquals(expected, actual)
   }

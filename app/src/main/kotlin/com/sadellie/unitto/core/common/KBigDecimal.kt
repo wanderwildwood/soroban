@@ -24,224 +24,224 @@ import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 
-actual class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDecimal> {
-  actual override fun equals(other: Any?): Boolean {
+class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDecimal> {
+  override fun equals(other: Any?): Boolean {
     if (other !is KBigDecimal) return false
     return this.wrapped == other.wrapped
   }
 
-  actual override fun toString(): String = this.wrapped.toString()
+  override fun toString(): String = this.wrapped.toString()
 
-  actual override fun hashCode(): Int = this.wrapped.hashCode()
+  override fun hashCode(): Int = this.wrapped.hashCode()
 
-  actual constructor(string: String) : this(BigDecimal(string))
+  constructor(string: String) : this(BigDecimal(string))
 
-  actual constructor(double: Double) : this(BigDecimal(double))
+  constructor(double: Double) : this(BigDecimal(double))
 
-  actual companion object {
-    actual val ZERO: KBigDecimal = KBigDecimal(BigDecimal.ZERO)
-    actual val ONE: KBigDecimal = KBigDecimal(BigDecimal.ONE)
-    actual val TEN: KBigDecimal = KBigDecimal(BigDecimal.TEN)
+  companion object {
+    val ZERO: KBigDecimal = KBigDecimal(BigDecimal.ZERO)
+    val ONE: KBigDecimal = KBigDecimal(BigDecimal.ONE)
+    val TEN: KBigDecimal = KBigDecimal(BigDecimal.TEN)
 
-    actual fun valueOf(double: Double): KBigDecimal = KBigDecimal(BigDecimal.valueOf(double))
+    fun valueOf(double: Double): KBigDecimal = KBigDecimal(BigDecimal.valueOf(double))
 
-    actual fun valueOf(long: Long): KBigDecimal = KBigDecimal(BigDecimal.valueOf(long))
+    fun valueOf(long: Long): KBigDecimal = KBigDecimal(BigDecimal.valueOf(long))
   }
 
-  actual override operator fun compareTo(other: KBigDecimal): Int =
+  override operator fun compareTo(other: KBigDecimal): Int =
     this.wrapped.compareTo(other.wrapped)
 
-  actual fun stripTrailingZeros(): KBigDecimal = KBigDecimal(this.wrapped.stripTrailingZeros())
+  fun stripTrailingZeros(): KBigDecimal = KBigDecimal(this.wrapped.stripTrailingZeros())
 
-  actual fun setScale(scale: Int, roundingMode: KRoundingMode): KBigDecimal =
+  fun setScale(scale: Int, roundingMode: KRoundingMode): KBigDecimal =
     KBigDecimal(this.wrapped.setScale(scale, roundingMode.wrapped))
 
-  actual fun setScale(scale: Int): KBigDecimal = KBigDecimal(this.wrapped.setScale(scale))
+  fun setScale(scale: Int): KBigDecimal = KBigDecimal(this.wrapped.setScale(scale))
 
-  actual fun scale(): Int = this.wrapped.scale()
+  fun scale(): Int = this.wrapped.scale()
 
-  actual fun abs(): KBigDecimal = KBigDecimal(this.wrapped.abs())
+  fun abs(): KBigDecimal = KBigDecimal(this.wrapped.abs())
 
-  actual fun remainder(divisor: KBigDecimal): KBigDecimal =
+  fun remainder(divisor: KBigDecimal): KBigDecimal =
     KBigDecimal(this.wrapped.remainder(divisor.wrapped))
 
-  actual fun toPlainString(): String = this.wrapped.toPlainString()
+  fun toPlainString(): String = this.wrapped.toPlainString()
 
-  actual fun toEngineeringString(): String = this.wrapped.toEngineeringString()
+  fun toEngineeringString(): String = this.wrapped.toEngineeringString()
 
-  actual fun intValueExact(): Int = this.wrapped.intValueExact()
+  fun intValueExact(): Int = this.wrapped.intValueExact()
 
-  actual fun multiply(multiplier: KBigDecimal): KBigDecimal =
+  fun multiply(multiplier: KBigDecimal): KBigDecimal =
     KBigDecimal(this.wrapped.multiply(multiplier.wrapped))
 
-  actual fun div(divisor: KBigDecimal): KBigDecimal = KBigDecimal(this.wrapped.div(divisor.wrapped))
+  fun div(divisor: KBigDecimal): KBigDecimal = KBigDecimal(this.wrapped.div(divisor.wrapped))
 
-  actual operator fun plus(addend: KBigDecimal): KBigDecimal =
+  operator fun plus(addend: KBigDecimal): KBigDecimal =
     KBigDecimal(this.wrapped.plus(addend.wrapped))
 
-  actual operator fun minus(subtrahend: KBigDecimal): KBigDecimal =
+  operator fun minus(subtrahend: KBigDecimal): KBigDecimal =
     KBigDecimal(this.wrapped.minus(subtrahend.wrapped))
 
-  actual fun divide(divisor: KBigDecimal, scale: Int, roundingMode: KRoundingMode): KBigDecimal =
+  fun divide(divisor: KBigDecimal, scale: Int, roundingMode: KRoundingMode): KBigDecimal =
     KBigDecimal(this.wrapped.divide(divisor.wrapped, scale, roundingMode.wrapped))
 
-  actual operator fun unaryMinus(): KBigDecimal = KBigDecimal(this.wrapped.unaryMinus())
+  operator fun unaryMinus(): KBigDecimal = KBigDecimal(this.wrapped.unaryMinus())
 
-  actual fun divide(divisor: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+  fun divide(divisor: KBigDecimal, mathContext: KMathContext): KBigDecimal =
     KBigDecimal(this.wrapped.divide(divisor.wrapped, mathContext.wrapped))
 
-  actual fun add(addend: KBigDecimal): KBigDecimal = KBigDecimal(this.wrapped.add(addend.wrapped))
+  fun add(addend: KBigDecimal): KBigDecimal = KBigDecimal(this.wrapped.add(addend.wrapped))
 
-  actual constructor(
+  constructor(
     string: String,
     mathContext: KMathContext,
   ) : this(BigDecimal(string, mathContext.wrapped))
 
-  actual fun toBigInteger(): KBigInteger = KBigInteger(this.wrapped.toBigInteger())
+  fun toBigInteger(): KBigInteger = KBigInteger(this.wrapped.toBigInteger())
 
-  actual fun toInt(): Int = this.wrapped.toInt()
+  fun toInt(): Int = this.wrapped.toInt()
 
-  actual constructor(bigInteger: KBigInteger) : this(BigDecimal(bigInteger.wrapped))
+  constructor(bigInteger: KBigInteger) : this(BigDecimal(bigInteger.wrapped))
 
   constructor(int: Int) : this(BigDecimal(int))
 
-  actual operator fun times(bigDecimal: KBigDecimal): KBigDecimal =
+  operator fun times(bigDecimal: KBigDecimal): KBigDecimal =
     KBigDecimal(this.wrapped.times(bigDecimal.wrapped))
 
-  actual fun divideAndRemainder(divisor: KBigDecimal): Array<KBigDecimal> {
+  fun divideAndRemainder(divisor: KBigDecimal): Array<KBigDecimal> {
     val res = this.wrapped.divideAndRemainder(divisor.wrapped)
     return arrayOf(KBigDecimal(res[0]), KBigDecimal(res[1]))
   }
 
-  actual fun pow(n: Int): KBigDecimal = KBigDecimal(this.wrapped.pow(n))
+  fun pow(n: Int): KBigDecimal = KBigDecimal(this.wrapped.pow(n))
 
-  actual fun scaleByPowerOfTen(n: Int): KBigDecimal = KBigDecimal(this.wrapped.scaleByPowerOfTen(n))
+  fun scaleByPowerOfTen(n: Int): KBigDecimal = KBigDecimal(this.wrapped.scaleByPowerOfTen(n))
 }
 
-actual class KRoundingMode internal constructor(val wrapped: RoundingMode) {
+class KRoundingMode internal constructor(val wrapped: RoundingMode) {
 
-  actual override fun equals(other: Any?): Boolean {
+  override fun equals(other: Any?): Boolean {
     if (other !is KRoundingMode) return false
     return this.wrapped == other.wrapped
   }
 
-  actual override fun toString(): String = this.wrapped.toString()
+  override fun toString(): String = this.wrapped.toString()
 
-  actual override fun hashCode(): Int = this.wrapped.hashCode()
+  override fun hashCode(): Int = this.wrapped.hashCode()
 
-  actual companion object {
-    actual val HALF_EVEN: KRoundingMode = KRoundingMode(RoundingMode.HALF_EVEN)
-    actual val DOWN: KRoundingMode = KRoundingMode(RoundingMode.DOWN)
+  companion object {
+    val HALF_EVEN: KRoundingMode = KRoundingMode(RoundingMode.HALF_EVEN)
+    val DOWN: KRoundingMode = KRoundingMode(RoundingMode.DOWN)
   }
 }
 
-actual class KMathContext private constructor(val wrapped: MathContext) {
-  actual override fun equals(other: Any?): Boolean {
+class KMathContext private constructor(val wrapped: MathContext) {
+  override fun equals(other: Any?): Boolean {
     if (other !is KMathContext) return false
     return this.wrapped == other.wrapped
   }
 
-  actual override fun toString(): String = this.wrapped.toString()
+  override fun toString(): String = this.wrapped.toString()
 
-  actual override fun hashCode(): Int = this.wrapped.hashCode()
+  override fun hashCode(): Int = this.wrapped.hashCode()
 
-  actual constructor(
+  constructor(
     precision: Int,
     roundingMode: KRoundingMode,
   ) : this(MathContext(precision, roundingMode.wrapped))
 
-  actual val precision: Int = this.wrapped.precision
+  val precision: Int = this.wrapped.precision
 }
 
-actual class KBigInteger internal constructor(internal val wrapped: BigInteger) :
+class KBigInteger internal constructor(internal val wrapped: BigInteger) :
   Comparable<KBigInteger> {
-  actual override fun equals(other: Any?): Boolean {
+  override fun equals(other: Any?): Boolean {
     if (other !is KBigInteger) return false
     return this.wrapped == other.wrapped
   }
 
-  actual override fun toString(): String = this.wrapped.toString()
+  override fun toString(): String = this.wrapped.toString()
 
-  actual fun toString(radix: Int): String = this.wrapped.toString(radix)
+  fun toString(radix: Int): String = this.wrapped.toString(radix)
 
-  actual override fun hashCode(): Int = this.wrapped.hashCode()
+  override fun hashCode(): Int = this.wrapped.hashCode()
 
-  actual fun gcd(d: KBigInteger): KBigInteger = KBigInteger(this.wrapped.gcd(d.wrapped))
+  fun gcd(d: KBigInteger): KBigInteger = KBigInteger(this.wrapped.gcd(d.wrapped))
 
-  actual fun divide(divisor: KBigInteger): KBigInteger =
+  fun divide(divisor: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.divide(divisor.wrapped))
 
-  actual companion object {
-    actual val ONE: KBigInteger = KBigInteger(BigInteger.ONE)
-    actual val ZERO: KBigInteger = KBigInteger(BigInteger.ZERO)
-    actual val TEN: KBigInteger = KBigInteger(BigInteger.TEN)
+  companion object {
+    val ONE: KBigInteger = KBigInteger(BigInteger.ONE)
+    val ZERO: KBigInteger = KBigInteger(BigInteger.ZERO)
+    val TEN: KBigInteger = KBigInteger(BigInteger.TEN)
   }
 
-  actual fun pow(n: Int): KBigInteger = KBigInteger(this.wrapped.pow(n))
+  fun pow(n: Int): KBigInteger = KBigInteger(this.wrapped.pow(n))
 
-  actual fun toKBigDecimal(): KBigDecimal = KBigDecimal(this.wrapped.toBigDecimal())
+  fun toKBigDecimal(): KBigDecimal = KBigDecimal(this.wrapped.toBigDecimal())
 
-  actual operator fun div(other: KBigInteger): KBigInteger =
+  operator fun div(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.div(other.wrapped))
 
-  actual operator fun minus(other: KBigInteger): KBigInteger =
+  operator fun minus(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.minus(other.wrapped))
 
-  actual fun multiply(other: KBigInteger): KBigInteger =
+  fun multiply(other: KBigInteger): KBigInteger =
     KBigInteger(this.wrapped.multiply(other.wrapped))
 
-  actual constructor(value: String) : this(BigInteger(value))
+  constructor(value: String) : this(BigInteger(value))
 
-  actual constructor(value: String, radix: Int) : this(BigInteger(value, radix))
+  constructor(value: String, radix: Int) : this(BigInteger(value, radix))
 
-  actual override fun compareTo(other: KBigInteger): Int = this.wrapped.compareTo(other.wrapped)
+  override fun compareTo(other: KBigInteger): Int = this.wrapped.compareTo(other.wrapped)
 }
 
-actual class KBigDecimalMath {
-  actual companion object {
-    actual fun toRadians(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+class KBigDecimalMath {
+  companion object {
+    fun toRadians(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.toRadians(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun sin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun sin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.sin(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun asin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun asin(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.asin(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun toDegrees(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun toDegrees(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.toDegrees(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun cos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun cos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.cos(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun acos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun acos(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.acos(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun tan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun tan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.tan(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun atan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun atan(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.atan(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun log(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun log(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.log(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun log10(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun log10(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.log10(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun exp(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun exp(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.exp(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun pi(mathContext: KMathContext): KBigDecimal =
+    fun pi(mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.pi(mathContext.wrapped))
 
-    actual fun e(mathContext: KMathContext): KBigDecimal =
+    fun e(mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.e(mathContext.wrapped))
 
-    actual fun sqrt(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun sqrt(bigDecimal: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.sqrt(bigDecimal.wrapped, mathContext.wrapped))
 
-    actual fun pow(expr: KBigDecimal, factor: KBigDecimal, mathContext: KMathContext): KBigDecimal =
+    fun pow(expr: KBigDecimal, factor: KBigDecimal, mathContext: KMathContext): KBigDecimal =
       KBigDecimal(BigDecimalMath.pow(expr.wrapped, factor.wrapped, mathContext.wrapped))
   }
 }

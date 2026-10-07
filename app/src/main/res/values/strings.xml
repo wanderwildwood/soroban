@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calculator</string>
+
+    <!-- Read aloud by a screen reader -->
+    <string name="cd_back">Back</string>
+    <string name="cd_about">About</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_backspace">Delete the last</string>
+    <string name="cd_swap">Swap the two units</string>
+    <string name="cd_groups">Choose what to convert</string>
+    <string name="cd_sum_actions">Copy, share or paste</string>
+    <string name="cd_degrees">Angles in degrees. Press for radians.</string>
+    <string name="cd_radians">Angles in radians. Press for degrees.</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- The three pages, under the top bar -->
+    <string name="tab_calculate">Calculate</string>
+    <string name="tab_convert">Convert</string>
+    <string name="tab_dates">Dates</string>
+
+    <!-- ============================================================ -->
+    <!-- Calculator keys. The rest are symbols: 7 + × sin π … -->
+
+    <string name="key_clear">C</string>
+    <!-- Turns the keypad to the scientific functions -->
+    <string name="key_functions">fx</string>
+    <!-- Turns the keypad back to the digits -->
+    <string name="key_numbers">123</string>
+    <!-- Angles are in degrees; shown on the key that changes it -->
+    <string name="key_degrees">deg</string>
+    <string name="key_radians">rad</string>
+
+    <string name="calc_divide_by_zero">Cannot divide by 0</string>
+    <string name="calc_error">There is no answer to that</string>
+
+    <!-- Held down, the sum or a value offers these -->
+    <string name="action_copy">Copy</string>
+    <string name="action_share">Share</string>
+    <string name="action_paste">Paste in its place</string>
+    <string name="paste_empty">There is nothing on the clipboard.</string>
+    <string name="paste_nothing">There is no number in what was copied.</string>
+    <string name="share_nothing">There is no app on this phone to share that with.</string>
+
+    <!-- ============================================================ -->
+    <!-- The tape -->
+
+    <string name="history_title">Tape</string>
+    <string name="history_empty">Each sum worked out with = is kept here, newest first.</string>
+    <!-- %1$s is how many sums the tape holds -->
+    <plurals name="history_clear">
+        <item quantity="one">Clear the tape (%1$s sum)</item>
+        <item quantity="other">Clear the tape (%1$s sums)</item>
+    </plurals>
+    <string name="history_clear_armed">Clear the tape — tap again</string>
+
+    <!-- ============================================================ -->
+    <!-- Converter -->
+
+    <string name="groups_title">Convert</string>
+    <string name="pick_from">Convert from</string>
+    <string name="pick_to">Convert to</string>
+    <string name="pick_search">Search by name or symbol</string>
+    <string name="pick_none">No unit by that name.</string>
+    <!-- %1$s whole feet, %2$s inches: "5 ft 9.29 in" -->
+    <string name="convert_feet_inches">%1$s ft %2$s in</string>
+    <!-- %1$s whole pounds, %2$s ounces -->
+    <string name="convert_pounds_ounces">%1$s lb %2$s oz</string>
+    <string name="convert_no_rate">No rate on this phone</string>
+
+    <!-- %1$s is the date the rates were published -->
+    <string name="rates_of">Exchange rates of %1$s</string>
+    <string name="rates_fetching">Fetching exchange rates</string>
+    <!-- %1$s is the date of the rates already on the phone -->
+    <string name="rates_fetching_have">Rates of %1$s; fetching today\'s</string>
+    <string name="rates_none">No rates yet: currency needs the internet once. Tap to try.</string>
+    <!-- %1$s is the date of the older rates still in use -->
+    <string name="rates_failed">Offline: rates of %1$s. Tap to try again.</string>
+
+    <!-- A length of time written out: "1 d 2 h 30 min". %1$s is the number. -->
+    <string name="time_days">%1$s d</string>
+    <string name="time_hours">%1$s h</string>
+    <string name="time_minutes">%1$s min</string>
+    <string name="time_seconds">%1$s s</string>
+    <string name="time_milliseconds">%1$s ms</string>
+    <string name="time_microseconds">%1$s µs</string>
+    <string name="time_nanoseconds">%1$s ns</string>
+    <string name="time_attoseconds">%1$s as</string>
+
+    <!-- ============================================================ -->
+    <!-- Dates -->
+
+    <string name="dates_between">Between two days</string>
+    <string name="dates_shift">Add or take away</string>
+    <string name="dates_from">From</string>
+    <string name="dates_to">To</string>
+    <string name="dates_start">Starting on</string>
+    <string name="dates_add">Add</string>
+    <string name="dates_subtract">Take away</string>
+    <string name="dates_years">Years</string>
+    <string name="dates_months">Months</string>
+    <string name="dates_days">Days</string>
+    <string name="dates_same_day">The same day</string>
+    <string name="dates_out_of_range">Too far for this calendar</string>
+    <!-- %1$s is a number -->
+    <plurals name="years">
+        <item quantity="one">%1$s year</item>
+        <item quantity="other">%1$s years</item>
+    </plurals>
+    <plurals name="months">
+        <item quantity="one">%1$s month</item>
+        <item quantity="other">%1$s months</item>
+    </plurals>
+    <plurals name="weeks">
+        <item quantity="one">%1$s week</item>
+        <item quantity="other">%1$s weeks</item>
+    </plurals>
+    <plurals name="days">
+        <item quantity="one">%1$s day</item>
+        <item quantity="other">%1$s days</item>
+    </plurals>
+
+    <!-- ============================================================ -->
+    <!-- Settings -->
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_places">Decimal places</string>
+    <string name="settings_style">Numbers written as</string>
+    <string name="settings_large">Very large and small numbers</string>
+    <string name="settings_large_plain">Every digit written out</string>
+    <string name="settings_large_e">With E, as 1.2E+15</string>
+    <string name="settings_fractions">Show the answer as a fraction too</string>
+
+    <!-- ============================================================ -->
+    <!-- About -->
+
+    <string name="about_title">Calculator %1$s</string>
+    <string name="about_what">Everything is worked out on the phone. Only currency uses the internet: once a day, while it is open, it fetches the exchange rates, and sends nothing else.</string>
+    <string name="about_licence">GNU General Public License v3</string>
+    <string name="about_unitto">Built on Unitto, GPL v3 or later</string>
+    <string name="about_rates">Exchange rates from Fawaz Ahmed\'s currency API, CC0</string>
+    <string name="about_icons">Icons from Material Symbols, Apache 2.0</string>
+    <string name="about_feed_the_llamas">feed the llamas</string>
+    <string name="about_no_browser">There is no browser on this phone to open that with.</string>
+    <string name="about_close">Close</string>
+</resources>

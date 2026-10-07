@@ -22,14 +22,14 @@ import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.setMaxScale
 import com.sadellie.unitto.core.model.converter.UnitGroup
-import org.jetbrains.compose.resources.StringResource
+import androidx.annotation.StringRes
 
 data class NormalUnit(
   override val id: String,
   override val factor: KBigDecimal,
   override val group: UnitGroup,
-  override val displayName: StringResource,
-  override val shortName: StringResource,
+  override val displayName: Int,
+  override val shortName: Int,
   override val backward: Boolean = false,
 ) : BasicUnit.Default {
   override fun convert(unitTo: BasicUnit.Default, value: KBigDecimal): KBigDecimal {

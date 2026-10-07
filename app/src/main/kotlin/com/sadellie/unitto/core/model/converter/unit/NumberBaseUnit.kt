@@ -21,14 +21,14 @@ package com.sadellie.unitto.core.model.converter.unit
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KBigInteger
 import com.sadellie.unitto.core.model.converter.UnitGroup
-import org.jetbrains.compose.resources.StringResource
+import androidx.annotation.StringRes
 
 data class NumberBaseUnit(
   override val id: String,
   override val factor: KBigDecimal,
   override val group: UnitGroup,
-  override val displayName: StringResource,
-  override val shortName: StringResource,
+  override val displayName: Int,
+  override val shortName: Int,
 ) : BasicUnit.NumberBase {
   override fun convert(unitTo: BasicUnit.NumberBase, value: String): String =
     KBigInteger(value, factor.intValueExact()).toString(unitTo.factor.intValueExact())

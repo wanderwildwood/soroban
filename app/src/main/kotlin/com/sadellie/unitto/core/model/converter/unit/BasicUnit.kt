@@ -20,13 +20,13 @@ package com.sadellie.unitto.core.model.converter.unit
 
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.model.converter.UnitGroup
-import org.jetbrains.compose.resources.StringResource
+import androidx.annotation.StringRes
 
 sealed interface BasicUnit {
   val id: String
   val group: UnitGroup
-  val displayName: StringResource
-  val shortName: StringResource
+  val displayName: Int
+  val shortName: Int
   val factor: KBigDecimal
 
   interface NumberBase : BasicUnit {

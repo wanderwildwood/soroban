@@ -23,21 +23,7 @@ import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
-import unitto.core.common.generated.resources.Res
-import unitto.core.common.generated.resources.unit_gigaweber
-import unitto.core.common.generated.resources.unit_gigaweber_short
-import unitto.core.common.generated.resources.unit_kiloweber
-import unitto.core.common.generated.resources.unit_kiloweber_short
-import unitto.core.common.generated.resources.unit_maxwell
-import unitto.core.common.generated.resources.unit_maxwell_short
-import unitto.core.common.generated.resources.unit_megaweber
-import unitto.core.common.generated.resources.unit_megaweber_short
-import unitto.core.common.generated.resources.unit_microweber
-import unitto.core.common.generated.resources.unit_microweber_short
-import unitto.core.common.generated.resources.unit_milliweber
-import unitto.core.common.generated.resources.unit_milliweber_short
-import unitto.core.common.generated.resources.unit_weber
-import unitto.core.common.generated.resources.unit_weber_short
+import com.wanderwildwood.soroban.R
 
 internal val fluxCollection: List<BasicUnit> by lazy {
   listOf(
@@ -45,50 +31,50 @@ internal val fluxCollection: List<BasicUnit> by lazy {
       UnitID.maxwell,
       KBigDecimal("1"),
       UnitGroup.FLUX,
-      Res.string.unit_maxwell,
-      Res.string.unit_maxwell_short,
+      R.string.unit_maxwell,
+      R.string.unit_maxwell_short,
     ),
     NormalUnit(
       UnitID.microweber,
       KBigDecimal("100"),
       UnitGroup.FLUX,
-      Res.string.unit_microweber,
-      Res.string.unit_microweber_short,
+      R.string.unit_microweber,
+      R.string.unit_microweber_short,
     ),
     NormalUnit(
       UnitID.milliweber,
       KBigDecimal("100000"),
       UnitGroup.FLUX,
-      Res.string.unit_milliweber,
-      Res.string.unit_milliweber_short,
+      R.string.unit_milliweber,
+      R.string.unit_milliweber_short,
     ),
     NormalUnit(
       UnitID.weber,
       KBigDecimal("100000000"),
       UnitGroup.FLUX,
-      Res.string.unit_weber,
-      Res.string.unit_weber_short,
+      R.string.unit_weber,
+      R.string.unit_weber_short,
     ),
     NormalUnit(
       UnitID.kiloweber,
       KBigDecimal("100000000000"),
       UnitGroup.FLUX,
-      Res.string.unit_kiloweber,
-      Res.string.unit_kiloweber_short,
+      R.string.unit_kiloweber,
+      R.string.unit_kiloweber_short,
     ),
     NormalUnit(
       UnitID.megaweber,
       KBigDecimal("100000000000000"),
       UnitGroup.FLUX,
-      Res.string.unit_megaweber,
-      Res.string.unit_megaweber_short,
+      R.string.unit_megaweber,
+      R.string.unit_megaweber_short,
     ),
     NormalUnit(
       UnitID.gigaweber,
       KBigDecimal("100000000000000000"),
       UnitGroup.FLUX,
-      Res.string.unit_gigaweber,
-      Res.string.unit_gigaweber_short,
+      R.string.unit_gigaweber,
+      R.string.unit_gigaweber_short,
     ),
   )
 }

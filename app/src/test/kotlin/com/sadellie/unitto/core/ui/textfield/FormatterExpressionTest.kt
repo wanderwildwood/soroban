@@ -185,12 +185,6 @@ class FormatterExpressionTest {
       commaAndPeriod,
       unformatted.formatExpression(FormatterSymbols(Token.COMMA, Token.PERIOD, false)),
     )
-    assertOutputTransformation(
-      outputTransformation =
-        ExpressionOutputTransformation(FormatterSymbols(Token.COMMA, Token.PERIOD, false)),
-      expected = "[]$commaAndPeriod", // set fake cursor at start as it is not tested here
-      input = "[]$unformatted",
-    )
     assertEquals(
       periodAndComma,
       unformatted.formatExpression(FormatterSymbols(Token.PERIOD, Token.COMMA, false)),

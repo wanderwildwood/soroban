@@ -1,13 +1,10 @@
+*.iml
 .gradle/
+.idea/
 build/
-.idea/*
-!.idea/copyright
-!.idea/ktfmt.xml
-!.idea/runConfigurations
-.kotlin/
-
 local.properties
 
-tools/
-internals/
-/detekt/*.html
+signing/signing.properties
+signing/signing.keystore
+.cxx/
+.kotlin/

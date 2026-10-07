@@ -20,76 +20,21 @@ package com.sadellie.unitto.core.data.converter
 
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.setMaxScale
-import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
-import com.sadellie.unitto.core.database.UnitsDaoInMemory
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class UnitRepositoryConvertPoundOunce {
-  private val fakeCurrencyApiService = FakeCurrencyApiService()
-  private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
-  private val fakeUnitsDao = UnitsDaoInMemory()
-  private val unitsRepository = UnitsRepository(fakeUnitsDao)
-  private val unitConverterRepo =
-    UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
+  private val converter = Converter { _, _ -> null }
 
   @Test
-  fun convert_poundOunceOutput() = runTest {
+  fun convert_poundOunceOutput() {
     val expected =
       ConverterResult.PoundOunce(
         pound = KBigDecimal("4").setMaxScale(),
         ounce = KBigDecimal("8").setMaxScale(),
       )
     val actual =
-      unitConverterRepo.convert(
-        unitFromId = UnitID.ounce,
-        unitToId = UnitID.pound,
-        value1 = "72",
-        value2 = "",
-        formatTime = false,
-        apiUrl = "",
-      )
-
-    assertEquals(expected, actual)
-  }
-
-  @Test
-  fun convert_poundOunceInput() = runTest {
-    val expected =
-      ConverterResult.Default(
-        value = KBigDecimal("40").setMaxScale(),
-        calculation = KBigDecimal("2.5").setMaxScale(),
-      )
-    val actual =
-      unitConverterRepo.convert(
-        unitFromId = UnitID.pound,
-        unitToId = UnitID.ounce,
-        value1 = "2",
-        value2 = "8",
-        formatTime = false,
-        apiUrl = "",
-      )
-
-    assertEquals(expected, actual)
-  }
-
-  @Test
-  fun convert_poundOunceInputAndOutput() = runTest {
-    val expected =
-      ConverterResult.PoundOunce(
-        pound = KBigDecimal("2").setMaxScale(),
-        ounce = KBigDecimal("8").setMaxScale(),
-      )
-    val actual =
-      unitConverterRepo.convert(
-        unitFromId = UnitID.pound,
-        unitToId = UnitID.pound,
-        value1 = "2",
-        value2 = "8",
-        formatTime = false,
-        apiUrl = "",
-      )
+      converter.convert(Units.byId(UnitID.ounce)!!, Units.byId(UnitID.pound)!!, "72")
 
     assertEquals(expected, actual)
   }

@@ -18,313 +18,121 @@
 
 package com.sadellie.unitto.core.data.converter
 
-import co.touchlab.kermit.Logger
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KRoundingMode
-import com.sadellie.unitto.core.common.defaultIODispatcher
 import com.sadellie.unitto.core.common.isEqualTo
 import com.sadellie.unitto.core.common.isLessThan
 import com.sadellie.unitto.core.common.setMaxScale
-import com.sadellie.unitto.core.database.CurrencyRatesDao
-import com.sadellie.unitto.core.database.CurrencyRatesEntity
+import com.sadellie.unitto.core.data.converter.collections.accelerationCollection
+import com.sadellie.unitto.core.data.converter.collections.angleCollection
+import com.sadellie.unitto.core.data.converter.collections.areaCollection
+import com.sadellie.unitto.core.data.converter.collections.currencyCollection
+import com.sadellie.unitto.core.data.converter.collections.dataCollection
+import com.sadellie.unitto.core.data.converter.collections.dataTransferCollection
+import com.sadellie.unitto.core.data.converter.collections.electrostaticCapacitance
+import com.sadellie.unitto.core.data.converter.collections.energyCollection
+import com.sadellie.unitto.core.data.converter.collections.flowRateCollection
+import com.sadellie.unitto.core.data.converter.collections.fluxCollection
+import com.sadellie.unitto.core.data.converter.collections.forceCollection
+import com.sadellie.unitto.core.data.converter.collections.fuelConsumptionCollection
+import com.sadellie.unitto.core.data.converter.collections.lengthCollection
+import com.sadellie.unitto.core.data.converter.collections.luminanceCollection
+import com.sadellie.unitto.core.data.converter.collections.massCollection
+import com.sadellie.unitto.core.data.converter.collections.numberBaseCollection
+import com.sadellie.unitto.core.data.converter.collections.powerCollection
+import com.sadellie.unitto.core.data.converter.collections.prefixCollection
+import com.sadellie.unitto.core.data.converter.collections.pressureCollection
+import com.sadellie.unitto.core.data.converter.collections.speedCollection
+import com.sadellie.unitto.core.data.converter.collections.temperatureCollection
+import com.sadellie.unitto.core.data.converter.collections.timeCollection
+import com.sadellie.unitto.core.data.converter.collections.torqueCollection
+import com.sadellie.unitto.core.data.converter.collections.volumeCollection
 import com.sadellie.unitto.core.model.converter.UnitGroup
-import com.sadellie.unitto.core.model.converter.UnitsListSorting
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
-import com.sadellie.unitto.core.remote.CurrencyApiService
 import io.github.sadellie.evaluatto.Expression
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.withContext
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
-class UnitConverterRepositoryImpl(
-  private val unitsRepo: UnitsRepository,
-  private val currencyRatesDao: CurrencyRatesDao,
-  private val currencyApiService: CurrencyApiService,
-) : UnitConverterRepository {
+/** Every unit the converter knows, in Unitto's order. */
+object Units {
+  val all: List<BasicUnit> by lazy {
+    lengthCollection +
+      currencyCollection +
+      massCollection +
+      speedCollection +
+      temperatureCollection +
+      areaCollection +
+      timeCollection +
+      volumeCollection +
+      dataCollection +
+      pressureCollection +
+      accelerationCollection +
+      energyCollection +
+      powerCollection +
+      angleCollection +
+      dataTransferCollection +
+      fluxCollection +
+      numberBaseCollection +
+      electrostaticCapacitance +
+      prefixCollection +
+      forceCollection +
+      torqueCollection +
+      flowRateCollection +
+      luminanceCollection +
+      fuelConsumptionCollection
+  }
 
-  override val currencyRateUpdateState =
-    MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
+  fun byId(id: String): BasicUnit? = all.firstOrNull { it.id == id }
 
-  override suspend fun getById(id: String): BasicUnit = unitsRepo.getById(id)
+  fun inGroup(group: UnitGroup): List<BasicUnit> = all.filter { it.group == group }
+}
 
-  override suspend fun getPairId(id: String): String = unitsRepo.getPairId(id)
+/**
+ * Converts a value between two units of one group. Unitto's repository, without its database:
+ * the conversions are Unitto's own, and a currency's rate comes from [rate], which answers from
+ * the rates kept on the phone or not at all.
+ *
+ * [value] is what was typed, and may be an expression ("12+3"), as in Unitto.
+ */
+class Converter(private val rate: (fromId: String, toId: String) -> KBigDecimal?) {
 
-  override suspend fun incrementCounter(id: String) = unitsRepo.incrementCounter(id)
-
-  override suspend fun setPair(id: String, pairId: String) = unitsRepo.setPair(id, pairId)
-
-  override suspend fun favorite(id: String) = unitsRepo.favorite(id)
-
-  override suspend fun filterUnits(
-    query: String,
-    unitGroups: List<UnitGroup>,
-    favoritesOnly: Boolean,
-    sorting: UnitsListSorting,
-  ): Map<UnitGroup, List<UnitSearchResultItem>> =
-    withContext(defaultIODispatcher) {
-      return@withContext unitsRepo
-        .filter(
-          query = query,
-          unitGroups = unitGroups,
-          favoritesOnly = favoritesOnly,
-          sorting = sorting,
-        )
-        .groupBy { it.basicUnit.group }
-    }
-
-  override suspend fun filterUnitsAndBatchConvert(
-    query: String,
-    unitGroup: UnitGroup,
-    favoritesOnly: Boolean,
-    sorting: UnitsListSorting,
-    unitFromId: String,
-    input1: String,
-    input2: String,
-    apiUrl: String,
-  ): Map<UnitGroup, List<UnitSearchResultItem>> =
-    withContext(defaultIODispatcher) {
-      val unitFrom = getById(unitFromId)
-      val units =
-        unitsRepo.filter(
-          query = query,
-          unitGroups = listOf(unitGroup),
-          favoritesOnly = favoritesOnly,
-          sorting = sorting,
-        )
-
-      val unitWithConversions =
-        try {
-          when {
-            unitGroup == UnitGroup.NUMBER_BASE ->
-              convertNumberBaseBatch(
-                input = input1,
-                unitSearchResultItems = units,
-                unitFrom = unitFrom as BasicUnit.NumberBase,
-              )
-
-            unitGroup == UnitGroup.CURRENCY ->
-              convertCurrenciesBatch(
-                input = input1,
-                unitSearchResultItems = units,
-                unitFrom = unitFrom as BasicUnit.Default,
-                apiUrl = apiUrl,
-              )
-
-            // foot and inches input
-            unitFrom.id == UnitID.foot ->
-              convertDefaultBatch(
-                input = calculateFootAndInchesInput(input1, input2),
-                unitSearchResultItems = units,
-                unitFrom = unitFrom as BasicUnit.Default,
-              )
-
-            // pound and ounces input
-            unitFrom.id == UnitID.pound ->
-              convertDefaultBatch(
-                input = calculatePoundAndOuncesInput(input1, input2),
-                unitSearchResultItems = units,
-                unitFrom = unitFrom as BasicUnit.Default,
-              )
-
-            else ->
-              convertDefaultBatch(
-                input = calculateInput(input1),
-                unitSearchResultItems = units,
-                unitFrom = unitFrom as BasicUnit.Default,
-              )
-          }
-        } catch (e: Exception) {
-          Logger.e(LOG_TAG, e) { "Failed to batch convert" }
-          units.toList()
-        }
-
-      return@withContext unitWithConversions.groupBy { it.basicUnit.group }
-    }
-
-  override suspend fun convert(
-    unitFromId: String,
-    unitToId: String,
-    value1: String,
-    value2: String,
-    formatTime: Boolean,
-    apiUrl: String,
-  ): ConverterResult {
-    val unitFrom = getById(unitFromId)
-    val unitTo = getById(unitToId)
-
-    return when {
+  fun convert(unitFrom: BasicUnit, unitTo: BasicUnit, value: String): ConverterResult =
+    when {
       unitFrom.group == UnitGroup.NUMBER_BASE && unitTo.group == UnitGroup.NUMBER_BASE ->
-        convertNumberBase(
-          unitFrom = unitFrom as BasicUnit.NumberBase,
-          unitTo = unitTo as BasicUnit.NumberBase,
-          value = value1,
+        ConverterResult.NumberBase(
+          (unitFrom as BasicUnit.NumberBase).convert(unitTo as BasicUnit.NumberBase, value)
         )
 
-      unitFrom.group == UnitGroup.TIME && unitTo.group == UnitGroup.TIME && formatTime ->
-        convertTimeAndFormatToHumanReadable(
-          unitFrom = unitFrom as BasicUnit.Default,
-          value = calculateInput(value1),
-        )
-
-      unitFrom.group == UnitGroup.CURRENCY && unitTo.group == UnitGroup.CURRENCY ->
-        convertCurrencies(
-          unitFrom = unitFrom as BasicUnit.Default,
-          unitTo = unitTo as BasicUnit.Default,
-          value = calculateInput(value1),
-          apiUrl = apiUrl,
-        )
-
-      // foot and inches output and input
-      unitTo.id == UnitID.foot && unitFrom.id == UnitID.foot ->
-        convertFoot(
-          footUnit = unitTo as BasicUnit.Default,
-          inchUnit = getById(UnitID.inch) as BasicUnit.Default,
-          feetInput = calculateFootAndInchesInput(value1, value2),
-        )
+      unitFrom.group == UnitGroup.CURRENCY && unitTo.group == UnitGroup.CURRENCY -> {
+        val input = calculateInput(value)
+        val pairRate = rate(unitFrom.id, unitTo.id)
+        if (pairRate == null) ConverterResult.Error.CurrencyError
+        else ConverterResult.Default(value = input.multiply(pairRate).setMaxScale(), calculation = input)
+      }
 
       // foot and inches output
       unitTo.id == UnitID.foot ->
         convertFoot(
           footUnit = unitTo as BasicUnit.Default,
-          inchUnit = getById(UnitID.inch) as BasicUnit.Default,
-          feetInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1)),
-        )
-
-      // foot and inches input
-      unitFrom.id == UnitID.foot ->
-        convertDefault(
-          unitFrom = unitFrom as BasicUnit.Default,
-          unitTo = unitTo as BasicUnit.Default,
-          value = calculateFootAndInchesInput(value1, value2),
-        )
-
-      // pound and ounces output and input
-      unitTo.id == UnitID.pound && unitFrom.id == UnitID.pound ->
-        convertPound(
-          poundUnit = unitTo as BasicUnit.Default,
-          ounceUnit = getById(UnitID.ounce) as BasicUnit.Default,
-          poundsInput = calculatePoundAndOuncesInput(value1, value2),
+          inchUnit = Units.byId(UnitID.inch) as BasicUnit.Default,
+          feetInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value)),
         )
 
       // pound and ounces output
       unitTo.id == UnitID.pound ->
         convertPound(
           poundUnit = unitTo as BasicUnit.Default,
-          ounceUnit = getById(UnitID.ounce) as BasicUnit.Default,
-          poundsInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value1)),
+          ounceUnit = Units.byId(UnitID.ounce) as BasicUnit.Default,
+          poundsInput = (unitFrom as BasicUnit.Default).convert(unitTo, calculateInput(value)),
         )
 
-      // pound and ounces input
-      unitFrom.id == UnitID.pound ->
-        convertDefault(
-          unitFrom = unitFrom as BasicUnit.Default,
-          unitTo = unitTo as BasicUnit.Default,
-          value = calculatePoundAndOuncesInput(value1, value2),
-        )
-
-      else ->
-        convertDefault(
-          unitFrom = unitFrom as BasicUnit.Default,
-          unitTo = unitTo as BasicUnit.Default,
-          value = calculateInput(value1),
-        )
-    }
-  }
-
-  private suspend fun convertNumberBaseBatch(
-    input: String,
-    unitSearchResultItems: Sequence<UnitSearchResultItem>,
-    unitFrom: BasicUnit.NumberBase,
-  ) =
-    withContext(Dispatchers.Default) {
-      val result = mutableListOf<UnitSearchResultItem>()
-      unitSearchResultItems.forEach { unitSearchResultItem ->
-        val conversion =
-          convertNumberBase(
-            unitFrom = unitFrom,
-            unitTo = unitSearchResultItem.basicUnit as BasicUnit.NumberBase,
-            value = input,
-          )
-        result.add(unitSearchResultItem.copy(conversion = conversion))
+      else -> {
+        val input = calculateInput(value)
+        ConverterResult.Default((unitFrom as BasicUnit.Default).convert(unitTo as BasicUnit.Default, input), input)
       }
-      return@withContext result
     }
 
-  private suspend fun convertCurrenciesBatch(
-    input: String,
-    unitSearchResultItems: Sequence<UnitSearchResultItem>,
-    unitFrom: BasicUnit.Default,
-    apiUrl: String,
-  ) =
-    withContext(Dispatchers.Default) {
-      val calculatedInput = calculateInput(input)
-      if (calculatedInput.isEqualTo(KBigDecimal.ZERO))
-        return@withContext unitSearchResultItems.toList()
-
-      val result = mutableListOf<UnitSearchResultItem>()
-      refreshCurrencyRates(unitFrom.id, apiUrl)
-      unitSearchResultItems.forEach { unitSearchResultItem ->
-        val latestRate =
-          currencyRatesDao
-            .getLatestRate(unitFrom.id, unitSearchResultItem.basicUnit.id)
-            ?.pairUnitValue
-
-        if (latestRate != null) {
-          val conversion =
-            ConverterResult.Default(
-              calculatedInput
-                .multiply(latestRate)
-                .setScale(BATCH_CURRENCY_CONVERSION_SCALE, KRoundingMode.HALF_EVEN),
-              calculatedInput,
-            )
-          result.add(unitSearchResultItem.copy(conversion = conversion))
-        }
-      }
-
-      return@withContext result
-    }
-
-  private suspend fun convertDefaultBatch(
-    input: KBigDecimal,
-    unitSearchResultItems: Sequence<UnitSearchResultItem>,
-    unitFrom: BasicUnit.Default,
-  ) =
-    withContext(Dispatchers.Default) {
-      val result = mutableListOf<UnitSearchResultItem>()
-      unitSearchResultItems.forEach { unitSearchResultItem ->
-        val conversion =
-          convertDefault(
-            unitFrom = unitFrom,
-            unitTo = unitSearchResultItem.basicUnit as BasicUnit.Default,
-            value = input,
-          )
-        result.add(unitSearchResultItem.copy(conversion = conversion))
-      }
-      return@withContext result
-    }
-
-  private fun convertDefault(
-    unitFrom: BasicUnit.Default,
-    unitTo: BasicUnit.Default,
-    value: KBigDecimal,
-  ): ConverterResult.Default {
-    return ConverterResult.Default(unitFrom.convert(unitTo, value), value)
-  }
-
-  private fun convertNumberBase(
-    unitFrom: BasicUnit.NumberBase,
-    unitTo: BasicUnit.NumberBase,
-    value: String,
-  ): ConverterResult.NumberBase {
-    val conversion = unitFrom.convert(unitTo, value)
-    return ConverterResult.NumberBase(conversion)
-  }
+  /** A length of time written out in days, hours, minutes and so on, beside the plain number. */
+  fun timeBreakdown(unitFrom: BasicUnit, value: String): ConverterResult.Time =
+    convertTimeAndFormatToHumanReadable(unitFrom as BasicUnit.Default, calculateInput(value))
 
   private fun convertTimeAndFormatToHumanReadable(
     unitFrom: BasicUnit.Default,
@@ -418,105 +226,9 @@ class UnitConverterRepositoryImpl(
     return ConverterResult.PoundOunce(integral, fractionInOunces)
   }
 
-  private fun calculateInput(value: String): KBigDecimal {
-    // Calculate expression in first text field
-    val calculated = Expression(value).calculate()
-    return calculated
-  }
-
-  /** Takes input from both text fields and returns amount of feet */
-  private suspend fun calculateFootAndInchesInput(
-    footInput: String,
-    inchInput: String,
-  ): KBigDecimal {
-    // Calculate expression in first text field
-    var calculated = Expression(footInput).calculate()
-
-    val calculatedInches = Expression(inchInput).calculate()
-    // turn inches into feet so that it all comes down to converting from feet only
-    val inches = getById(UnitID.inch) as BasicUnit.Default
-    val feet = getById(UnitID.foot) as BasicUnit.Default
-    val inchesConvertedToFeet = inches.convert(feet, calculatedInches)
-
-    calculated += inchesConvertedToFeet
-
-    return calculated
-  }
-
-  private suspend fun calculatePoundAndOuncesInput(
-    poundInput: String,
-    ounceInput: String,
-  ): KBigDecimal {
-    // Calculate expression in first text field
-    var calculated = Expression(poundInput).calculate()
-
-    val calculatedOunces = Expression(ounceInput).calculate()
-    // turn ounces into pounds so that it all comes down to converting from pounds only
-    val ounce = getById(UnitID.ounce) as BasicUnit.Default
-    val pound = getById(UnitID.pound) as BasicUnit.Default
-    val ouncesConvertedToPounds = ounce.convert(pound, calculatedOunces)
-
-    calculated += ouncesConvertedToPounds
-
-    return calculated
-  }
-
-  private suspend fun convertCurrencies(
-    unitFrom: BasicUnit.Default,
-    unitTo: BasicUnit.Default,
-    value: KBigDecimal,
-    apiUrl: String,
-  ): ConverterResult =
-    withContext(defaultIODispatcher) {
-      refreshCurrencyRates(unitFrom.id, apiUrl)
-
-      val latestRate = currencyRatesDao.getLatestRate(unitFrom.id, unitTo.id)
-      val pairUnitValue = latestRate?.pairUnitValue
-      if (pairUnitValue == null) {
-        // rate for given pair is not found in cached response
-        currencyRateUpdateState.update { CurrencyRateUpdateState.Error }
-        return@withContext ConverterResult.Error.CurrencyError
-      }
-      currencyRateUpdateState.update {
-        CurrencyRateUpdateState.Ready(LocalDate.fromEpochDays(latestRate.date))
-      }
-
-      val conversion = value.multiply(pairUnitValue).setMaxScale()
-
-      return@withContext ConverterResult.Default(value = conversion, calculation = value)
-    }
-
-  @OptIn(ExperimentalTime::class)
-  private suspend fun refreshCurrencyRates(unitFromId: String, apiUrl: String) =
-    withContext(defaultIODispatcher) {
-      val latestUpdateDate = currencyRatesDao.getLatestRateTimeStamp(unitFromId)
-      val currentDate =
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toEpochDays()
-
-      if (latestUpdateDate != currentDate) {
-        // Update cache if needed
-        currencyRateUpdateState.update { CurrencyRateUpdateState.Loading }
-        try {
-          val conversions = currencyApiService.getCurrencyPairs(unitFromId, apiUrl)
-          val rates =
-            conversions.currency.map { (pairId, pairValue) ->
-              CurrencyRatesEntity(
-                baseUnitId = unitFromId,
-                date = currentDate,
-                pairUnitId = pairId,
-                pairUnitValue = KBigDecimal.valueOf(pairValue),
-              )
-            }
-          currencyRatesDao.insertRates(rates)
-        } catch (e: Exception) {
-          Logger.d(LOG_TAG, e) { "Skipped update" }
-        }
-      }
-    }
+  private fun calculateInput(value: String): KBigDecimal = Expression(value).calculate()
 }
 
-internal const val BATCH_CURRENCY_CONVERSION_SCALE = 10
-private const val LOG_TAG = "UnitConverterRepo"
 private val dayBasicUnit by lazy { KBigDecimal("86400000000000000000000") }
 private val hourBasicUnit by lazy { KBigDecimal("3600000000000000000000") }
 private val minuteBasicUnit by lazy { KBigDecimal("60000000000000000000") }
