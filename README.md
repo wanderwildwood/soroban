@@ -58,7 +58,8 @@ sixteen greys, a slow redraw, and is read outdoors as often as indoors.
 - **Hold** the sum or a value to copy it, share it as text, or paste a number in its place.
 - **Settings**: decimal places, how numbers are written (1,234.5 or 1.234,5 and the spaced
   forms; it starts as the phone's language has it), every digit or E for very large and small
-  numbers, and the fraction on or off.
+  numbers, the fraction on or off, and a vibration at each key press (off to begin with;
+  it follows the phone's own touch feedback setting).
 
 ## Currency
 

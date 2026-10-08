@@ -192,6 +192,8 @@
     <string name="settings_large_plain">Every digit written out</string>
     <string name="settings_large_e">With E, as 1.2E+15</string>
     <string name="settings_fractions">Show the answer as a fraction too</string>
+    <string name="settings_vibrate">Vibrate on key press</string>
+    <string name="settings_vibrate_note">A short tick at each key. Stays quiet if the phone\'s own touch feedback is off.</string>
 
     <!-- ============================================================ -->
     <!-- About -->

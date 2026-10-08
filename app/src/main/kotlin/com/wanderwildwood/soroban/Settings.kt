@@ -47,6 +47,8 @@ data class Settings(
     /** After =, a result that is a simple fraction is also shown as one. */
     val fractions: Boolean = true,
     val radians: Boolean = false,
+    /** A short tick from the phone at each key, the way the stock calculator does it. Off unless asked for. */
+    val vibrate: Boolean = false,
 ) {
     val symbols: FormatterSymbols get() = style.symbols
 }
@@ -67,6 +69,7 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
         outputFormat = prefs.getInt(OUTPUT, OutputFormat.PLAIN),
         fractions = prefs.getBoolean(FRACTIONS, true),
         radians = prefs.getBoolean(RADIANS, false),
+        vibrate = prefs.getBoolean(VIBRATE, false),
     )
 
     fun update(change: (Settings) -> Settings) {
@@ -77,6 +80,7 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
             .putInt(OUTPUT, next.outputFormat)
             .putBoolean(FRACTIONS, next.fractions)
             .putBoolean(RADIANS, next.radians)
+            .putBoolean(VIBRATE, next.vibrate)
             .apply()
         state.value = next
     }
@@ -149,6 +153,7 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
         private const val OUTPUT = "output_format"
         private const val FRACTIONS = "fractions"
         private const val RADIANS = "radians"
+        private const val VIBRATE = "vibrate"
         private const val PAGE = "page"
         private const val TAB = "tab"
         private const val GROUP = "group"

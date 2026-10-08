@@ -33,7 +33,7 @@ import com.wanderwildwood.soroban.calc.Line
 
 private val PLACES = listOf(0, 2, 3, 4, 6, 8, 10, 12, 15, 20)
 
-/** How numbers are written. Four rows, and nothing else. */
+/** How numbers are written, and whether a key ticks. Five rows, and nothing else. */
 @Composable
 fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
     BackHandler(onBack = onBack)
@@ -66,6 +66,13 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
             }
             item(key = "fractions") {
                 SwitchRow(stringResource(R.string.settings_fractions), s.fractions) { on -> prefs.update { it.copy(fractions = on) } }
+            }
+            item(key = "vibrate") {
+                SwitchRow(
+                    stringResource(R.string.settings_vibrate),
+                    s.vibrate,
+                    note = stringResource(R.string.settings_vibrate_note),
+                ) { on -> prefs.update { it.copy(vibrate = on) } }
             }
         }
     }
