@@ -50,7 +50,7 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize().padding(horizontal = 20.dp)) {
+        LazyColumnMMD(Modifier.padding(padding).fillMaxSize().padding(horizontal = 20.dp), isScrollbarVisible = false) {
             item { Spacer(Modifier.height(8.dp)) }
             item(key = "places") {
                 SettingRow(stringResource(R.string.settings_places), s.precision.toString()) { picking = "places" }
@@ -128,7 +128,7 @@ fun HistoryScreen(
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize()) {
+        LazyColumnMMD(Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
             if (lines.isEmpty()) {
                 item(key = "empty") {
                     TextMMD(

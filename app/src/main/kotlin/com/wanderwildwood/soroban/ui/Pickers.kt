@@ -55,7 +55,7 @@ fun GroupPicker(current: UnitGroup, onPick: (UnitGroup) -> Unit, onBack: () -> U
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize()) {
+        LazyColumnMMD(Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
             UnitGroup.entries.forEach { group ->
                 item(key = group.name) {
                     Column {
@@ -125,7 +125,7 @@ fun UnitPicker(vm: ConverterViewModel, choosingTo: Boolean, onBack: () -> Unit) 
                     modifier = Modifier.padding(20.dp),
                 )
             }
-            LazyColumnMMD(Modifier.fillMaxSize()) {
+            LazyColumnMMD(Modifier.fillMaxSize(), isScrollbarVisible = false) {
                 shown.forEach { unit ->
                     item(key = unit.id) {
                         val (name, short) = names.getValue(unit.id)

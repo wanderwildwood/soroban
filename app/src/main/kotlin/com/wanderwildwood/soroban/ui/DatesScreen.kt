@@ -68,7 +68,7 @@ fun DatesScreen() {
     var days by rememberSaveable { mutableStateOf("") }
     var picking by rememberSaveable { mutableStateOf<String?>(null) }
 
-    LazyColumnMMD(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+    LazyColumnMMD(Modifier.fillMaxSize().padding(horizontal = 16.dp), isScrollbarVisible = false) {
         item(key = "mode") {
             Row(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
                 ModeButton(stringResource(R.string.dates_between), between, Modifier.weight(1f)) { between = true }

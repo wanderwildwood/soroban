@@ -154,7 +154,7 @@ fun PointsScreen(vm: GraphViewModel, onBack: () -> Unit) {
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize()) {
+        LazyColumnMMD(Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
             val list = found
             item(key = "note") {
                 TextMMD(
@@ -239,8 +239,7 @@ fun TableScreen(vm: GraphViewModel, prefs: Prefs, onBack: () -> Unit) {
                     prefs.tableStep = it
                 }
             }
-            // Its end kept clear of the list's rail below, so the headings sit over their columns.
-            Box(Modifier.padding(end = 30.dp)) { TableRow(listOf("x") + functions.indices.map { curveName(it) }, bold = true) }
+            TableRow(listOf("x") + functions.indices.map { curveName(it) }, bold = true)
             HorizontalDividerMMD()
             if (rows.isEmpty()) {
                 TextMMD(
@@ -249,7 +248,7 @@ fun TableScreen(vm: GraphViewModel, prefs: Prefs, onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                 )
             }
-            LazyColumnMMD(Modifier.fillMaxSize()) {
+            LazyColumnMMD(Modifier.fillMaxSize(), isScrollbarVisible = false) {
                 rows.forEachIndexed { i, (x, ys) ->
                     item(key = "r$i") {
                         TableRow(listOf(fmt(x, s)) + ys.map { fmt(it, s) }, bold = false)
