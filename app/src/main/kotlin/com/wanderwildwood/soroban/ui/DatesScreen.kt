@@ -35,7 +35,6 @@ import androidx.compose.ui.window.DialogWindowProvider
 import com.mudita.mmd.components.buttons.ButtonMMD
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.mudita.mmd.components.time.DatePickerFormatterMMD
@@ -68,7 +67,7 @@ fun DatesScreen() {
     var days by rememberSaveable { mutableStateOf("") }
     var picking by rememberSaveable { mutableStateOf<String?>(null) }
 
-    LazyColumnMMD(Modifier.fillMaxSize().padding(horizontal = 16.dp), isScrollbarVisible = false) {
+    PagedColumn(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         item(key = "mode") {
             Row(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
                 ModeButton(stringResource(R.string.dates_between), between, Modifier.weight(1f)) { between = true }

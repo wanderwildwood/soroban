@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -21,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.sadellie.unitto.core.common.OutputFormat
@@ -50,7 +50,7 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize().padding(horizontal = 20.dp), isScrollbarVisible = false) {
+        PagedColumn(Modifier.padding(padding).fillMaxSize().padding(horizontal = 20.dp)) {
             item { Spacer(Modifier.height(8.dp)) }
             item(key = "places") {
                 SettingRow(stringResource(R.string.settings_places), s.precision.toString()) { picking = "places" }
@@ -128,35 +128,38 @@ fun HistoryScreen(
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
-            if (lines.isEmpty()) {
-                item(key = "empty") {
-                    TextMMD(
-                        text = stringResource(R.string.history_empty),
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(20.dp),
-                    )
-                }
-            }
-            lines.forEachIndexed { i, line ->
-                item(key = "line$i") {
-                    Column(Modifier.fillMaxWidth().clickable { onUse(line) }) {
-                        Column(Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
-                            TextMMD(text = Numbers.show(line.expression, s.symbols), style = MaterialTheme.typography.bodySmall)
-                            TextMMD(text = "= " + Numbers.show(line.result, s.symbols), style = MaterialTheme.typography.bodyMedium)
-                        }
-                        HorizontalDividerMMD()
+        val state = rememberLazyListState()
+        ListJumpBox(state, ListJump.Pages, Modifier.padding(padding)) {
+            PagedColumn(Modifier.fillMaxSize(), state = state) {
+                if (lines.isEmpty()) {
+                    item(key = "empty") {
+                        TextMMD(
+                            text = stringResource(R.string.history_empty),
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(20.dp),
+                        )
                     }
                 }
-            }
-            if (lines.isNotEmpty()) {
-                item(key = "clear") {
-                    Column(Modifier.padding(horizontal = 20.dp)) {
-                        ArmedRow(
-                            label = pluralStringResource(R.plurals.history_clear, lines.size, lines.size.toString()),
-                            armedLabel = stringResource(R.string.history_clear_armed),
-                            onConfirmed = onClear,
-                        )
+                lines.forEachIndexed { i, line ->
+                    item(key = "line$i") {
+                        Column(Modifier.fillMaxWidth().clickable { onUse(line) }) {
+                            Column(Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
+                                TextMMD(text = Numbers.show(line.expression, s.symbols), style = MaterialTheme.typography.bodySmall)
+                                TextMMD(text = "= " + Numbers.show(line.result, s.symbols), style = MaterialTheme.typography.bodyMedium)
+                            }
+                            HorizontalDividerMMD()
+                        }
+                    }
+                }
+                if (lines.isNotEmpty()) {
+                    item(key = "clear") {
+                        Column(Modifier.padding(horizontal = 20.dp)) {
+                            ArmedRow(
+                                label = pluralStringResource(R.plurals.history_clear, lines.size, lines.size.toString()),
+                                armedLabel = stringResource(R.string.history_clear_armed),
+                                onConfirmed = onClear,
+                            )
+                        }
                     }
                 }
             }

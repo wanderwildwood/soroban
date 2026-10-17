@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
@@ -154,7 +153,7 @@ fun PointsScreen(vm: GraphViewModel, onBack: () -> Unit) {
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
+        PagedColumn(Modifier.padding(padding).fillMaxSize()) {
             val list = found
             item(key = "note") {
                 TextMMD(
@@ -248,7 +247,7 @@ fun TableScreen(vm: GraphViewModel, prefs: Prefs, onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                 )
             }
-            LazyColumnMMD(Modifier.fillMaxSize(), isScrollbarVisible = false) {
+            PagedColumn(Modifier.fillMaxSize()) {
                 rows.forEachIndexed { i, (x, ys) ->
                     item(key = "r$i") {
                         TableRow(listOf(fmt(x, s)) + ys.map { fmt(it, s) }, bold = false)

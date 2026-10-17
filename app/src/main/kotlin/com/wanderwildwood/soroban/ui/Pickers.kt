@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -31,7 +32,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
@@ -55,7 +55,7 @@ fun GroupPicker(current: UnitGroup, onPick: (UnitGroup) -> Unit, onBack: () -> U
             )
         },
     ) { padding ->
-        LazyColumnMMD(Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
+        PagedColumn(Modifier.padding(padding).fillMaxSize()) {
             UnitGroup.entries.forEach { group ->
                 item(key = group.name) {
                     Column {
@@ -125,44 +125,47 @@ fun UnitPicker(vm: ConverterViewModel, choosingTo: Boolean, onBack: () -> Unit) 
                     modifier = Modifier.padding(20.dp),
                 )
             }
-            LazyColumnMMD(Modifier.fillMaxSize(), isScrollbarVisible = false) {
-                shown.forEach { unit ->
-                    item(key = unit.id) {
-                        val (name, short) = names.getValue(unit.id)
-                        val answer = conversions[unit.id]?.let { answerText(it, settings, money = group == UnitGroup.CURRENCY) }
-                        Column(
-                            Modifier.fillMaxWidth().clickable {
-                                if (choosingTo) vm.selectTo(unit) else vm.selectFrom(unit)
-                                onBack()
-                            },
-                        ) {
-                            Row(
-                                Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
-                                verticalAlignment = Alignment.CenterVertically,
+            val state = rememberLazyListState()
+            ListJumpBox(state, ListJump.Pages) {
+                PagedColumn(Modifier.fillMaxSize(), state = state) {
+                    shown.forEach { unit ->
+                        item(key = unit.id) {
+                            val (name, short) = names.getValue(unit.id)
+                            val answer = conversions[unit.id]?.let { answerText(it, settings, money = group == UnitGroup.CURRENCY) }
+                            Column(
+                                Modifier.fillMaxWidth().clickable {
+                                    if (choosingTo) vm.selectTo(unit) else vm.selectFrom(unit)
+                                    onBack()
+                                },
                             ) {
-                                Column(Modifier.weight(1f)) {
-                                    TextMMD(
-                                        text = name,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = if (unit.id == current.id) FontWeight.Bold else FontWeight.Normal,
-                                        maxLines = 2,
-                                        overflow = TextOverflow.Ellipsis,
-                                    )
-                                    TextMMD(text = short, style = MaterialTheme.typography.labelSmall)
+                                Row(
+                                    Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Column(Modifier.weight(1f)) {
+                                        TextMMD(
+                                            text = name,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            fontWeight = if (unit.id == current.id) FontWeight.Bold else FontWeight.Normal,
+                                            maxLines = 2,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
+                                        TextMMD(text = short, style = MaterialTheme.typography.labelSmall)
+                                    }
+                                    if (answer != null) {
+                                        Spacer(Modifier.width(10.dp))
+                                        TextMMD(
+                                            text = answer,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            maxLines = 2,
+                                            overflow = TextOverflow.Ellipsis,
+                                            textAlign = TextAlign.End,
+                                            modifier = Modifier.widthIn(max = 170.dp),
+                                        )
+                                    }
                                 }
-                                if (answer != null) {
-                                    Spacer(Modifier.width(10.dp))
-                                    TextMMD(
-                                        text = answer,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        maxLines = 2,
-                                        overflow = TextOverflow.Ellipsis,
-                                        textAlign = TextAlign.End,
-                                        modifier = Modifier.widthIn(max = 170.dp),
-                                    )
-                                }
+                                HorizontalDividerMMD()
                             }
-                            HorizontalDividerMMD()
                         }
                     }
                 }
