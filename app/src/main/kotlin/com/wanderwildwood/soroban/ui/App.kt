@@ -1,17 +1,7 @@
 package com.wanderwildwood.soroban.ui
 
 import android.app.Application
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mudita.mmd.components.text.TextMMD
@@ -102,7 +91,7 @@ fun SorobanApp() {
             },
         ) { padding ->
             Column(Modifier.padding(padding).fillMaxSize()) {
-                Tabs(
+                StoneTabs(
                     labels = listOf(R.string.tab_calculate, R.string.tab_graph, R.string.tab_convert, R.string.tab_dates).map { stringResource(it) },
                     selected = page,
                     onSelect = { i ->
@@ -136,35 +125,4 @@ fun SorobanApp() {
     }
 
     if (about) AboutDialog(onDismiss = { about = false })
-}
-
-/**
- * The pages, in a row of equal parts, the one open in bold over a solid bar. MMD's own tab row
- * draws the same, but pads each label by 16dp a side, and at four tabs on a 480px panel that
- * broke "Calculate" over two lines.
- */
-@Composable
-private fun Tabs(labels: List<String>, selected: Int, onSelect: (Int) -> Unit) {
-    Column(Modifier.fillMaxWidth()) {
-        Row(Modifier.fillMaxWidth().height(48.dp)) {
-            labels.forEachIndexed { i, label ->
-                Box(
-                    Modifier.weight(1f).fillMaxHeight().clickable { onSelect(i) },
-                    contentAlignment = Alignment.Center,
-                ) {
-                    TextMMD(
-                        text = label,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = if (i == selected) FontWeight.Bold else FontWeight.Normal,
-                        maxLines = 1,
-                        softWrap = false,
-                    )
-                    if (i == selected) {
-                        Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().padding(horizontal = 10.dp).height(3.dp).background(Color.Black))
-                    }
-                }
-            }
-        }
-        HorizontalDividerMMD()
-    }
 }
