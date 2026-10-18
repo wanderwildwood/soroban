@@ -18,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,11 +34,12 @@ import com.wanderwildwood.soroban.calc.Line
 
 private val PLACES = listOf(0, 2, 3, 4, 6, 8, 10, 12, 15, 20)
 
-/** How numbers are written, and whether a key ticks. Five rows, and nothing else. */
+/** How numbers are written, whether a key ticks, and whether lists show letters and page dots. */
 @Composable
 fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
     BackHandler(onBack = onBack)
     val s by prefs.settings.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     var picking by rememberSaveable { mutableStateOf<String?>(null) }
 
     Scaffold(
@@ -73,6 +75,10 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
                     s.vibrate,
                     note = stringResource(R.string.settings_vibrate_note),
                 ) { on -> prefs.update { it.copy(vibrate = on) } }
+            }
+            item(key = "jump") {
+                val jumpShown by rememberListJumpShown()
+                SwitchRow(stringResource(R.string.list_jump_setting), jumpShown) { ListJumpPrefs.setShown(context, it) }
             }
         }
     }
