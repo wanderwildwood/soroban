@@ -23,6 +23,7 @@ import com.sadellie.unitto.core.common.KBigDecimalMath
 import com.sadellie.unitto.core.common.KMathContext
 import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.MAX_SCALE
+import com.sadellie.unitto.core.common.integerDigits
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isEqualTo
 
@@ -47,6 +48,19 @@ class Expression(
   private val mathContext = KMathContext(TRIG_SCALE, roundingMode)
   private val tokens = input.tokenize()
   private var cursorPosition = 0
+
+  /**
+   * True when the answer was rounded to [TRIG_SCALE] significant digits and is a number with
+   * more whole digits than that (so the figures after them are not known), as a huge power
+   * of a fraction or e^300 is. Exact answers, 2^1000 among them, leave it false.
+   */
+  var approximate = false
+    private set
+
+  private fun KBigDecimal.noteRounded(): KBigDecimal {
+    if (integerDigits() > TRIG_SCALE) approximate = true
+    return this
+  }
 
   /**
    * Expression := [ "-" ] Term { ("+" | "-") Term }
@@ -171,7 +185,7 @@ class Expression(
 
     // sqrt
     if (moveIfMatched(Token.Operator.SQRT)) {
-      expr = KBigDecimalMath.sqrt(parseFuncParentheses(), mathContext)
+      expr = KBigDecimalMath.sqrt(parseFuncParentheses(), mathContext).noteRounded()
     }
 
     // sin
@@ -216,7 +230,7 @@ class Expression(
 
     // exp
     if (moveIfMatched(Token.Func.EXP)) {
-      expr = parseFuncParentheses().exp(mathContext)
+      expr = parseFuncParentheses().exp(mathContext).noteRounded()
     }
 
     // Power
@@ -228,7 +242,7 @@ class Expression(
         throw ExpressionException.BadExpression()
       }
 
-      expr = KBigDecimalMath.pow(expr, factor, mathContext)
+      expr = exactPower(expr, factor) ?: KBigDecimalMath.pow(expr, factor, mathContext).noteRounded()
     }
 
     // Modulo
@@ -248,9 +262,25 @@ class Expression(
     return expr
   }
 
+  /**
+   * A whole-number power worked out digit for digit, so 2^1000 is all 302 of its digits and not
+   * 100 of them and zeros. Null when the exponent is not a whole number from 0 to 9999, or the
+   * answer would run past [EXACT_DIGITS] digits: the caller rounds then.
+   */
+  private fun exactPower(base: KBigDecimal, exponent: KBigDecimal): KBigDecimal? {
+    if (exponent < KBigDecimal.ZERO || exponent > MAX_EXACT_EXPONENT) return null
+    if (exponent.remainder(KBigDecimal.ONE).compareTo(KBigDecimal.ZERO) != 0) return null
+    val n = exponent.toInt()
+    val b = base.stripTrailingZeros()
+    if (b.precision().toLong() * n > EXACT_DIGITS) return null
+    return b.pow(n)
+  }
+
   // rescale to avoid precision loss when evaluating special cases in trigonometry
   private fun KBigDecimal.rescaleTrig(): KBigDecimal =
     this.setScale(mathContext.precision, KRoundingMode.HALF_EVEN)
 }
 
 private const val TRIG_SCALE = 100
+private const val EXACT_DIGITS = 20_000
+private val MAX_EXACT_EXPONENT = KBigDecimal("9999")

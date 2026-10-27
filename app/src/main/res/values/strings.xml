@@ -49,6 +49,7 @@
     <string name="key_ops">Bitwise</string>
     <string name="key_digits">A–F</string>
     <!-- %1$s is QWORD, DWORD, WORD or BYTE -->
+    <string name="cd_base">Typing in %1$s. Press for the next base.</string>
     <string name="cd_word_size">Word size %1$s. Press for the next.</string>
     <string name="cd_leave_programmer">Back to the ordinary calculator</string>
 
@@ -60,6 +61,8 @@
     <string name="graph_hint">Press a curve for its value; drag to move, pinch to zoom.</string>
     <!-- %1$s the curve (y₁), %2$s x, %3$s y -->
     <string name="graph_point">%1$s: x = %2$s, y = %3$s</string>
+    <string name="graph_degrees">Degrees</string>
+    <string name="graph_radians">Radians</string>
     <string name="graph_reset">Reset</string>
     <string name="graph_points">Points</string>
     <string name="graph_table">Table</string>
@@ -95,6 +98,7 @@
 
     <string name="calc_divide_by_zero">Cannot divide by 0</string>
     <string name="calc_error">There is no answer to that</string>
+    <string name="calc_approximate">≈ Approximate: rounded</string>
 
     <!-- Held down, the sum or a value offers these -->
     <string name="action_copy">Copy</string>
@@ -135,9 +139,9 @@
     <string name="rates_fetching">Fetching exchange rates</string>
     <!-- %1$s is the date of the rates already on the phone -->
     <string name="rates_fetching_have">Rates of %1$s; fetching today\'s</string>
-    <string name="rates_none">No rates yet: currency needs the internet once. Tap to try.</string>
+    <string name="rates_none">No rates yet. Tap to fetch them.</string>
     <!-- %1$s is the date of the older rates still in use -->
-    <string name="rates_failed">Offline: rates of %1$s. Tap to try again.</string>
+    <string name="rates_failed">Offline. Rates of %1$s. Tap to retry.</string>
 
     <!-- A length of time written out: "1 d 2 h 30 min". %1$s is the number. -->
     <string name="time_days">%1$s d</string>
@@ -199,15 +203,13 @@
     <!-- About -->
 
     <string name="about_title">Calculator %1$s</string>
-    <string name="about_what">Everything is worked out on the phone. Only currency uses the internet: once a day, while it is open, it fetches the exchange rates, and sends nothing else.</string>
-    <string name="about_licence">GNU General Public License v3</string>
-    <string name="about_unitto">Built on Unitto, GPL v3 or later</string>
-    <string name="about_rates">Exchange rates from Fawaz Ahmed\'s currency API, CC0</string>
-    <string name="about_icons">Icons from Material Symbols, Apache 2.0</string>
+    <string name="about_privacy_head">Privacy</string>
+    <string name="about_privacy">Your sums, graphs and settings stay on this phone. The app goes online only to fetch the day\'s exchange rates, and only when you open currencies; that request carries no account and nothing you have written. There are no ads, no analytics and no tracking. A number you copy or share goes only where you send it.</string>
+    <string name="about_terms_head">Terms</string>
+    <string name="about_terms">This app is free software under the GNU General Public License v3 (the code of Unitto, which it is built on, is v3 or later). It comes with no warranty: use it at your own risk, and check any result that matters.</string>
+    <string name="about_built_head">Built with</string>
+    <string name="about_built">Unitto, by Elshan Agaev, GPL v3 or later. Exchange rates from Fawaz Ahmed\'s currency API, CC0. big-math by Eric Obermühlner, MIT. Mudita Mindful Design components. Jetpack Compose and AndroidX, Apache 2.0. Icons from Material Symbols, Apache 2.0.</string>
     <string name="about_feed_the_llamas">feed the llamas</string>
     <string name="about_no_browser">There is no browser on this phone to open that with.</string>
     <string name="about_close">Close</string>
-    <string name="list_jump_setting">Letters and page dots</string>
-    <string name="list_jump_shown">Shown</string>
-    <string name="list_jump_hidden">Hidden</string>
 </resources>

@@ -60,6 +60,14 @@ class KBigDecimal(internal val wrapped: BigDecimal) : Comparable<KBigDecimal> {
 
   fun scale(): Int = this.wrapped.scale()
 
+  fun precision(): Int = this.wrapped.precision()
+
+  /** Rounds to [digits] significant digits. */
+  fun roundTo(digits: Int, roundingMode: KRoundingMode): KBigDecimal =
+    KBigDecimal(this.wrapped.round(MathContext(digits, roundingMode.wrapped)))
+
+  fun unscaledString(): String = this.wrapped.unscaledValue().abs().toString()
+
   fun abs(): KBigDecimal = KBigDecimal(this.wrapped.abs())
 
   fun remainder(divisor: KBigDecimal): KBigDecimal =

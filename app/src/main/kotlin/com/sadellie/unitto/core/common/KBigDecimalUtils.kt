@@ -87,3 +87,19 @@ private fun KBigDecimal.toStringWith(outputFormat: Int): String =
     OutputFormat.FORCE_ENGINEERING -> this.toEngineeringString()
     else -> this.toPlainString()
   }
+
+/** How many digits are in the whole part: 1 for 0.5 and for 7, 302 for 2^1000. */
+fun KBigDecimal.integerDigits(): Int = (precision() - scale()).coerceAtLeast(1)
+
+/**
+ * A number too long to know every digit of, written short: [digits] figures and a power of
+ * ten, as 1.07150860718E+301, the way the sum field reads scientific notation.
+ */
+fun KBigDecimal.toApproximateString(digits: Int = 12): String {
+  val rounded = roundTo(digits, KRoundingMode.HALF_EVEN)
+  val figures = rounded.unscaledString().trimEnd('0').ifEmpty { "0" }
+  val exponent = rounded.precision() - rounded.scale() - 1
+  val sign = if (rounded < KBigDecimal.ZERO) "-" else ""
+  val mantissa = if (figures.length == 1) figures else figures[0] + "." + figures.drop(1)
+  return "$sign${mantissa}E${if (exponent < 0) "-" else "+"}${kotlin.math.abs(exponent)}"
+}

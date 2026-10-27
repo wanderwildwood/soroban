@@ -35,6 +35,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
@@ -106,6 +108,7 @@ fun GraphScreen(
     val settings by vm.settings.collectAsStateWithLifecycle()
     var size by remember { mutableStateOf(IntSize.Zero) }
     val curves = remember(functions, settings.radians) { vm.curves() }
+    val angleDescription = stringResource(if (settings.radians) R.string.cd_radians else R.string.cd_degrees)
 
     Column(Modifier.fillMaxSize()) {
         functions.forEachIndexed { i, f ->
@@ -113,20 +116,40 @@ fun GraphScreen(
         }
         if (functions.size < GraphViewModel.MAX) {
             Row(
-                Modifier.fillMaxWidth().height(36.dp).clickable { onEdit(functions.size) }.padding(horizontal = 16.dp),
+                Modifier.fillMaxWidth().height(48.dp).clickable { onEdit(functions.size) }.padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TextMMD(text = stringResource(R.string.graph_add), style = MaterialTheme.typography.bodySmall)
             }
         }
         HorizontalDividerMMD()
-        Box(Modifier.fillMaxWidth().height(26.dp).padding(horizontal = 16.dp), contentAlignment = Alignment.CenterStart) {
+        Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             TextMMD(
                 text = picked?.let { readout(it, settings.symbols) } ?: stringResource(if (functions.isEmpty()) R.string.graph_empty else R.string.graph_hint),
                 style = MaterialTheme.typography.labelSmall,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
             )
+            Spacer(Modifier.width(10.dp))
+            // The angle unit the trig functions are read in, said on the graph, and changed here:
+            // the calculator's own setting, so the two never disagree.
+            Box(
+                Modifier
+                    .height(40.dp)
+                    .rule()
+                    .clickable { vm.setRadians(!settings.radians) }
+                    .semantics { contentDescription = angleDescription }
+                    .padding(horizontal = 12.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                TextMMD(
+                    text = stringResource(if (settings.radians) R.string.graph_radians else R.string.graph_degrees),
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                )
+            }
         }
         Box(
             Modifier.fillMaxWidth().weight(1f).onSizeChanged {
@@ -158,7 +181,7 @@ fun GraphScreen(
 @Composable
 private fun FunctionRow(i: Int, text: String, broken: Boolean, onClick: () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().height(36.dp).clickable(onClick = onClick).padding(horizontal = 16.dp),
+        Modifier.fillMaxWidth().height(48.dp).clickable(onClick = onClick).padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Canvas(Modifier.width(36.dp).height(12.dp)) {

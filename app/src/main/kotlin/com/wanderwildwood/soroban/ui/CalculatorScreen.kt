@@ -80,7 +80,12 @@ fun CalculatorScreen(vm: CalculatorViewModel, programmer: ProgrammerViewModel, p
             },
             sum = shown.ifEmpty { "0" },
             below = when (val r = result) {
-                is CalculationResult.Success -> r.text.takeIf { it.isNotEmpty() }?.let { if (equalled) Numbers.show(it, settings.symbols) else "= " + Numbers.show(it, settings.symbols) }
+                is CalculationResult.Success -> when {
+                    // Too long to know every digit: say so, in words after =, with ≈ while typing.
+                    r.approximate && equalled -> stringResource(R.string.calc_approximate)
+                    r.approximate -> "≈ " + Numbers.show(r.text, settings.symbols)
+                    else -> r.text.takeIf { it.isNotEmpty() }?.let { if (equalled) Numbers.show(it, settings.symbols) else "= " + Numbers.show(it, settings.symbols) }
+                }
                 CalculationResult.DivideByZeroError -> stringResource(R.string.calc_divide_by_zero)
                 CalculationResult.Error -> stringResource(R.string.calc_error)
                 CalculationResult.Empty -> null
@@ -231,7 +236,7 @@ private fun Display(tape: String?, sum: String, below: String?, onTape: () -> Un
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(28.dp)
+                .height(48.dp)
                 .combinedClickable(onClick = onTape),
             contentAlignment = Alignment.CenterEnd,
         ) {

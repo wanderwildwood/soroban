@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
@@ -60,19 +62,20 @@ fun ProgrammerScreen(vm: ProgrammerViewModel, onLeave: () -> Unit) {
     val value = s.value
 
     Column(Modifier.fillMaxSize()) {
-        ProgDisplay(s, value, onHold = { actions = true }, onBase = vm::setBase)
+        ProgDisplay(s, value, onHold = { actions = true })
         HorizontalDividerMMD()
         // The modes, as one row of words: what the keys below are, and the word they work in.
         Keypad(
             listOf(
                 listOf(
+                    Key(s.base.name, { vm.setBase(Base.entries[(s.base.ordinal + 1) % Base.entries.size]) }, mode = true, description = stringResource(R.string.cd_base, s.base.name)),
                     Key(s.size.name, vm::cycleSize, mode = true, description = stringResource(R.string.cd_word_size, s.size.name)),
                     Key(stringResource(R.string.key_bits), { bits = !bits }, mode = true, bold = bits),
                     Key(stringResource(if (ops) R.string.key_digits else R.string.key_ops), { ops = !ops; bits = false }, mode = true),
                     Key(stringResource(R.string.key_numbers), onLeave, mode = true, description = stringResource(R.string.cd_leave_programmer)),
                 ),
             ),
-            Modifier.height(44.dp),
+            Modifier.height(48.dp),
         )
         HorizontalDividerMMD()
         if (bits) {
@@ -97,11 +100,12 @@ fun ProgrammerScreen(vm: ProgrammerViewModel, onLeave: () -> Unit) {
 /** The sum as typed, then the value in each of the four bases, the one typed in bold. */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ProgDisplay(s: ProgState, value: Long?, onHold: () -> Unit, onBase: (Base) -> Unit) {
+private fun ProgDisplay(s: ProgState, value: Long?, onHold: () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
         Box(
             Modifier.fillMaxWidth().height(44.dp)
-                .combinedClickable(onClick = {}, onLongClick = onHold, onLongClickLabel = stringResource(R.string.cd_sum_actions)),
+                // Not a press: the sum answers a long press (copy, paste), nothing more.
+                .pointerInput(Unit) { detectTapGestures(onLongPress = { onHold() }) },
             contentAlignment = Alignment.CenterEnd,
         ) {
             val sum = show(s)
@@ -122,9 +126,7 @@ private fun ProgDisplay(s: ProgState, value: Long?, onHold: () -> Unit, onBase: 
             val text = value?.let { if (base == Base.BIN) Word.nibbles(it, s.size) else Word.format(it, base, s.size).replace("-", "−") } ?: "0"
             Row(
                 Modifier.fillMaxWidth()
-                    .height(if (base == Base.BIN) 42.dp else 24.dp)
-                    .clickable { onBase(base) }
-                    .semantics { contentDescription = base.name },
+                    .height(if (base == Base.BIN) 42.dp else 24.dp),
                 verticalAlignment = Alignment.Top,
             ) {
                 TextMMD(

@@ -34,6 +34,7 @@ import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.Token
 import com.sadellie.unitto.core.common.isExpression
 import com.sadellie.unitto.core.common.isGreaterThan
+import com.sadellie.unitto.core.common.toApproximateString
 import com.sadellie.unitto.core.common.toFormattedString
 import com.sadellie.unitto.core.ui.textfield.addBracket
 import com.sadellie.unitto.core.ui.textfield.addTokens
@@ -57,9 +58,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /** What the line under the sum says. */
+/** A worked-out sum, and whether its digits run past what could be known ([Expression.approximate]). */
+data class Answer(val value: KBigDecimal, val approximate: Boolean) {
+  /** Every digit when they are all known; 12 figures and a power of ten when they are not. */
+  fun text(places: Int, format: Int): String =
+    if (approximate) value.toApproximateString() else value.toFormattedString(places, format)
+}
+
 sealed class CalculationResult {
   /** A preview while typing, or after = the same answer as a fraction (empty if none). */
-  data class Success(val text: String) : CalculationResult()
+  data class Success(val text: String, val approximate: Boolean = false) : CalculationResult()
 
   data object Empty : CalculationResult()
 
@@ -175,10 +183,14 @@ class CalculatorViewModel(
       val inputValue = input.text.toString()
       if (!inputValue.isExpression()) return@launch
 
+      var approximate = false
       val calculated =
         try {
             calculate(inputValue, prefs.radians, KRoundingMode.HALF_EVEN)
-              .toFormattedString(prefs.precision, prefs.outputFormat)
+              .let { answer ->
+                approximate = answer.approximate
+                answer.text(prefs.precision, prefs.outputFormat)
+              }
           } catch (e: ExpressionException.DivideByZero) {
             _result.update { CalculationResult.DivideByZeroError }
             return@launch
@@ -192,10 +204,10 @@ class CalculatorViewModel(
       val fractional =
         // A whole answer has no fraction to show. Without this, a sum whose exact value is
         // whole but whose arithmetic is not (40 × sin 30° is 19.999…) came out as "19 1⁄1".
-        if (prefs.fractions && Token.PERIOD in calculated) {
+        if (prefs.fractions && !approximate && Token.PERIOD in calculated) {
           try {
             // Different rounding mode to properly calculate fractional
-            calculate(inputValue, prefs.radians, KRoundingMode.DOWN).toFractionalString()
+            calculate(inputValue, prefs.radians, KRoundingMode.DOWN).value.toFractionalString()
               .takeUnless { it.endsWith(Token.DisplayOnly.FRACTION + "1") }
               .orEmpty()
           } catch (e: Exception) {
@@ -211,7 +223,7 @@ class CalculatorViewModel(
       setEqualled(true)
       savedStateHandle[_inputKey] = calculated
       input.setTextAndPlaceCursorAtEnd(calculated)
-      _result.update { CalculationResult.Success(fractional) }
+      _result.update { CalculationResult.Success(fractional, approximate) }
     }
 
   private fun calculateInput() {
@@ -233,7 +245,8 @@ class CalculatorViewModel(
                 roundingMode = KRoundingMode.HALF_EVEN,
               )
             CalculationResult.Success(
-              calculated.toFormattedString(prefs.precision, prefs.outputFormat).replace("-", Token.Operator.MINUS)
+              calculated.text(prefs.precision, prefs.outputFormat).replace("-", Token.Operator.MINUS),
+              calculated.approximate,
             )
           } catch (e: Exception) {
             CalculationResult.Empty
@@ -246,11 +259,12 @@ class CalculatorViewModel(
     input: String,
     radianMode: Boolean,
     roundingMode: KRoundingMode = KRoundingMode.HALF_EVEN,
-  ): KBigDecimal =
+  ): Answer =
     withContext(Dispatchers.Default) {
-      Expression(input, radianMode, roundingMode).calculate().also {
-        if (it.isGreaterThan(maxCalculationResult)) throw ExpressionException.TooBig()
-      }
+      val expression = Expression(input, radianMode, roundingMode)
+      val value = expression.calculate()
+      if (value.isGreaterThan(maxCalculationResult)) throw ExpressionException.TooBig()
+      Answer(value, expression.approximate)
     }
 
   private val maxCalculationResult = KBigDecimal.valueOf(Double.MAX_VALUE)

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,7 +17,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,12 +32,11 @@ import com.wanderwildwood.soroban.calc.Line
 
 private val PLACES = listOf(0, 2, 3, 4, 6, 8, 10, 12, 15, 20)
 
-/** How numbers are written, whether a key ticks, and whether lists show letters and page dots. */
+/** How numbers are written, and whether a key ticks. */
 @Composable
 fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
     BackHandler(onBack = onBack)
     val s by prefs.settings.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     var picking by rememberSaveable { mutableStateOf<String?>(null) }
 
     Scaffold(
@@ -75,10 +72,6 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
                     s.vibrate,
                     note = stringResource(R.string.settings_vibrate_note),
                 ) { on -> prefs.update { it.copy(vibrate = on) } }
-            }
-            item(key = "jump") {
-                val jumpShown by rememberListJumpShown()
-                SwitchRow(stringResource(R.string.list_jump_setting), jumpShown) { ListJumpPrefs.setShown(context, it) }
             }
         }
     }
@@ -134,38 +127,35 @@ fun HistoryScreen(
             )
         },
     ) { padding ->
-        val state = rememberLazyListState()
-        ListJumpBox(state, ListJump.Pages, Modifier.padding(padding)) {
-            PagedColumn(Modifier.fillMaxSize(), state = state) {
-                if (lines.isEmpty()) {
-                    item(key = "empty") {
-                        TextMMD(
-                            text = stringResource(R.string.history_empty),
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(20.dp),
+        PagedColumn(Modifier.padding(padding).fillMaxSize()) {
+            if (lines.isEmpty()) {
+                item(key = "empty") {
+                    TextMMD(
+                        text = stringResource(R.string.history_empty),
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(20.dp),
+                    )
+                }
+            }
+            lines.forEachIndexed { i, line ->
+                item(key = "line$i") {
+                    Column(Modifier.fillMaxWidth().clickable { onUse(line) }) {
+                        Column(Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
+                            TextMMD(text = Numbers.show(line.expression, s.symbols), style = MaterialTheme.typography.bodySmall)
+                            TextMMD(text = "= " + Numbers.show(line.result, s.symbols), style = MaterialTheme.typography.bodyMedium)
+                        }
+                        HorizontalDividerMMD()
+                    }
+                }
+            }
+            if (lines.isNotEmpty()) {
+                item(key = "clear") {
+                    Column(Modifier.padding(horizontal = 20.dp)) {
+                        ArmedRow(
+                            label = pluralStringResource(R.plurals.history_clear, lines.size, lines.size.toString()),
+                            armedLabel = stringResource(R.string.history_clear_armed),
+                            onConfirmed = onClear,
                         )
-                    }
-                }
-                lines.forEachIndexed { i, line ->
-                    item(key = "line$i") {
-                        Column(Modifier.fillMaxWidth().clickable { onUse(line) }) {
-                            Column(Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
-                                TextMMD(text = Numbers.show(line.expression, s.symbols), style = MaterialTheme.typography.bodySmall)
-                                TextMMD(text = "= " + Numbers.show(line.result, s.symbols), style = MaterialTheme.typography.bodyMedium)
-                            }
-                            HorizontalDividerMMD()
-                        }
-                    }
-                }
-                if (lines.isNotEmpty()) {
-                    item(key = "clear") {
-                        Column(Modifier.padding(horizontal = 20.dp)) {
-                            ArmedRow(
-                                label = pluralStringResource(R.plurals.history_clear, lines.size, lines.size.toString()),
-                                armedLabel = stringResource(R.string.history_clear_armed),
-                                onConfirmed = onClear,
-                            )
-                        }
                     }
                 }
             }

@@ -41,6 +41,9 @@ class GraphViewModel(private val prefs: Prefs) : ViewModel() {
 
     val settings = prefs.settings
 
+    /** Degrees or radians for sin, cos, tan and their inverses: the calculator's setting, one for both. */
+    fun setRadians(on: Boolean) = prefs.update { it.copy(radians = on) }
+
     /** The functions, ready to evaluate in the current angle unit; a broken one is null. */
     fun curves(): List<((Double) -> Double)?> {
         val radians = prefs.settings.value.radians

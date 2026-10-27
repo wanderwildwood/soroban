@@ -34,6 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
@@ -165,7 +167,7 @@ fun answerText(result: ConverterResult?, settings: Settings, money: Boolean = fa
 private fun Side(unit: BasicUnit, value: String, onUnit: () -> Unit, onHold: () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
         Row(
-            Modifier.fillMaxWidth().height(30.dp).clickable(onClick = onUnit),
+            Modifier.fillMaxWidth().height(48.dp).clickable(onClick = onUnit),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TextMMD(
@@ -182,8 +184,9 @@ private fun Side(unit: BasicUnit, value: String, onUnit: () -> Unit, onHold: () 
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(46.dp)
-                .combinedClickable(onClick = onUnit, onLongClick = onHold, onLongClickLabel = stringResource(R.string.cd_sum_actions)),
+                .height(38.dp)
+                // Only the unit row above is a press; the figure itself answers a long press.
+                .pointerInput(Unit) { detectTapGestures(onLongPress = { onHold() }) },
             contentAlignment = Alignment.CenterEnd,
         ) {
             TextMMD(
@@ -230,12 +233,12 @@ private fun Note(group: UnitGroup, rates: RatesView, result: ConverterResult?, v
     Box(
         Modifier
             .fillMaxWidth()
-            .height(28.dp)
+            .height(if (retry) 48.dp else 28.dp)
             .let { if (retry) it.clickable { vm.retryRates() } else it }
             .padding(horizontal = 16.dp),
         contentAlignment = Alignment.CenterEnd,
     ) {
-        TextMMD(text = text ?: "", style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        TextMMD(text = text ?: "", style = MaterialTheme.typography.labelSmall, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.End)
     }
 }
 

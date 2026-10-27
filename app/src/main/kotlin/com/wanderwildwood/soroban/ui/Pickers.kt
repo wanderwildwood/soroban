@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -125,47 +124,44 @@ fun UnitPicker(vm: ConverterViewModel, choosingTo: Boolean, onBack: () -> Unit) 
                     modifier = Modifier.padding(20.dp),
                 )
             }
-            val state = rememberLazyListState()
-            ListJumpBox(state, ListJump.Pages) {
-                PagedColumn(Modifier.fillMaxSize(), state = state) {
-                    shown.forEach { unit ->
-                        item(key = unit.id) {
-                            val (name, short) = names.getValue(unit.id)
-                            val answer = conversions[unit.id]?.let { answerText(it, settings, money = group == UnitGroup.CURRENCY) }
-                            Column(
-                                Modifier.fillMaxWidth().clickable {
-                                    if (choosingTo) vm.selectTo(unit) else vm.selectFrom(unit)
-                                    onBack()
-                                },
+            PagedColumn(Modifier.fillMaxSize()) {
+                shown.forEach { unit ->
+                    item(key = unit.id) {
+                        val (name, short) = names.getValue(unit.id)
+                        val answer = conversions[unit.id]?.let { answerText(it, settings, money = group == UnitGroup.CURRENCY) }
+                        Column(
+                            Modifier.fillMaxWidth().clickable {
+                                if (choosingTo) vm.selectTo(unit) else vm.selectFrom(unit)
+                                onBack()
+                            },
+                        ) {
+                            Row(
+                                Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Row(
-                                    Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Column(Modifier.weight(1f)) {
-                                        TextMMD(
-                                            text = name,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            fontWeight = if (unit.id == current.id) FontWeight.Bold else FontWeight.Normal,
-                                            maxLines = 2,
-                                            overflow = TextOverflow.Ellipsis,
-                                        )
-                                        TextMMD(text = short, style = MaterialTheme.typography.labelSmall)
-                                    }
-                                    if (answer != null) {
-                                        Spacer(Modifier.width(10.dp))
-                                        TextMMD(
-                                            text = answer,
-                                            style = MaterialTheme.typography.bodySmall,
-                                            maxLines = 2,
-                                            overflow = TextOverflow.Ellipsis,
-                                            textAlign = TextAlign.End,
-                                            modifier = Modifier.widthIn(max = 170.dp),
-                                        )
-                                    }
+                                Column(Modifier.weight(1f)) {
+                                    TextMMD(
+                                        text = name,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        fontWeight = if (unit.id == current.id) FontWeight.Bold else FontWeight.Normal,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                    TextMMD(text = short, style = MaterialTheme.typography.labelSmall)
                                 }
-                                HorizontalDividerMMD()
+                                if (answer != null) {
+                                    Spacer(Modifier.width(10.dp))
+                                    TextMMD(
+                                        text = answer,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        textAlign = TextAlign.End,
+                                        modifier = Modifier.widthIn(max = 170.dp),
+                                    )
+                                }
                             }
+                            HorizontalDividerMMD()
                         }
                     }
                 }

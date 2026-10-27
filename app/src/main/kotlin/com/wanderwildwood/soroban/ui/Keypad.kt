@@ -133,7 +133,7 @@ private fun KeyFace(key: Key, color: Color) {
             maxLines = 1,
             // A key's figure is an instrument's, like a speedometer's, and is sized to the key
             // rather than to the type scale: 30sp digits are what stock calculators use here.
-            fontSize = when { key.mode -> 19.sp; key.small -> 22.sp; else -> 30.sp },
+            fontSize = when { key.mode -> 16.sp; key.small -> 22.sp; else -> 30.sp },
             fontWeight = if (key.bold) FontWeight.Bold else FontWeight.Medium,
             style = MaterialTheme.typography.bodyLarge,
         )

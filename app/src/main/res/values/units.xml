@@ -134,7 +134,7 @@
     <string name="unit_cubic_yard">Cubic yard</string>
     <string name="unit_cubic_yard_short">yd³</string>
     <string name="unit_currency_1inch" translatable="false">1inch Network</string>
-    <string name="unit_currency_1inch_short" translatable="false">NCH</string>
+    <string name="unit_currency_1inch_short" translatable="false">1INCH</string>
     <string name="unit_currency_ada">Cardano</string>
     <string name="unit_currency_ada_short" translatable="false">ADA</string>
     <string name="unit_currency_aed">United Arab Emirates Dirham</string>
@@ -142,7 +142,7 @@
     <string name="unit_currency_afn">Afghan afghani</string>
     <string name="unit_currency_afn_short" translatable="false">AFN</string>
     <string name="unit_currency_algo" translatable="false">Algorand</string>
-    <string name="unit_currency_algo_short" translatable="false">LGO</string>
+    <string name="unit_currency_algo_short" translatable="false">ALGO</string>
     <string name="unit_currency_all">Albanian lek</string>
     <string name="unit_currency_all_short" translatable="false">ALL</string>
     <string name="unit_currency_amd">Armenian dram</string>
@@ -154,11 +154,11 @@
     <string name="unit_currency_ars">Argentine peso</string>
     <string name="unit_currency_ars_short" translatable="false">ARS</string>
     <string name="unit_currency_atom" translatable="false">Atomic Coin</string>
-    <string name="unit_currency_atom_short" translatable="false">TOM</string>
+    <string name="unit_currency_atom_short" translatable="false">ATOM</string>
     <string name="unit_currency_aud">Australian dollar</string>
     <string name="unit_currency_aud_short" translatable="false">AUD</string>
     <string name="unit_currency_avax" translatable="false">Avalanche</string>
-    <string name="unit_currency_avax_short" translatable="false">VAX</string>
+    <string name="unit_currency_avax_short" translatable="false">AVAX</string>
     <string name="unit_currency_awg">Aruban florin</string>
     <string name="unit_currency_awg_short" translatable="false">AWG</string>
     <string name="unit_currency_azn">Azerbaijani manat</string>
@@ -194,7 +194,7 @@
     <string name="unit_currency_btn">Bhutan currency</string>
     <string name="unit_currency_btn_short" translatable="false">BTN</string>
     <string name="unit_currency_busd" translatable="false">Binance USD</string>
-    <string name="unit_currency_busd_short" translatable="false">USD</string>
+    <string name="unit_currency_busd_short" translatable="false">BUSD</string>
     <string name="unit_currency_bwp">Botswanan Pula</string>
     <string name="unit_currency_bwp_short" translatable="false">BWP</string>
     <string name="unit_currency_byn">New Belarusian Ruble</string>
@@ -238,7 +238,7 @@
     <string name="unit_currency_dkk">Danish krone</string>
     <string name="unit_currency_dkk_short" translatable="false">DKK</string>
     <string name="unit_currency_doge" translatable="false">Dogecoin</string>
-    <string name="unit_currency_doge_short" translatable="false">OGE</string>
+    <string name="unit_currency_doge_short" translatable="false">DOGE</string>
     <string name="unit_currency_dop">Dominican peso</string>
     <string name="unit_currency_dop_short" translatable="false">DOP</string>
     <string name="unit_currency_dot" translatable="false">Dotcoin</string>
@@ -246,7 +246,7 @@
     <string name="unit_currency_dzd">Algerian dinar</string>
     <string name="unit_currency_dzd_short" translatable="false">DZD</string>
     <string name="unit_currency_egld" translatable="false">Elrond</string>
-    <string name="unit_currency_egld_short" translatable="false">GLD</string>
+    <string name="unit_currency_egld_short" translatable="false">EGLD</string>
     <string name="unit_currency_egp">Egyptian pound</string>
     <string name="unit_currency_egp_short" translatable="false">EGP</string>
     <string name="unit_currency_enj" translatable="false">Enjin Coin</string>
@@ -350,7 +350,7 @@
     <string name="unit_currency_lbp">Lebanese pound</string>
     <string name="unit_currency_lbp_short" translatable="false">LBP</string>
     <string name="unit_currency_link" translatable="false">ChainLink</string>
-    <string name="unit_currency_link_short" translatable="false">INK</string>
+    <string name="unit_currency_link_short" translatable="false">LINK</string>
     <string name="unit_currency_lkr">Sri Lankan rupee</string>
     <string name="unit_currency_lkr_short" translatable="false">LKR</string>
     <string name="unit_currency_lrd">Liberian dollar</string>
@@ -362,7 +362,7 @@
     <string name="unit_currency_ltl">Lithuanian litas</string>
     <string name="unit_currency_ltl_short" translatable="false">LTL</string>
     <string name="unit_currency_luna" translatable="false">Luna Coin</string>
-    <string name="unit_currency_luna_short" translatable="false">UNA</string>
+    <string name="unit_currency_luna_short" translatable="false">LUNA</string>
     <string name="unit_currency_lvl">Latvian lats</string>
     <string name="unit_currency_lvl_short" translatable="false">LVL</string>
     <string name="unit_currency_lyd">Libyan dinar</string>
@@ -370,7 +370,7 @@
     <string name="unit_currency_mad">Moroccan dirham</string>
     <string name="unit_currency_mad_short" translatable="false">MAD</string>
     <string name="unit_currency_matic" translatable="false">Polygon</string>
-    <string name="unit_currency_matic_short" translatable="false">TIC</string>
+    <string name="unit_currency_matic_short" translatable="false">MATIC</string>
     <string name="unit_currency_mdl">Moldovan leu</string>
     <string name="unit_currency_mdl_short" translatable="false">MDL</string>
     <string name="unit_currency_mga">Malagasy ariary</string>
@@ -450,7 +450,7 @@
     <string name="unit_currency_sgd">Singapore dollar</string>
     <string name="unit_currency_sgd_short" translatable="false">SGD</string>
     <string name="unit_currency_shib">Shiba Inu</string>
-    <string name="unit_currency_shib_short" translatable="false">HIB</string>
+    <string name="unit_currency_shib_short" translatable="false">SHIB</string>
     <string name="unit_currency_shp">Saint Helena pound</string>
     <string name="unit_currency_shp_short" translatable="false">SHP</string>
     <string name="unit_currency_sll">Sierra Leonean leone</string>
@@ -472,7 +472,7 @@
     <string name="unit_currency_thb">Thai baht</string>
     <string name="unit_currency_thb_short" translatable="false">THB</string>
     <string name="unit_currency_theta">Theta</string>
-    <string name="unit_currency_theta_short" translatable="false">ETA</string>
+    <string name="unit_currency_theta_short" translatable="false">THETA</string>
     <string name="unit_currency_tjs">Tajikistani somoni</string>
     <string name="unit_currency_tjs_short" translatable="false">TJS</string>
     <string name="unit_currency_tmt">Turkmenistani manat</string>
@@ -500,9 +500,9 @@
     <string name="unit_currency_usd">United States dollar</string>
     <string name="unit_currency_usd_short" translatable="false">USD</string>
     <string name="unit_currency_usdc">USD Coin</string>
-    <string name="unit_currency_usdc_short" translatable="false">SDC</string>
+    <string name="unit_currency_usdc_short" translatable="false">USDC</string>
     <string name="unit_currency_usdt" translatable="false">Tether</string>
-    <string name="unit_currency_usdt_short" translatable="false">SDT</string>
+    <string name="unit_currency_usdt_short" translatable="false">USDT</string>
     <string name="unit_currency_uyu">Uruguayan peso</string>
     <string name="unit_currency_uyu_short" translatable="false">UYU</string>
     <string name="unit_currency_uzs">Uzbekistani som</string>
@@ -516,7 +516,7 @@
     <string name="unit_currency_vuv">Vanuatu vatu</string>
     <string name="unit_currency_vuv_short" translatable="false">VUV</string>
     <string name="unit_currency_wbtc">Wrapped Bitcoin</string>
-    <string name="unit_currency_wbtc_short" translatable="false">BTC</string>
+    <string name="unit_currency_wbtc_short" translatable="false">WBTC</string>
     <string name="unit_currency_wst">Samoan tala</string>
     <string name="unit_currency_wst_short" translatable="false">WST</string>
     <string name="unit_currency_xaf">Central African CFA franc</string>
