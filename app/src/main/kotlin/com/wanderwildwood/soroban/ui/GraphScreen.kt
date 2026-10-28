@@ -151,7 +151,7 @@ fun GraphScreen(
             // the calculator's own setting, so the two never disagree.
             Box(
                 Modifier
-                    .height(40.dp)
+                    .height(48.dp)
                     .rule()
                     .clickable { vm.setRadians(!settings.radians) }
                     .semantics { contentDescription = angleDescription }
