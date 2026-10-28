@@ -73,6 +73,13 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
                     note = stringResource(R.string.settings_vibrate_note),
                 ) { on -> prefs.update { it.copy(vibrate = on) } }
             }
+            item(key = "turn") {
+                SwitchRow(
+                    stringResource(R.string.settings_turn),
+                    s.turnWithPhone,
+                    note = stringResource(R.string.settings_turn_note),
+                ) { on -> prefs.update { it.copy(turnWithPhone = on) } }
+            }
         }
     }
 

@@ -23,6 +23,17 @@ data class Viewport(val xMin: Double, val xMax: Double, val yMin: Double, val yM
 
     fun pan(dx: Double, dy: Double) = Viewport(xMin + dx, xMax + dx, yMin + dy, yMax + dy)
 
+    /**
+     * The same x range and the same middle, with as much y as a panel of [aspect] (height /
+     * width) shows at the same scale: a graph turned sideways, or made shorter by another
+     * function row, keeps a circle round.
+     */
+    fun fit(aspect: Double): Viewport {
+        val half = width * aspect / 2
+        val middle = (yMin + yMax) / 2
+        return Viewport(xMin, xMax, middle - half, middle + half)
+    }
+
     companion object {
         /** x from −10 to 10, and y to the same scale for a screen [aspect] (height / width). */
         fun standard(aspect: Double) = Viewport(-10.0, 10.0, -10.0 * aspect, 10.0 * aspect)

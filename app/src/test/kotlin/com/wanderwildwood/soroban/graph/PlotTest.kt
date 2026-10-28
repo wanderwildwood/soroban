@@ -119,4 +119,12 @@ class PlotTest {
         val v = Viewport(-10.0, 10.0, -5.0, 5.0).zoom(0.5)
         assertEquals(Viewport(-5.0, 5.0, -2.5, 2.5), v)
     }
+
+    @Test
+    fun fittingToASquareKeepsTheXRangeAndTheMiddle() {
+        // An upright plot, taller than wide, turned to a square one.
+        val v = Viewport(-10.0, 10.0, -6.0, 18.0).fit(1.0)
+        assertEquals(Viewport(-10.0, 10.0, -4.0, 16.0), v)
+        assertEquals(1.0, v.height / v.width, 1e-12)
+    }
 }

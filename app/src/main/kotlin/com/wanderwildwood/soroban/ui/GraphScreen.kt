@@ -4,7 +4,15 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -101,6 +109,8 @@ fun GraphScreen(
     onEdit: (Int) -> Unit,
     onPoints: () -> Unit,
     onTable: () -> Unit,
+    /** The phone turned sideways: the plot square at the left, the controls beside it. */
+    wide: Boolean = false,
 ) {
     val functions by vm.functions.collectAsStateWithLifecycle()
     val view by vm.view.collectAsStateWithLifecycle()
@@ -109,6 +119,11 @@ fun GraphScreen(
     var size by remember { mutableStateOf(IntSize.Zero) }
     val curves = remember(functions, settings.radians) { vm.curves() }
     val angleDescription = stringResource(if (settings.radians) R.string.cd_radians else R.string.cd_degrees)
+
+    if (wide) {
+        WideGraph(vm, curves, onEdit, onPoints, onTable)
+        return
+    }
 
     Column(Modifier.fillMaxSize()) {
         functions.forEachIndexed { i, f ->
@@ -154,7 +169,7 @@ fun GraphScreen(
         Box(
             Modifier.fillMaxWidth().weight(1f).onSizeChanged {
                 size = it
-                if (it.width > 0) vm.ensureView(it.height.toDouble() / it.width)
+                if (it.width > 0) vm.fitView(it.height.toDouble() / it.width)
             },
         ) {
             val v = view
@@ -175,6 +190,121 @@ fun GraphScreen(
             ),
             Modifier.height(52.dp),
         )
+    }
+}
+
+/**
+ * The graph with the phone turned sideways: the plot a square at the left, as big as the height
+ * allows, and beside it which line is which function, the reading, and the buttons. The
+ * functions are changed from a short list behind Functions, since three rows of them would not
+ * fit beside the plot with the buttons.
+ */
+@Composable
+private fun WideGraph(
+    vm: GraphViewModel,
+    curves: List<((Double) -> Double)?>,
+    onEdit: (Int) -> Unit,
+    onPoints: () -> Unit,
+    onTable: () -> Unit,
+) {
+    val functions by vm.functions.collectAsStateWithLifecycle()
+    val view by vm.view.collectAsStateWithLifecycle()
+    val picked by vm.picked.collectAsStateWithLifecycle()
+    val settings by vm.settings.collectAsStateWithLifecycle()
+    var listing by rememberSaveable { mutableStateOf(false) }
+    val angleDescription = stringResource(if (settings.radians) R.string.cd_radians else R.string.cd_degrees)
+
+    Row(Modifier.fillMaxSize().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Box(
+            Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f, matchHeightConstraintsFirst = true)
+                .border(1.dp, Color.Black)
+                .padding(1.dp)
+                .onSizeChanged { if (it.width > 0) vm.fitView(it.height.toDouble() / it.width) },
+        ) {
+            val v = view
+            if (v != null) PlotCanvas(v, curves, picked, settings.symbols, onView = vm::setView, onPick = vm::pick)
+        }
+        Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            functions.forEachIndexed { i, f ->
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Canvas(Modifier.width(28.dp).height(12.dp)) {
+                        drawLine(Color.Black, Offset(0f, size.height / 2), Offset(size.width, size.height / 2), 3f, pathEffect = STYLES[i], cap = if (i == 2) StrokeCap.Round else StrokeCap.Butt)
+                    }
+                    Spacer(Modifier.width(8.dp))
+                    TextMMD(
+                        text = "${curveName(i)} = ${showFunction(f, settings.symbols)}" + if (curves.getOrNull(i) == null) "  (?)" else "",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+            TextMMD(
+                text = picked?.let { readout(it, settings.symbols) } ?: stringResource(if (functions.isEmpty()) R.string.graph_empty else R.string.graph_hint),
+                style = MaterialTheme.typography.labelSmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Spacer(Modifier.weight(1f))
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                // The angle unit, said and changed here as in the upright graph.
+                WideButton(
+                    stringResource(if (settings.radians) R.string.graph_radians else R.string.graph_degrees),
+                    Modifier.semantics { contentDescription = angleDescription },
+                ) { vm.setRadians(!settings.radians) }
+                WideButton(stringResource(R.string.cd_zoom_in)) { vm.zoom(0.5) }
+                WideButton(stringResource(R.string.cd_zoom_out)) { vm.zoom(2.0) }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                WideButton(stringResource(R.string.graph_functions)) { listing = true }
+                WideButton(stringResource(R.string.graph_points), enabled = functions.isNotEmpty(), onClick = onPoints)
+                WideButton(stringResource(R.string.graph_table), enabled = functions.isNotEmpty(), onClick = onTable)
+            }
+        }
+    }
+
+    if (listing) {
+        EInkDialog(onDismiss = { listing = false }) {
+            TextMMD(text = stringResource(R.string.graph_functions), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
+            Spacer(Modifier.height(6.dp))
+            functions.forEachIndexed { i, f ->
+                FunctionRow(i, showFunction(f, settings.symbols), broken = curves.getOrNull(i) == null) {
+                    listing = false
+                    onEdit(i)
+                }
+            }
+            if (functions.size < GraphViewModel.MAX) {
+                Row(
+                    Modifier.fillMaxWidth().height(48.dp).clickable {
+                        listing = false
+                        onEdit(functions.size)
+                    }.padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    TextMMD(text = stringResource(R.string.graph_add), style = MaterialTheme.typography.bodySmall)
+                }
+            }
+            Spacer(Modifier.height(10.dp))
+            OutlinedButtonMMD(onClick = { listing = false }, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+                TextMMD(text = stringResource(R.string.about_close), style = MaterialTheme.typography.bodySmall)
+            }
+        }
+    }
+}
+
+/** A button beside the turned graph: a word in an outlined box, a third of the row, 48 dp high. */
+@Composable
+private fun RowScope.WideButton(text: String, modifier: Modifier = Modifier, enabled: Boolean = true, onClick: () -> Unit) {
+    OutlinedButtonMMD(
+        onClick = onClick,
+        enabled = enabled,
+        contentPadding = PaddingValues(horizontal = 2.dp),
+        modifier = modifier.weight(1f).height(48.dp),
+    ) {
+        TextMMD(text = text, style = MaterialTheme.typography.bodySmall, maxLines = 1)
     }
 }
 

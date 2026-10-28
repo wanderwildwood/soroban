@@ -45,6 +45,11 @@ sixteen greys, a slow redraw, and is read outdoors as often as indoors.
   the part on screen, and marks one when pressed; points closer together than the graph's
   resolution can be missed. **Table** gives each function's value from a chosen x, a chosen
   step at a time.
+- **The graph turned sideways.** With the phone on its side the plot becomes a square at the
+  left, as big as the screen's height, with Degrees or Radians, Zoom in, Zoom out, Functions,
+  Points and Table beside it; the other pages stay upright. The phone's own settings never turn
+  the Kompakt's screen, so the app watches the phone itself; **Settings → Turn sideways with
+  the phone** keeps the graph upright too.
 - **Convert** between 24 kinds of unit: length, currency, mass, speed, temperature, area, time,
   volume, data, pressure, acceleration, energy, power, angle, data transfer, flux, number base,
   capacitance, prefix, force, torque, flow rate, luminance and fuel consumption. Press either

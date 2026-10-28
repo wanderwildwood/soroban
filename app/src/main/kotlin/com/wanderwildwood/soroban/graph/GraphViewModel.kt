@@ -1,5 +1,6 @@
 package com.wanderwildwood.soroban.graph
 
+import kotlin.math.abs
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -55,6 +56,12 @@ class GraphViewModel(private val prefs: Prefs) : ViewModel() {
     /** Sets the window once the graph knows its shape, unless one was kept from before. */
     fun ensureView(aspect: Double) {
         if (_view.value == null) setView(Viewport.standard(aspect))
+    }
+
+    /** The view made to fit a plot of [aspect] (height / width), keeping its x range and middle. */
+    fun fitView(aspect: Double) {
+        val v = _view.value ?: return setView(Viewport.standard(aspect))
+        if (abs(v.height / v.width - aspect) > aspect * 0.01) setView(v.fit(aspect))
     }
 
     fun setView(v: Viewport) {

@@ -1,7 +1,16 @@
 package com.wanderwildwood.soroban.ui
 
 import android.app.Application
+import android.content.res.Configuration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -36,7 +45,10 @@ private enum class Over { NONE, SETTINGS, HISTORY, GROUPS, FROM, TO, EDIT, POINT
  * app opens on.
  */
 @Composable
-fun SorobanApp() {
+fun SorobanApp(
+    /** Whether the screen may turn sideways with the phone now: on the graph, when Settings allow it. */
+    onTurn: (Boolean) -> Unit = {},
+) {
     val context = LocalContext.current
     val app = context.applicationContext as Application
     val prefs = Prefs.get(context)
@@ -49,6 +61,12 @@ fun SorobanApp() {
     var over by rememberSaveable { mutableStateOf(Over.NONE) }
     var about by rememberSaveable { mutableStateOf(false) }
     val close = { over = Over.NONE }
+    val settings by prefs.settings.collectAsStateWithLifecycle()
+    val onGraph = over == Over.NONE && page == 1
+    LaunchedEffect(onGraph, settings.turnWithPhone) { onTurn(onGraph && settings.turnWithPhone) }
+    // Turned sideways on the graph: the plot and its controls take the screen under a bar of
+    // their own, without the tabs; the arrow goes back to the calculator, upright.
+    val wide = onGraph && LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val onAbout = { about = true }
 
     when (over) {
@@ -78,7 +96,45 @@ fun SorobanApp() {
         Over.EDIT -> FunctionEditor(graph, editing, onBack = close)
         Over.POINTS -> PointsScreen(graph, onBack = close)
         Over.TABLE -> TableScreen(graph, prefs, onBack = close)
-        Over.NONE -> Scaffold(
+        Over.NONE -> if (wide) Scaffold(
+            containerColor = MaterialTheme.colorScheme.surface,
+            topBar = {
+                TopAppBarMMD(
+                    title = { TextMMD(text = stringResource(R.string.tab_graph)) },
+                    navigationIcon = {
+                        BarButton(Icons.Back, stringResource(R.string.cd_back)) {
+                            page = 0
+                            prefs.page = 0
+                        }
+                    },
+                    actions = {
+                        TextMMD(
+                            text = stringResource(R.string.graph_reset),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier
+                                .heightIn(min = 48.dp)
+                                .clickable { graph.reset(1.0) }
+                                .wrapContentHeight(Alignment.CenterVertically)
+                                .padding(horizontal = 16.dp),
+                        )
+                    },
+                )
+            },
+        ) { padding ->
+            Box(Modifier.padding(padding).fillMaxSize()) {
+                GraphScreen(
+                    graph,
+                    onEdit = {
+                        editing = it
+                        over = Over.EDIT
+                    },
+                    onPoints = { over = Over.POINTS },
+                    onTable = { over = Over.TABLE },
+                    wide = true,
+                )
+            }
+        } else Scaffold(
             containerColor = MaterialTheme.colorScheme.surface,
             topBar = {
                 TopAppBarMMD(

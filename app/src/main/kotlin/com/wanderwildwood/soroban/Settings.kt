@@ -49,6 +49,11 @@ data class Settings(
     val radians: Boolean = false,
     /** A short tick from the phone at each key, the way the stock calculator does it. Off unless asked for. */
     val vibrate: Boolean = false,
+    /**
+     * Whether the graph turns sideways when the phone does. The Kompakt's own settings have no
+     * auto-rotate to follow, so the app watches the phone itself; the other pages stay upright.
+     */
+    val turnWithPhone: Boolean = true,
 ) {
     val symbols: FormatterSymbols get() = style.symbols
 }
@@ -70,6 +75,7 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
         fractions = prefs.getBoolean(FRACTIONS, true),
         radians = prefs.getBoolean(RADIANS, false),
         vibrate = prefs.getBoolean(VIBRATE, false),
+        turnWithPhone = prefs.getBoolean(TURN_WITH_PHONE, true),
     )
 
     fun update(change: (Settings) -> Settings) {
@@ -81,6 +87,7 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
             .putBoolean(FRACTIONS, next.fractions)
             .putBoolean(RADIANS, next.radians)
             .putBoolean(VIBRATE, next.vibrate)
+            .putBoolean(TURN_WITH_PHONE, next.turnWithPhone)
             .apply()
         state.value = next
     }
@@ -154,6 +161,7 @@ class Prefs private constructor(private val prefs: SharedPreferences) {
         private const val FRACTIONS = "fractions"
         private const val RADIANS = "radians"
         private const val VIBRATE = "vibrate"
+        private const val TURN_WITH_PHONE = "turn_with_phone"
         private const val PAGE = "page"
         private const val TAB = "tab"
         private const val GROUP = "group"
