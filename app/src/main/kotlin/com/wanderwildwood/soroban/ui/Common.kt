@@ -77,7 +77,7 @@ fun SwitchRow(title: String, checked: Boolean, note: String? = null, onChange: (
             TextMMD(text = title, style = MaterialTheme.typography.bodyMedium)
             if (note != null) TextMMD(text = note, style = MaterialTheme.typography.labelSmall)
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(16.dp))
         SwitchMMD(checked = checked, onCheckedChange = null)
     }
 }

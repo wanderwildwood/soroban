@@ -1,8 +1,5 @@
 package com.wanderwildwood.soroban.ui
 
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -98,14 +95,9 @@ private fun AboutPart(head: Int, body: Int) {
 @Composable
 private fun Modifier.openLink(url: String): Modifier {
     val context = LocalContext.current
+    val shown = url.removePrefix("https://")
     return this
-        .clickable {
-            runCatching {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-            }.onFailure {
-                Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
-            }
-        }
+        .clickable { openLink(context, url, context.getString(R.string.about_no_browser_address, shown)) }
         .heightIn(min = 48.dp)
         .wrapContentHeight(Alignment.CenterVertically)
 }

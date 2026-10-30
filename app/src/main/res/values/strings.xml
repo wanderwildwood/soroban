@@ -141,7 +141,7 @@
     <string name="rates_fetching_have">Rates of %1$s; fetching today\'s</string>
     <string name="rates_none">No rates yet. Tap to fetch them.</string>
     <!-- %1$s is the date of the older rates still in use -->
-    <string name="rates_failed">Offline. Rates of %1$s. Tap to retry.</string>
+    <string name="rates_failed">Could not fetch rates, so these are the rates of %1$s. Tap to retry.</string>
 
     <!-- A length of time written out: "1 d 2 h 30 min". %1$s is the number. -->
     <string name="time_days">%1$s d</string>
@@ -209,9 +209,8 @@
     <string name="about_privacy_head">Privacy</string>
     <string name="about_privacy">Your sums, graphs and settings stay on this phone. The app goes online only to fetch the day\'s exchange rates, and only when you open currencies; that request carries no account and nothing you have written. There are no ads, no analytics and no tracking. A number you copy or share goes only where you send it.</string>
     <string name="about_terms_head">Terms</string>
-    <string name="about_terms">This app is free software under the GNU General Public License v3 (the code of Unitto, which it is built on, is v3 or later). It comes with no warranty: use it at your own risk, and check any result that matters. It is a calculator, not medical or safety equipment: do not rely on it for doses, loads, measurements or any decision where a wrong number could hurt someone.</string>
+    <string name="about_terms">This app is free software under the GNU General Public License v3 (the code of Unitto, which it is built on, is v3 or later). It comes with no warranty: use it at your own risk, and check any result that matters. It is a calculator, not medical or safety equipment: do not rely on it for doses, loads, measurements or any decision where a wrong number could hurt someone. Currency and cryptocurrency rates are indicative, fetched once a day from a free public source, and are not a quote to trade at.</string>
     <string name="about_feed_the_llamas">feed the llamas</string>
-    <string name="about_no_browser">There is no browser on this phone to open that with.</string>
     <string name="about_close">Close</string>
     <!-- Licences page, opened from About -->
     <string name="about_licences">Licences</string>
@@ -221,7 +220,6 @@
     <string name="licences_licence">Calculator is free software under the GNU General Public License, version 3 only (GPL-3.0-only), copyright wander wildwood, for what is written here. The work it is built on keeps its own licence and its authors keep their copyright, as listed under Built with. The full text is at the end of this page.</string>
     <string name="licences_built_head">Built with</string>
     <string name="licences_back">Back</string>
-    <string name="licences_no_browser">No browser is installed</string>
     <string name="licences_gpl">GNU General Public License, version 3</string>
     <string name="licences_apache">Apache License, version 2.0</string>
     <string name="licences_mit">MIT License</string>
@@ -232,4 +230,5 @@
     <string name="folio_page">Page %1$d of %2$d</string>
     <string name="folio_go">Go</string>
     <string name="folio_cancel">Cancel</string>
+    <string name="about_no_browser_address">No browser is installed. The address is %1$s.</string>
 </resources>
