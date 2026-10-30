@@ -128,7 +128,7 @@ class TurnWithPhone(private val activity: Activity) {
         else -> NONE
     }
 
-    private companion object {
+    companion object {
         const val PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         const val LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         const val REVERSE_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
