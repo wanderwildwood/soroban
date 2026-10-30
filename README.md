@@ -13,7 +13,7 @@ sixteen greys, a slow redraw, and is read outdoors as often as indoors.
 
 | | | | |
 |---|---|---|---|
-| ![The calculator](screenshots/1-calculate.png) | ![Its functions](screenshots/2-functions.png) | ![Converting currency](screenshots/3-convert.png) | ![A unit list with the answer in each](screenshots/4-units.png) |
+| ![The calculator](screenshots/1-calculate.png) | ![The graph, ready for a function](screenshots/2-graph.png) | ![Converting a length](screenshots/3-convert.png) | ![About: privacy, terms and licences, a page at a time](screenshots/4-about.png) |
 
 ## What it does
 
