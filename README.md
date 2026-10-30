@@ -116,6 +116,9 @@ Unitto's name, icon and look are not used, as its README asks.
 Arithmetic beyond + − × ÷ is [big-math](https://github.com/eobermuhlner/big-math), MIT. Icons
 are [Material Symbols](https://fonts.google.com/icons), Apache License 2.0.
 
+The app's own **Licences** page (About) gives the source address, this list and the full text of
+each licence, so none of it depends on this repository.
+
 ## Licence
 
 GPL-3.0-only for what is written here. See [LICENSE](LICENSE). Unitto's own files keep the

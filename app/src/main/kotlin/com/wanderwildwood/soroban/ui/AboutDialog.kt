@@ -18,6 +18,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -40,7 +44,12 @@ import com.wanderwildwood.soroban.R
 @Composable
 fun AboutDialog(onDismiss: () -> Unit) {
     val room = LocalConfiguration.current.screenHeightDp.dp * 0.62f
+    var licences by rememberSaveable { mutableStateOf(false) }
     EInkDialog(onDismiss = onDismiss) {
+        if (licences) {
+            LicencesPage(onBack = { licences = false }, room = room)
+            return@EInkDialog
+        }
         PagedColumn(modifier = Modifier.fillMaxWidth().height(room)) {
             item(key = "title") {
                 TextMMD(
@@ -51,7 +60,14 @@ fun AboutDialog(onDismiss: () -> Unit) {
             }
             item(key = "privacy") { AboutPart(R.string.about_privacy_head, R.string.about_privacy) }
             item(key = "terms") { AboutPart(R.string.about_terms_head, R.string.about_terms) }
-            item(key = "built") { AboutPart(R.string.about_built_head, R.string.about_built) }
+            item(key = "licences") {
+                TextMMD(
+                    text = stringResource(R.string.about_licences),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable { licences = true }.padding(top = 14.dp).heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically),
+                )
+            }
             item(key = "source") {
                 TextMMD(
                     text = "github.com/wanderwildwood/soroban",

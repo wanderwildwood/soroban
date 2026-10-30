@@ -209,10 +209,21 @@
     <string name="about_privacy_head">Privacy</string>
     <string name="about_privacy">Your sums, graphs and settings stay on this phone. The app goes online only to fetch the day\'s exchange rates, and only when you open currencies; that request carries no account and nothing you have written. There are no ads, no analytics and no tracking. A number you copy or share goes only where you send it.</string>
     <string name="about_terms_head">Terms</string>
-    <string name="about_terms">This app is free software under the GNU General Public License v3 (the code of Unitto, which it is built on, is v3 or later). It comes with no warranty: use it at your own risk, and check any result that matters.</string>
-    <string name="about_built_head">Built with</string>
-    <string name="about_built">Unitto, by Elshan Agaev, GPL v3 or later. Exchange rates from Fawaz Ahmed\'s currency API, CC0. big-math by Eric Obermühlner, MIT. Mudita Mindful Design components. Jetpack Compose and AndroidX, Apache 2.0. Icons from Material Symbols, Apache 2.0.</string>
+    <string name="about_terms">This app is free software under the GNU General Public License v3 (the code of Unitto, which it is built on, is v3 or later). It comes with no warranty: use it at your own risk, and check any result that matters. It is a calculator, not medical or safety equipment: do not rely on it for doses, loads, measurements or any decision where a wrong number could hurt someone.</string>
     <string name="about_feed_the_llamas">feed the llamas</string>
     <string name="about_no_browser">There is no browser on this phone to open that with.</string>
     <string name="about_close">Close</string>
+    <!-- Licences page, opened from About -->
+    <string name="about_licences">Licences</string>
+    <string name="licences_title">Licences</string>
+    <string name="licences_source_head">Source code</string>
+    <string name="licences_licence_head">Licence</string>
+    <string name="licences_licence">Calculator is free software under the GNU General Public License, version 3 only (GPL-3.0-only), copyright wander wildwood, for what is written here. The work it is built on keeps its own licence and its authors keep their copyright, as listed under Built with. The full text is at the end of this page.</string>
+    <string name="licences_built_head">Built with</string>
+    <string name="licences_back">Back</string>
+    <string name="licences_no_browser">No browser is installed</string>
+    <string name="licences_gpl">GNU General Public License, version 3</string>
+    <string name="licences_apache">Apache License, version 2.0</string>
+    <string name="licences_mit">MIT License</string>
+    <string name="licences_ofl">SIL Open Font License, version 1.1</string>
 </resources>
