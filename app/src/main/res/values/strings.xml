@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Calculator</string>
+    <string name="app_name">Abacus</string>
 
     <!-- Read aloud by a screen reader -->
     <string name="cd_back">Back</string>
@@ -205,7 +205,7 @@
     <!-- ============================================================ -->
     <!-- About -->
 
-    <string name="about_title">Calculator %1$s</string>
+    <string name="about_title">Abacus %1$s</string>
     <string name="about_privacy_head">Privacy</string>
     <string name="about_privacy">Your sums, graphs and settings stay on this phone. The app goes online only to fetch the day\'s exchange rates, and only when you open currencies; that request carries no account and nothing you have written. There are no ads, no analytics and no tracking. A number you copy or share goes only where you send it.</string>
     <string name="about_terms_head">Terms</string>
@@ -217,7 +217,7 @@
     <string name="licences_title">Licences</string>
     <string name="licences_source_head">Source code</string>
     <string name="licences_licence_head">Licence</string>
-    <string name="licences_licence">Calculator is free software: GPL-3.0-only, copyright wander wildwood. What it is built on keeps its own licences, listed below.</string>
+    <string name="licences_licence">Abacus is free software: GPL-3.0-only, copyright wander wildwood. What it is built on keeps its own licences, listed below.</string>
     <string name="licences_built_head">Built with</string>
     <string name="licences_back">Back</string>
     <string name="about_no_browser_address">No browser is installed. The address is %1$s.</string>

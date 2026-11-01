@@ -1,4 +1,4 @@
-# Calculator
+# Abacus
 
 算盤 *soroban*
 

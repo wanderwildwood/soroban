@@ -1,6 +1,6 @@
 # Privacy
 
-Calculator works everything out on the phone. The one thing it fetches from the internet is the
+Abacus works everything out on the phone. The one thing it fetches from the internet is the
 day's exchange rates, while currency is open in the converter, and it sends nothing but the
 request for them.
 
