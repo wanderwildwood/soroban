@@ -141,7 +141,6 @@ fun SorobanApp(
                     title = { TextMMD(text = stringResource(R.string.app_name)) },
                     actions = {
                         BarButton(Icons.Settings, stringResource(R.string.cd_settings)) { over = Over.SETTINGS }
-                        BarButton(Icons.Info, stringResource(R.string.cd_about), onAbout)
                     },
                 )
             },
