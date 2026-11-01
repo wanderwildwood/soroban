@@ -49,7 +49,7 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
             )
         },
     ) { padding ->
-        PagedColumn(Modifier.padding(padding).fillMaxSize().padding(horizontal = 20.dp)) {
+        PagedColumn(Modifier.padding(padding).fillMaxSize(), contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, end = 12.dp)) {
             item { Spacer(Modifier.height(8.dp)) }
             item(key = "places") {
                 SettingRow(stringResource(R.string.settings_places), s.precision.toString()) { picking = "places" }

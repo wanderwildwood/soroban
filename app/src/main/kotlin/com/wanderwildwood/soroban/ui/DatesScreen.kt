@@ -68,7 +68,7 @@ fun DatesScreen() {
     var days by rememberSaveable { mutableStateOf("") }
     var picking by rememberSaveable { mutableStateOf<String?>(null) }
 
-    PagedColumn(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+    PagedColumn(Modifier.fillMaxSize(), contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 16.dp, end = 12.dp)) {
         item(key = "mode") {
             Row(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
                 ModeButton(stringResource(R.string.dates_between), between, Modifier.weight(1f)) { between = true }
