@@ -210,7 +210,7 @@
     <string name="about_privacy">Your sums, graphs and settings stay on this phone. The app goes online only to fetch the day\'s exchange rates, and only when you open currencies; that request carries no account and nothing you have written. There are no ads, no analytics and no tracking. A number you copy or share goes only where you send it.</string>
     <string name="about_terms_head">Terms</string>
     <string name="about_terms">This app is free software under the GNU General Public License v3 (the code of Unitto, which it is built on, is v3 or later). It comes with no warranty: use it at your own risk, and check any result that matters. It is a calculator, not medical or safety equipment: do not rely on it for doses, loads, measurements or any decision where a wrong number could hurt someone. Currency and cryptocurrency rates are indicative, fetched once a day from a free public source, and are not a quote to trade at.</string>
-    <string name="about_feed_the_llamas">feed the llamas</string>
+    <string name="about_feed_the_llamas">Feed the llamas</string>
     <string name="about_close">Close</string>
     <!-- Licences page, opened from About -->
     <string name="about_licences">Licences</string>
