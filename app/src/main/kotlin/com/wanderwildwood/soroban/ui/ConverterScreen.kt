@@ -295,7 +295,7 @@ private fun baseKeys(vm: ConverterViewModel, from: BasicUnit): List<List<Key?>> 
 
 /** Held down, a value offers to be copied or shared, or replaced from the clipboard. */
 @Composable
-fun ValueActions(text: String, onPaste: (String) -> Unit, onDismiss: () -> Unit) {
+fun ValueActions(text: String, onPaste: (String) -> Unit, onDismiss: () -> Unit, sum: String? = null) {
     val context = LocalContext.current
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     EInkDialog(onDismiss = onDismiss) {
@@ -305,6 +305,12 @@ fun ValueActions(text: String, onPaste: (String) -> Unit, onDismiss: () -> Unit)
             ActionButton(stringResource(R.string.action_copy)) {
                 clipboard.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.app_name), text))
                 onDismiss()
+            }
+            if (sum != null && sum != text) {
+                ActionButton(stringResource(R.string.action_copy_sum)) {
+                    clipboard.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.app_name), sum))
+                    onDismiss()
+                }
             }
             ActionButton(stringResource(R.string.action_share)) {
                 val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text)

@@ -102,6 +102,7 @@
 
     <!-- Held down, the sum or a value offers these -->
     <string name="action_copy">Copy</string>
+    <string name="action_copy_sum">Copy the whole sum</string>
     <string name="action_share">Share</string>
     <string name="action_paste">Paste in its place</string>
     <string name="paste_empty">There is nothing on the clipboard.</string>

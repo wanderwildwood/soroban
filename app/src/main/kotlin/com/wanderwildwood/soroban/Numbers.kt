@@ -24,6 +24,10 @@ object Numbers {
     /** A number or sum as text for another app: exactly what the screen shows. */
     fun copyText(tokens: String, symbols: FormatterSymbols): String = show(tokens, symbols).trim()
 
+    /** The sum and its answer on one line ("12 × 3 = 36"), or null while there is no exact answer to give. */
+    fun wholeSum(tokens: String, result: String, symbols: FormatterSymbols): String? =
+        if (tokens.isBlank() || result.isBlank()) null else copyText(tokens, symbols) + " = " + copyText(result, symbols)
+
     /**
      * Text pasted or shared in, as tokens: "1,234.5" (or "1.234,5", whichever style is set),
      * "-3", "2*3" and "10 / 4" all read; anything that is not part of a sum is dropped.

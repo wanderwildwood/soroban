@@ -116,6 +116,7 @@ fun CalculatorScreen(vm: CalculatorViewModel, programmer: ProgrammerViewModel, p
     if (actions) {
         ValueActions(
             text = Numbers.copyText(text, settings.symbols),
+            sum = (result as? CalculationResult.Success)?.takeIf { !it.approximate }?.let { Numbers.wholeSum(text, it.text, settings.symbols) },
             onPaste = { pasted ->
                 Numbers.parse(pasted, settings.symbols)?.let { vm.replaceInput(it) }
                     ?: Toast.makeText(context, context.getString(R.string.paste_nothing), Toast.LENGTH_SHORT).show()

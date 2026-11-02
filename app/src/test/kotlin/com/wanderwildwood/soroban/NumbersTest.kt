@@ -20,6 +20,14 @@ class NumbersTest {
     }
 
     @Test
+    fun theWholeSumIsTheSumAndItsAnswerInTheChosenStyle() {
+        assertEquals("12×3,000 = 36,000", Numbers.wholeSum("12×3000", "36000", us))
+        assertEquals("1.234,5×2 = 2.469", Numbers.wholeSum("1234.5×2", "2469", de))
+        assertNull(Numbers.wholeSum("", "5", us))
+        assertNull(Numbers.wholeSum("2+3", "", us))
+    }
+
+    @Test
     fun moduloIsWrittenAsAWord() {
         assertEquals("10 mod 3", Numbers.show("10" + Token.Operator.MODULO + "3", us))
     }
