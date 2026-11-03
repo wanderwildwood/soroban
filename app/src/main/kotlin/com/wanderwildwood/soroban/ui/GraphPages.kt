@@ -61,8 +61,7 @@ fun FunctionEditor(vm: GraphViewModel, index: Int, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     val context = LocalContext.current
     val settings by vm.settings.collectAsStateWithLifecycle()
-    val initial = vm.functions.value.getOrNull(index).orEmpty()
-    val state = remember(index) { TextFieldState(initial) }
+    val state = remember(index) { TextFieldState(vm.functions.value.getOrNull(index).orEmpty()) }
     var functions by rememberSaveable { mutableStateOf(false) }
     val add: (String) -> Unit = { state.addTokens(it) }
     val insert: (String) -> Unit = {
