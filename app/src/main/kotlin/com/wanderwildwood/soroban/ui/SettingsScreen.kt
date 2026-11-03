@@ -151,7 +151,7 @@ fun HistoryScreen(
                             TextMMD(text = Numbers.show(line.expression, s.symbols), style = MaterialTheme.typography.bodySmall)
                             TextMMD(text = "= " + Numbers.show(line.result, s.symbols), style = MaterialTheme.typography.bodyMedium)
                         }
-                        HorizontalDividerMMD()
+                        DottedRule(start = 20.dp, end = 20.dp)
                     }
                 }
             }

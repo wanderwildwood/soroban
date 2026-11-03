@@ -67,7 +67,7 @@ fun GroupPicker(current: UnitGroup, onPick: (UnitGroup) -> Unit, onBack: () -> U
                                 .clickable { onPick(group) }
                                 .padding(horizontal = 20.dp, vertical = 14.dp),
                         )
-                        HorizontalDividerMMD()
+                        DottedRule(start = 20.dp, end = 20.dp)
                     }
                 }
             }
@@ -161,7 +161,7 @@ fun UnitPicker(vm: ConverterViewModel, choosingTo: Boolean, onBack: () -> Unit) 
                                     )
                                 }
                             }
-                            HorizontalDividerMMD()
+                            DottedRule(start = 20.dp, end = 20.dp)
                         }
                     }
                 }

@@ -189,7 +189,7 @@ fun PointsScreen(vm: GraphViewModel, onBack: () -> Unit) {
                             TextMMD(text = title, style = MaterialTheme.typography.bodySmall)
                             TextMMD(text = detail, style = MaterialTheme.typography.bodyMedium)
                         }
-                        HorizontalDividerMMD()
+                        DottedRule(start = 20.dp, end = 20.dp)
                     }
                 }
             }
