@@ -1,4 +1,5 @@
 [versions]
+aboutlibraries = "15.3.0"
 # Versions mirror the other Kompakt apps rather than the newest available (Unitto itself
 # builds on a beta Kotlin and AGP 9), so this app builds against the same Compose/MMD
 # combination that is known to work on the Kompakt.
@@ -44,6 +45,8 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 json = { module = "org.json:json", version.ref = "json" }
 
 [plugins]
+# Builds the Licenses list from the dependency graph (res/raw/aboutlibraries.json).
+aboutlibraries-android = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlibraries" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

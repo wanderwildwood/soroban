@@ -1,0 +1,14 @@
+{
+  "uniqueId": "unitto",
+  "name": "Unitto",
+  "description": "The calculator and unit converter this app is built on; its code is carried here, restyled for the Kompakt.",
+  "developers": [
+    {
+      "name": "Elshan Agaev"
+    }
+  ],
+  "website": "https://github.com/sadellie/unitto",
+  "licenses": [
+    "GPL-3.0-or-later"
+  ]
+}

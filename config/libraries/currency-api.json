@@ -1,0 +1,14 @@
+{
+  "uniqueId": "currency-api",
+  "name": "Currency exchange rates (fetched, not bundled)",
+  "description": "The day's exchange rates, fetched while currency is open in the converter, from Fawaz Ahmed's currency API, served by jsDelivr and Cloudflare Pages.",
+  "developers": [
+    {
+      "name": "Fawaz Ahmed"
+    }
+  ],
+  "website": "https://github.com/fawazahmed0/exchange-api",
+  "licenses": [
+    "CC0-1.0"
+  ]
+}
