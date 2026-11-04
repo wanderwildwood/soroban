@@ -7,6 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalCursorBlinkEnabled
 import com.mudita.mmd.ThemeMMD
 import com.wanderwildwood.soroban.ui.SorobanApp
+import com.wanderwildwood.soroban.ui.houseTypography
 import com.wanderwildwood.soroban.ui.monochrome
 import com.wanderwildwood.soroban.ui.ArmedScope
 
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
             // A steady cursor: a blinking one is a repaint twice a second on an e-ink panel
             // for as long as a field has focus.
             CompositionLocalProvider(LocalCursorBlinkEnabled provides false) {
-                ThemeMMD(colorScheme = monochrome) {
+                ThemeMMD(colorScheme = monochrome, typography = houseTypography) {
                     ArmedScope { SorobanApp(onTurn = { turner.set(it) }) }
                 }
             }
