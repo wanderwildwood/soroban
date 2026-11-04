@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalCursorBlinkEnabled
 import com.mudita.mmd.ThemeMMD
 import com.wanderwildwood.soroban.ui.SorobanApp
 import com.wanderwildwood.soroban.ui.monochrome
+import com.wanderwildwood.soroban.ui.ArmedScope
 
 class MainActivity : ComponentActivity() {
     private val turner = TurnWithPhone(this)
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
             // for as long as a field has focus.
             CompositionLocalProvider(LocalCursorBlinkEnabled provides false) {
                 ThemeMMD(colorScheme = monochrome) {
-                    SorobanApp(onTurn = { turner.set(it) })
+                    ArmedScope { SorobanApp(onTurn = { turner.set(it) }) }
                 }
             }
         }
