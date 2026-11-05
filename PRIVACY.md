@@ -68,7 +68,7 @@ when you ask.
 <!-- shared-about privacy section -->
 ## Who we are
 
-Abacus is made by wander wildwood, an independent developer: one person, not a company. wander wildwood is the data controller for anything the app itself handles, and that is very little. Abacus keeps what you put in it on your phone, apart from what it sends to jsDelivr and Cloudflare Pages as described above, and sends nothing to the developer, so the developer holds no data about you.
+Abacus is made by wander wildwood, an independent developer: one person, not a company. wander wildwood is the data controller for anything the app itself handles, and that is very little. What you put in Abacus stays on your phone. The only thing that goes out is the request for exchange rates to jsDelivr or Cloudflare Pages described above, which carries no amount, no currency chosen and nothing you have written. The developer receives nothing, so the developer holds no data about you.
 
 ## How to contact us
 
