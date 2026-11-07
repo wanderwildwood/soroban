@@ -54,7 +54,7 @@ fun GroupPicker(current: UnitGroup, onPick: (UnitGroup) -> Unit, onBack: () -> U
             )
         },
     ) { padding ->
-        PagedColumn(Modifier.padding(padding).fillMaxSize()) {
+        PagedColumn(Modifier.padding(padding).fillMaxSize(), showCutRow = true) {
             UnitGroup.entries.forEach { group ->
                 item(key = group.name) {
                     Column {
@@ -124,7 +124,7 @@ fun UnitPicker(vm: ConverterViewModel, choosingTo: Boolean, onBack: () -> Unit) 
                     modifier = Modifier.padding(20.dp),
                 )
             }
-            PagedColumn(Modifier.fillMaxSize()) {
+            PagedColumn(Modifier.fillMaxSize(), showCutRow = true) {
                 shown.forEach { unit ->
                     item(key = unit.id) {
                         val (name, short) = names.getValue(unit.id)

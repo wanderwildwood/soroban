@@ -152,7 +152,7 @@ fun PointsScreen(vm: GraphViewModel, onBack: () -> Unit) {
             )
         },
     ) { padding ->
-        PagedColumn(Modifier.padding(padding).fillMaxSize()) {
+        PagedColumn(Modifier.padding(padding).fillMaxSize(), showCutRow = true) {
             val list = found
             item(key = "note") {
                 TextMMD(
@@ -246,7 +246,7 @@ fun TableScreen(vm: GraphViewModel, prefs: Prefs, onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                 )
             }
-            PagedColumn(Modifier.fillMaxSize()) {
+            PagedColumn(Modifier.fillMaxSize(), showCutRow = true) {
                 rows.forEachIndexed { i, (x, ys) ->
                     item(key = "r$i") {
                         TableRow(listOf(fmt(x, s)) + ys.map { fmt(it, s) }, bold = false)
