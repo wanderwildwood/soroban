@@ -1,6 +1,4 @@
-# Abacus
-
-算盤 *soroban*
+# 算盤 soroban — Abacus
 
 A calculator with scientific and programmer's modes, a graph of up to three functions, a unit
 and currency converter, and a date calculator, drawn for an E Ink screen: big plain keys, a
