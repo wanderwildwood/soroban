@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,7 @@ private val PLACES = listOf(0, 2, 3, 4, 6, 8, 10, 12, 15, 20)
 @Composable
 fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
     BackHandler(onBack = onBack)
+    val context = LocalContext.current
     val s by prefs.settings.collectAsStateWithLifecycle()
     var picking by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -79,6 +81,13 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
                     s.turnWithPhone,
                     note = stringResource(R.string.settings_turn_note),
                 ) { on -> prefs.update { it.copy(turnWithPhone = on) } }
+            }
+            item(key = "dark") {
+                SwitchRow(
+                    stringResource(R.string.settings_dark),
+                    DarkMode.on,
+                    note = stringResource(R.string.settings_dark_note),
+                ) { DarkMode.set(context, it) }
             }
         }
     }
