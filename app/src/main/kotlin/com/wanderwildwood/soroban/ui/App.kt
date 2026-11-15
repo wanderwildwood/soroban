@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -68,6 +69,13 @@ fun SorobanApp(
     // their own, without the tabs; the arrow goes back to the calculator, upright.
     val wide = onGraph && LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val onAbout = { about = true }
+
+    // Back from Graph, Convert or Dates goes to Calculate; only Back from Calculate leaves the
+    // app. On this panel the launcher would otherwise be under the next tap.
+    BackHandler(enabled = over == Over.NONE && page != 0) {
+        page = 0
+        prefs.page = 0
+    }
 
     when (over) {
         Over.SETTINGS -> SettingsScreen(prefs, onBack = close, onAbout = onAbout)
