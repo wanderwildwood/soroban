@@ -29,6 +29,12 @@ import com.mudita.mmd.components.radio_button.RadioButtonMMD
 import com.mudita.mmd.components.switcher.SwitchMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.wanderwildwood.soroban.R
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.state.ToggleableState
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
 
 /** An icon in a top bar, with a target a thumb can find. */
 @Composable
@@ -65,6 +71,7 @@ fun SwitchRow(title: String, checked: Boolean, note: String? = null, onChange: (
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .semantics { role = Role.Switch; toggleableState = ToggleableState(checked) }
             .clickable { onChange(!checked) }
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -84,6 +91,7 @@ fun ChoiceRow(title: String, chosen: Boolean, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .semantics { role = Role.RadioButton; selected = chosen }
             .clickable(onClick = onClick)
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
