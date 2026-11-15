@@ -40,6 +40,10 @@ import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.wanderwildwood.soroban.R
 import com.wanderwildwood.soroban.convert.ConverterViewModel
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 
 /** The groups of units, in Unitto's order, the one open marked in bold. */
 @Composable
@@ -64,6 +68,7 @@ fun GroupPicker(current: UnitGroup, onPick: (UnitGroup) -> Unit, onBack: () -> U
                             fontWeight = if (group == current) FontWeight.Bold else FontWeight.Normal,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .semantics { role = Role.RadioButton; selected = group == current }
                                 .clickable { onPick(group) }
                                 .padding(horizontal = 20.dp, vertical = 14.dp),
                         )

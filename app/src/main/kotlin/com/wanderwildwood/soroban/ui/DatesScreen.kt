@@ -49,6 +49,10 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 
 private val dateSaver = Saver<LocalDate, Long>(save = { it.toEpochDay() }, restore = { LocalDate.ofEpochDay(it) })
 
@@ -170,6 +174,7 @@ private fun ModeButton(label: String, chosen: Boolean, modifier: Modifier, onCli
         modifier
             .height(48.dp)
             .let { if (chosen) it.rule(2) else it.rule(1) }
+            .semantics { role = Role.RadioButton; selected = chosen }
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
