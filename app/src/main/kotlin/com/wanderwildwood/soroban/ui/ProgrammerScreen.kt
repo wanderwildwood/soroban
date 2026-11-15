@@ -1,6 +1,5 @@
 package com.wanderwildwood.soroban.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -90,7 +89,7 @@ fun ProgrammerScreen(vm: ProgrammerViewModel, onLeave: () -> Unit) {
         ValueActions(
             text = text,
             onPaste = { pasted ->
-                if (!vm.paste(pasted)) Toast.makeText(context, context.getString(R.string.paste_nothing), Toast.LENGTH_SHORT).show()
+                if (!vm.paste(pasted)) Notice.say(context, R.string.paste_nothing)
             },
             onDismiss = { actions = false },
         )

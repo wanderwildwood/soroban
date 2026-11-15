@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -126,7 +125,7 @@ fun ConverterScreen(
                 val tokens = if (numberBase) pasted.trim().uppercase().filter { Character.digit(it, pair.first.factor.intValueExact()) >= 0 }.ifEmpty { null }
                 else Numbers.parse(pasted, settings.symbols)
                 if (tokens != null) vm.replaceInput(tokens)
-                else Toast.makeText(context, context.getString(R.string.paste_nothing), Toast.LENGTH_SHORT).show()
+                else Notice.say(context, R.string.paste_nothing)
             },
             onDismiss = { actions = null },
         )
@@ -315,13 +314,13 @@ fun ValueActions(text: String, onPaste: (String) -> Unit, onDismiss: () -> Unit,
             ActionButton(stringResource(R.string.action_share)) {
                 val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text)
                 runCatching { context.startActivity(Intent.createChooser(send, null)) }
-                    .onFailure { Toast.makeText(context, context.getString(R.string.share_nothing), Toast.LENGTH_SHORT).show() }
+                    .onFailure { Notice.say(context, R.string.share_nothing) }
                 onDismiss()
             }
         }
         ActionButton(stringResource(R.string.action_paste)) {
             val pasted = clipboard.primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.coerceToText(context)?.toString()
-            if (pasted.isNullOrBlank()) Toast.makeText(context, context.getString(R.string.paste_empty), Toast.LENGTH_SHORT).show()
+            if (pasted.isNullOrBlank()) Notice.say(context, R.string.paste_empty)
             else onPaste(pasted)
             onDismiss()
         }

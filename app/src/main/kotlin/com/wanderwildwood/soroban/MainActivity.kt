@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             // for as long as a field has focus.
             CompositionLocalProvider(LocalCursorBlinkEnabled provides false) {
                 ThemeMMD(colorScheme = monochrome, typography = houseTypography) {
-                    ArmedScope { SorobanApp(onTurn = { turner.set(it) }) }
+                    ArmedScope { com.wanderwildwood.soroban.ui.NoticeFrame { SorobanApp(onTurn = { turner.set(it) }) } }
                 }
             }
         }

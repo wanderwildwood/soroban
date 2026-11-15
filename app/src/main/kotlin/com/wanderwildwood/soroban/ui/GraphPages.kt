@@ -1,6 +1,5 @@
 package com.wanderwildwood.soroban.ui
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -70,7 +69,7 @@ fun FunctionEditor(vm: GraphViewModel, index: Int, onBack: () -> Unit) {
     }
     val done = {
         if (vm.save(index, state.text.toString())) onBack()
-        else Toast.makeText(context, context.getString(R.string.graph_not_a_function), Toast.LENGTH_SHORT).show()
+        else Notice.say(context, R.string.graph_not_a_function)
     }
 
     Scaffold(
