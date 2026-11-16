@@ -86,7 +86,6 @@ fun SettingsScreen(prefs: Prefs, onBack: () -> Unit, onAbout: () -> Unit) {
                 SwitchRow(
                     stringResource(R.string.settings_dark),
                     DarkMode.on,
-                    note = stringResource(R.string.settings_dark_note),
                 ) { DarkMode.set(context, it) }
             }
         }
