@@ -29,28 +29,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** What the converter knows about exchange rates at the moment. */
+/** What the converter knows about exchange rates. */
 data class RatesView(
-    /** The rates in use, or null when the phone has never fetched any. */
+    /** The rates that came with the app, or null if they could not be read. */
     val table: RateTable? = null,
-    val fetching: Boolean = false,
-    /** The last attempt to fetch failed; [table], if any, is an older day's. */
-    val failed: Boolean = false,
 )
 
 /**
  * The converter: a group, a unit to convert from and one to convert to, and what is typed.
  *
- * Exchange rates are fetched when currency is opened and not otherwise, and at most once a day;
- * between times, and with no signal, the rates kept on the phone are used and their date shown.
+ * Exchange rates are the ones carried in the app (see [Rates]); their date is shown under the answer.
  */
 class ConverterViewModel(
     private val prefs: Prefs,
-    private val rates: Rates,
+    private val loadRates: () -> RateTable?,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -77,9 +72,7 @@ class ConverterViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val cached = rates.cached()
-            _rates.update { it.copy(table = cached) }
-            if (_group.value == UnitGroup.CURRENCY) fetchRatesIfStale()
+            _rates.value = RatesView(table = loadRates())
         }
         viewModelScope.launch {
             combine(input.observe(), _pair, _rates) { text, pair, _ -> text.toString() to pair }
@@ -130,7 +123,6 @@ class ConverterViewModel(
         _pair.value = pairFor(group)
         // Digits typed for hexadecimal mean nothing in metres, and an expression nothing in hex.
         if (wasNumberBase || group == UnitGroup.NUMBER_BASE) input.clearText()
-        if (group == UnitGroup.CURRENCY) viewModelScope.launch(Dispatchers.IO) { fetchRatesIfStale() }
     }
 
     fun selectFrom(unit: BasicUnit) {
@@ -179,25 +171,6 @@ class ConverterViewModel(
     /** Puts a pasted number in place of what is typed. */
     fun replaceInput(tokens: String) = input.setTextAndPlaceCursorAtEnd(tokens)
 
-    /** Tries the rates again, from the line that says they could not be fetched. */
-    fun retryRates() = viewModelScope.launch(Dispatchers.IO) { fetchRates() }
-
-    private suspend fun fetchRatesIfStale() {
-        if (_rates.value.fetching) return
-        if (rates.isStale() || _rates.value.table == null) fetchRates()
-    }
-
-    private suspend fun fetchRates() {
-        if (_rates.value.fetching) return
-        _rates.update { it.copy(fetching = true) }
-        try {
-            val table = withContext(Dispatchers.IO) { rates.fetch() }
-            _rates.value = RatesView(table = table)
-        } catch (e: Exception) {
-            _rates.update { it.copy(fetching = false, failed = true) }
-        }
-    }
-
     private fun dropInvalidDigits(unit: BasicUnit) {
         val base = unit.factor.intValueExact()
         val valid = input.text.filter { Character.digit(it, base) >= 0 }
@@ -234,7 +207,13 @@ class ConverterViewModel(
         )
 
         fun factory(app: Application): ViewModelProvider.Factory = viewModelFactory {
-            initializer { ConverterViewModel(Prefs.get(app), Rates.get(app), createSavedStateHandle()) }
+            initializer {
+                ConverterViewModel(
+                    Prefs.get(app),
+                    { Rates.forgetFetched(app); Rates.bundled(app) },
+                    createSavedStateHandle(),
+                )
+            }
         }
     }
 }

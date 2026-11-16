@@ -67,10 +67,10 @@ sixteen grays, a slow redraw, and is read outdoors as often as indoors.
 ## Currency
 
 Exchange rates come from [Fawaz Ahmed's currency API](https://github.com/fawazahmed0/exchange-api),
-which publishes one file a day of over 200 currencies, metals and coins. They are fetched only
-while currency is open in the converter, at most once a day, and kept on the phone: with no
-signal the converter uses the last rates it has and says which day they are from. A phone that
-has never been online has no rates at all, and says that instead. Amounts are shown to the cent
+which publishes one file a day of over 200 currencies, metals and coins. One day's file comes
+with the app (`app/src/main/res/raw/rates_usd.json`), taken when that version was made, and the
+converter says which day it is from. The app has no internet permission and never fetches newer
+rates: they are as new as the app. Amounts are shown to the cent
 (a coin worth less, to its first figure), whatever the decimal places are set to. They are a
 day's reference rates, not what a bank or a card will charge.
 

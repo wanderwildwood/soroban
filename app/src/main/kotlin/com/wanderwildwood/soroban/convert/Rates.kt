@@ -4,15 +4,14 @@ import android.content.Context
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KMathContext
 import com.sadellie.unitto.core.common.KRoundingMode
+import com.wanderwildwood.soroban.R
 import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
 import java.time.LocalDate
 import org.json.JSONObject
 
 /**
  * A day's exchange rates: how much of each currency one US dollar buys, as published for [date].
- * Any pair is worked out through the dollar, so one fetch covers every currency.
+ * Any pair is worked out through the dollar, so one file covers every currency.
  */
 class RateTable(val date: LocalDate, private val perDollar: Map<String, Double>) {
 
@@ -51,74 +50,25 @@ class RateTable(val date: LocalDate, private val perDollar: Map<String, Double>)
 }
 
 /**
- * The exchange rates, kept on the phone so currency converts with no signal.
+ * The exchange rates, carried in the app itself (`res/raw/rates_usd.json`), so currency converts
+ * with no network at all: the app has no internet permission.
  *
- * They come from Fawaz Ahmed's free currency API, the source Unitto uses: one file a day, read
- * from jsDelivr's CDN, or from the API's own mirror on Cloudflare Pages when that fails. Nothing
- * is sent but the request for the file. It is fetched only while currency is open, and at most
- * once a day: [isStale] is false for the rest of the day a fetch succeeded.
+ * They are one day's file from Fawaz Ahmed's free currency API (CC0), the source Unitto uses,
+ * taken when this version of the app was made. The converter shows their date, because they are
+ * as new as the app and no newer.
  */
-class Rates(private val dir: File, private val addresses: List<String> = ADDRESSES) {
+object Rates {
 
-    private val file get() = File(dir, "rates-usd.json")
-    private val fetchedFile get() = File(dir, "rates-fetched")
-
-    /** The rates last fetched, or null if none have ever been. */
-    fun cached(): RateTable? = runCatching { RateTable.parse(file.readText()) }.getOrNull()
-
-    /** True unless a fetch has already succeeded today. */
-    fun isStale(today: LocalDate = LocalDate.now()): Boolean =
-        runCatching { LocalDate.parse(fetchedFile.readText().trim()) != today }.getOrDefault(true)
+    /** The rates that came with the app, or null if the file does not read as rates. */
+    fun bundled(context: Context): RateTable? = runCatching {
+        context.resources.openRawResource(R.raw.rates_usd).bufferedReader().use { RateTable.parse(it.readText()) }
+    }.getOrNull()
 
     /**
-     * Fetches today's file and keeps it. Throws if neither address answers with something that
-     * reads as rates; the file already kept is then left as it was.
+     * Earlier versions fetched the rates and kept the file in `files/rates`. Nothing reads it any
+     * more, so it is not left lying on the phone.
      */
-    fun fetch(today: LocalDate = LocalDate.now()): RateTable {
-        var failure: Exception? = null
-        for (address in addresses) {
-            try {
-                val text = get(address)
-                val table = RateTable.parse(text)
-                if (table.size < MIN_CURRENCIES) error("only ${table.size} rates in the file")
-                dir.mkdirs()
-                val tmp = File(dir, "rates-usd.json.tmp")
-                tmp.writeText(text)
-                if (!tmp.renameTo(file)) error("could not keep the rates")
-                fetchedFile.writeText(today.toString())
-                return table
-            } catch (e: Exception) {
-                failure = e
-            }
-        }
-        throw failure ?: IllegalStateException("no address to fetch from")
-    }
-
-    private fun get(address: String): String {
-        val connection = URL(address).openConnection() as HttpURLConnection
-        try {
-            connection.connectTimeout = TIMEOUT_MS
-            connection.readTimeout = TIMEOUT_MS
-            connection.setRequestProperty("Accept", "application/json")
-            // Android's own default names the phone's model and build; this names only the app.
-            connection.setRequestProperty("User-Agent", "soroban")
-            val code = connection.responseCode
-            if (code != HttpURLConnection.HTTP_OK) error("HTTP $code")
-            return connection.inputStream.bufferedReader().use { it.readText() }
-        } finally {
-            connection.disconnect()
-        }
-    }
-
-    companion object {
-        private const val TIMEOUT_MS = 15_000
-        private const val MIN_CURRENCIES = 30
-
-        val ADDRESSES = listOf(
-            "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json",
-            "https://latest.currency-api.pages.dev/v1/currencies/usd.json",
-        )
-
-        fun get(context: Context) = Rates(File(context.applicationContext.filesDir, "rates"))
+    fun forgetFetched(context: Context) {
+        File(context.applicationContext.filesDir, "rates").deleteRecursively()
     }
 }

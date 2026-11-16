@@ -203,37 +203,27 @@ private fun Side(unit: BasicUnit, value: String, onUnit: () -> Unit, onHold: () 
 }
 
 /**
- * One line under the answer, when there is something to say: for currency, whose rates these
- * are and from which day, or that there are none; for time, the answer in days, hours and
- * minutes.
+ * One line under the answer, when there is something to say: for currency, the day the rates
+ * carried in the app are from; for time, the answer in days, hours and minutes.
  */
 @Composable
 private fun Note(group: UnitGroup, rates: RatesView, result: ConverterResult?, vm: ConverterViewModel) {
-    val text: String?
-    var retry = false
-    if (group == UnitGroup.CURRENCY) {
-        val date = rates.table?.date?.let { DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(it) }
-        text = when {
-            rates.fetching && date == null -> stringResource(R.string.rates_fetching)
-            rates.fetching -> stringResource(R.string.rates_fetching_have, date!!)
-            rates.failed && date == null -> stringResource(R.string.rates_none).also { retry = true }
-            rates.failed -> stringResource(R.string.rates_failed, date!!).also { retry = true }
-            date != null -> stringResource(R.string.rates_of, date)
-            else -> null
-        }
+    val text: String? = if (group == UnitGroup.CURRENCY) {
+        rates.table?.date
+            ?.let { DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(it) }
+            ?.let { stringResource(R.string.rates_of, it) }
     } else if (group == UnitGroup.TIME) {
-        text = vm.input.text.toString().takeIf { it.isNotEmpty() }
+        vm.input.text.toString().takeIf { it.isNotEmpty() }
             ?.let { runCatching { vm.timeBreakdown() }.getOrNull() }
             ?.let { timeText(it) }
     } else {
-        text = null
+        null
     }
     // The line is always there, empty or not, so the keypad never moves under the thumb.
     Box(
         Modifier
             .fillMaxWidth()
-            .height(if (retry) 48.dp else 28.dp)
-            .let { if (retry) it.clickable { vm.retryRates() } else it }
+            .height(28.dp)
             .padding(horizontal = 16.dp),
         contentAlignment = Alignment.CenterEnd,
     ) {

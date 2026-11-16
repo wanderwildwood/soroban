@@ -30,7 +30,7 @@ class LicencesTest {
     private val EXPECTED = listOf<String>(
         "ch.obermuhlner:big-math", "com.mudita:MMD", "org.jetbrains.kotlinx:kotlinx-coroutines-core",
         "androidx.compose.material3:material3", "androidx.compose.material:material-icons-core",
-        "Unitto", "Lato typeface", "Material Symbols icons", "Currency exchange rates (fetched, not bundled)",
+        "Unitto", "Lato typeface", "Material Symbols icons", "Currency exchange rates",
     )
 
     @Test fun theBuildListedTheLibraries() {

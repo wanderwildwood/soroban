@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- For exchange rates only, fetched while currency is open in the converter. Nothing
-         else in the app reaches the network. See PRIVACY.md. -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- No permissions, INTERNET included: the exchange rates come with the app
+         (res/raw/rates_usd.json), so nothing in it reaches the network. See PRIVACY.md. -->
 
     <queries>
         <!-- Home, whose dark mode switch this app follows when Home is installed. -->

@@ -1,7 +1,7 @@
 {
   "uniqueId": "currency-api",
-  "name": "Currency exchange rates (fetched, not bundled)",
-  "description": "The day's exchange rates, fetched while currency is open in the converter, from Fawaz Ahmed's currency API, served by jsDelivr and Cloudflare Pages.",
+  "name": "Currency exchange rates",
+  "description": "One day's exchange rates from Fawaz Ahmed's currency API, carried in the app (res/raw/rates_usd.json) and used by the converter.",
   "developers": [
     {
       "name": "Fawaz Ahmed"

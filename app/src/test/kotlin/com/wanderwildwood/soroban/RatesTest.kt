@@ -8,15 +8,12 @@ import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.UnitID
 import com.sadellie.unitto.core.data.converter.Units
 import com.wanderwildwood.soroban.convert.RateTable
-import com.wanderwildwood.soroban.convert.Rates
 import java.io.File
-import java.nio.file.Files
 import java.time.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Test
 
 class RatesTest {
@@ -59,30 +56,15 @@ class RatesTest {
         )
     }
 
+    /** The file the app carries reads as rates, with the common currencies in it. */
     @Test
-    fun aFailedFetchKeepsTheRatesAlreadyThere() {
-        val dir = Files.createTempDirectory("rates").toFile()
-        File(dir, "rates-usd.json").writeText(sample)
-        // Port 1 on this machine refuses at once: both addresses fail.
-        val rates = Rates(dir, listOf("http://127.0.0.1:1/a.json", "http://127.0.0.1:1/b.json"))
-        try {
-            rates.fetch()
-            fail("a fetch from nowhere succeeded")
-        } catch (e: Exception) {
-            // expected
+    fun theRatesInTheAppRead() {
+        // Unit tests run in the module directory.
+        val t = RateTable.parse(File("src/main/res/raw/rates_usd.json").readText())
+        assertTrue("only ${t.size} rates", t.size >= 150)
+        for (id in listOf("eur", "gbp", "jpy", "cad", "aud", "chf", "cny", "inr", "mxn")) {
+            assertNotNull("no rate for $id", t.rate("usd", id))
         }
-        val kept = rates.cached()
-        assertNotNull(kept)
-        assertEquals(LocalDate.of(2026, 10, 6), kept!!.date)
-        assertTrue("never fetched, so stale", rates.isStale(LocalDate.of(2026, 10, 7)))
-        dir.deleteRecursively()
-    }
-
-    @Test
-    fun noRatesAtAllIsNull() {
-        val dir = Files.createTempDirectory("rates").toFile()
-        assertNull(Rates(dir).cached())
-        dir.deleteRecursively()
     }
 
     @Test
