@@ -10,6 +10,7 @@ import com.wanderwildwood.soroban.ui.SorobanApp
 import com.wanderwildwood.soroban.ui.houseTypography
 import com.wanderwildwood.soroban.ui.monochrome
 import com.wanderwildwood.soroban.ui.ArmedScope
+import com.wanderwildwood.soroban.ui.DarkSelection
 
 class MainActivity : ComponentActivity() {
     private val turner = TurnWithPhone(this)
@@ -22,9 +23,9 @@ class MainActivity : ComponentActivity() {
             // A steady cursor: a blinking one is a repaint twice a second on an e-ink panel
             // for as long as a field has focus.
             CompositionLocalProvider(LocalCursorBlinkEnabled provides false) {
-                ThemeMMD(colorScheme = monochrome, typography = houseTypography) {
+                ThemeMMD(colorScheme = monochrome, typography = houseTypography) { DarkSelection {
                     ArmedScope { com.wanderwildwood.soroban.ui.NoticeFrame { SorobanApp(onTurn = { turner.set(it) }) } }
-                }
+                } }
             }
         }
     }
