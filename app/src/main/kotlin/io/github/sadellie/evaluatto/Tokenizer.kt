@@ -149,35 +149,48 @@ private fun MutableList<String>.missingMultiply(): MutableList<String> {
 }
 
 private fun MutableList<String>.unpackNotation(): MutableList<String> {
-  // Transform 1E+7 ==> 1*10^7
-  // Transform 1E-7 ==> 1/10^7
-  val iterator = this.listIterator()
-
-  while (iterator.hasNext()) {
-    if (iterator.next() == Token.DisplayOnly.ENGINEERING_E) {
-      iterator.remove()
-
-      val tokenAfterE =
-        try {
-          iterator.next()
-        } catch (e: Exception) {
-          throw TokenizerException.BadScientificNotation()
-        }
-
-      iterator.remove()
-
-      when (tokenAfterE) {
-        Token.Operator.MINUS -> iterator.add(Token.Operator.DIVIDE)
-        Token.Operator.PLUS -> iterator.add(Token.Operator.MULTIPLY)
+  // Transform 1E+7 ==> (1*10^7)
+  // Transform 1E-7 ==> (1/10^7)
+  // The brackets keep the number whole, so 1E+3^2 is (1×10^3)^2 and 6÷2E+3 divides by 2000.
+  if (Token.DisplayOnly.ENGINEERING_E !in this) return this
+  val result = mutableListOf<String>()
+  var i = 0
+  while (i < size) {
+    val token = this[i]
+    if (token != Token.DisplayOnly.ENGINEERING_E) {
+      result.add(token)
+      i++
+      continue
+    }
+    val sign = getOrNull(i + 1) ?: throw TokenizerException.BadScientificNotation()
+    val operator =
+      when (sign) {
+        Token.Operator.MINUS -> Token.Operator.DIVIDE
+        Token.Operator.PLUS -> Token.Operator.MULTIPLY
         else -> throw TokenizerException.BadScientificNotation()
       }
-
-      iterator.add("10")
-      iterator.add(Token.Operator.POWER)
+    val exponent = getOrNull(i + 2)
+    val mantissaIsNumber = result.lastOrNull()?.isDigitToken() == true
+    if (mantissaIsNumber && exponent != null && exponent.isDigitToken()) {
+      val mantissa = result.removeAt(result.lastIndex)
+      result.addAll(
+        listOf(
+          Token.Operator.LEFT_BRACKET,
+          mantissa,
+          operator,
+          "10",
+          Token.Operator.POWER,
+          exponent,
+          Token.Operator.RIGHT_BRACKET,
+        )
+      )
+      i += 3
+    } else {
+      result.addAll(listOf(operator, "10", Token.Operator.POWER))
+      i += 2
     }
   }
-
-  return this
+  return result
 }
 
 private fun MutableList<String>.unpackAllPercents(): MutableList<String> {

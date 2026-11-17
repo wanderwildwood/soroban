@@ -51,4 +51,15 @@ class ExpressionComplexTest {
   @Test fun expression14() = assertExpr("4160×3.1%", "128.96", scale = 3)
 
   @Test fun expression15() = assertExpr("4160×3.13%", "130.208", scale = 3)
+
+  // An answer in E form stays one number when the sum goes on from it.
+  @Test fun notationPower() = assertExpr("1E+3^2", "1000000")
+
+  @Test fun notationDivisor() = assertExpr("6÷2E+3", "0.003")
+
+  @Test fun notationExponent() = assertExpr("2^1E+1", "1024")
+
+  @Test fun notationFactorial() = assertExpr("1E+1!", "3628800")
+
+  @Test fun notationNegative() = assertExpr("5E−1^2", "0.25")
 }
