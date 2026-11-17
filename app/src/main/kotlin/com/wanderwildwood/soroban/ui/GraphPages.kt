@@ -60,7 +60,10 @@ fun FunctionEditor(vm: GraphViewModel, index: Int, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     val context = LocalContext.current
     val settings by vm.settings.collectAsStateWithLifecycle()
-    val state = remember(index) { TextFieldState(vm.functions.value.getOrNull(index).orEmpty()) }
+    // Saveable, so a function half typed comes back if the phone stops the app in the background.
+    val state = rememberSaveable(index, saver = TextFieldState.Saver) {
+        TextFieldState(vm.functions.value.getOrNull(index).orEmpty())
+    }
     var functions by rememberSaveable { mutableStateOf(false) }
     val add: (String) -> Unit = { state.addTokens(it) }
     val insert: (String) -> Unit = {
