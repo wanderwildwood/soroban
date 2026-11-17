@@ -217,11 +217,12 @@ private fun BitGrid(value: Long, s: ProgState, onToggle: (Int) -> Unit, modifier
                     if (i == 4) Spacer(Modifier.width(10.dp))
                     val live = index < s.size.bits
                     val on = live && (value ushr index) and 1L == 1L
+                    val bitLabel = stringResource(R.string.cd_bit, index)
                     Box(
                         Modifier.weight(1f).fillMaxHeight().padding(2.dp)
                             .let { if (!live) it else if (on) it.background(Color.Black) else it.rule(1, 4) }
                             .let { if (live) it.clickable { onToggle(index) } else it }
-                            .semantics { contentDescription = "bit $index" },
+                            .semantics { contentDescription = bitLabel },
                         contentAlignment = Alignment.Center,
                     ) {
                         if (live) {
