@@ -162,9 +162,13 @@ object Word {
      */
     fun appendDigit(current: Long, digit: Int, base: Base, size: WordSize): Long? {
         return if (base == Base.DEC) {
-            // Typed decimals are positive; the largest is the word's largest signed number.
+            // The largest is the word's largest signed number. A negative number (one a NOT or a
+            // smaller word made) grows downward, to the word's smallest.
             val max = if (size.bits == 64) Long.MAX_VALUE else (1L shl (size.bits - 1)) - 1
-            if (current > (max - digit) / 10) null else current * 10 + digit
+            if (current < 0) {
+                val min = -max - 1
+                if (current < (min + digit) / 10) null else current * 10 - digit
+            } else if (current > (max - digit) / 10) null else current * 10 + digit
         } else {
             val shift = Integer.numberOfTrailingZeros(base.radix)
             val pattern = size.pattern(current)

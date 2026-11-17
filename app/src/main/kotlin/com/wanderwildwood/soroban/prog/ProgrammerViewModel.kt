@@ -82,7 +82,7 @@ class ProgrammerViewModel(private val prefs: Prefs, private val saved: SavedStat
         val t = s.tokens
         val next = when (val last = t.lastOrNull()) {
             is PToken.Num -> t.dropLast(1) + PToken.Num(Word.not(last.value, s.size))
-            PToken.Close -> listOf(PToken.Num(Word.not(s.value ?: return, s.size)))
+            PToken.Close -> notOfLastGroup(t) ?: return
             else -> t + PToken.Not
         }
         set(s.copy(tokens = next, equalled = false))
@@ -173,6 +173,28 @@ class ProgrammerViewModel(private val prefs: Prefs, private val saved: SavedStat
     companion object {
         private const val KEY = "PROG_TOKENS"
         private const val EQUALLED = "PROG_EQUALLED"
+
+        /**
+         * NOT of the bracketed group that [tokens] ends with, not of the whole sum: a NOT goes in
+         * front of the group's opening bracket, or comes out again if one is there already.
+         */
+        fun notOfLastGroup(tokens: List<PToken>): List<PToken>? {
+            var depth = 0
+            for (i in tokens.indices.reversed()) {
+                when (tokens[i]) {
+                    PToken.Close -> depth++
+                    PToken.Open -> if (--depth == 0) {
+                        return if (i > 0 && tokens[i - 1] == PToken.Not) {
+                            tokens.take(i - 1) + tokens.drop(i)
+                        } else {
+                            tokens.take(i) + PToken.Not + tokens.drop(i)
+                        }
+                    }
+                    else -> {}
+                }
+            }
+            return null
+        }
 
         fun encode(tokens: List<PToken>): String = tokens.joinToString(" ") {
             when (it) {

@@ -98,6 +98,23 @@ class WordTest {
         var bin = 0L
         repeat(8) { bin = Word.appendDigit(bin, 1, Base.BIN, WordSize.BYTE)!! }
         assertNull(Word.appendDigit(bin, 1, Base.BIN, WordSize.BYTE))
+        // A negative number (5 then NOT is -6) takes digits downward and stops at the word's end.
+        assertEquals(-63L, Word.appendDigit(-6, 3, Base.DEC, WordSize.BYTE))
+        assertEquals(-128L, Word.appendDigit(-12, 8, Base.DEC, WordSize.BYTE))
+        assertNull(Word.appendDigit(-12, 9, Base.DEC, WordSize.BYTE))
+        assertNull(Word.appendDigit(-13, 0, Base.DEC, WordSize.BYTE))
+        assertEquals(Long.MIN_VALUE, Word.appendDigit(Long.MIN_VALUE / 10, 8, Base.DEC, WordSize.QWORD))
+    }
+
+    @Test
+    fun notAfterABracketIsNotOfThatBracketOnly() {
+        // 1 + ( 2 ) NOT is 1 + NOT 2, not NOT 3.
+        val t = listOf(n(1), b(Op.ADD), PToken.Open, n(2), PToken.Close)
+        val once = ProgrammerViewModel.notOfLastGroup(t)!!
+        assertEquals(-2L, Word.evaluate(once, WordSize.QWORD))
+        assertEquals(t, ProgrammerViewModel.notOfLastGroup(once))
+        val nested = listOf(PToken.Open, n(1), b(Op.ADD), PToken.Open, n(2), PToken.Close, PToken.Close)
+        assertEquals(listOf(PToken.Not) + nested, ProgrammerViewModel.notOfLastGroup(nested))
     }
 
     @Test
