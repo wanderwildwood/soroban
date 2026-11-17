@@ -29,7 +29,14 @@ All in the app's own storage, which no other app can read:
 
 - the last hundred sums worked out with =, for the tape (`history.json`);
 - the settings, the page last open, the units last used in each kind, the graph's functions
-  and window, and the programmer's base and word size (`SharedPreferences`).
+  and window, and the programmer's base and word size (`SharedPreferences`);
+- whether dark mode is on, and Home's dark mode switch as last heard (`ui/DarkMode.kt`).
+
+If Home (`com.wanderwildwood.iori`) is installed, Abacus asks it whether its dark mode switch
+is on, a yes or no, and sends nothing to it.
+
+While Settings → Turn sideways with the phone is on, the app reads the phone's accelerometer
+while it is open, only to turn the graph. Nothing of it is kept.
 
 Clearing the tape is the last row of the tape. Uninstalling the app removes all of it.
 

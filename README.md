@@ -61,8 +61,9 @@ sixteen grays, a slow redraw, and is read outdoors as often as indoors.
 - **Hold** the sum or a value to copy it, share it as text, or paste a number in its place.
 - **Settings**: decimal places, how numbers are written (1,234.5 or 1.234,5 and the spaced
   forms; it starts as the phone's language has it), every digit or E for very large and small
-  numbers, the fraction on or off, and a vibration at each key press (off to begin with;
-  it follows the phone's own touch feedback setting).
+  numbers, the fraction on or off, a vibration at each key press (off to begin with;
+  it follows the phone's own touch feedback setting), and dark mode, which follows Home's
+  switch when Home is on the phone.
 
 ## Currency
 
@@ -77,8 +78,7 @@ day's reference rates, not what a bank or a card will charge.
 ## What it does not do
 
 No 3D or polar graphs, and the programmer's calculator works in whole numbers only. No time
-zones or body mass, which Unitto has. No widgets, history across phones, or themes: it is black
-on white.
+zones or body mass, which Unitto has. No widgets or history across phones.
 
 ## Building
 
