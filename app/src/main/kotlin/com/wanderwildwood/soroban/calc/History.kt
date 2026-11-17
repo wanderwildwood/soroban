@@ -44,8 +44,11 @@ class History internal constructor(private val file: File) {
         val array = JSONArray()
         lines.forEach { array.put(JSONObject().put("e", it.expression).put("r", it.result)) }
         val tmp = File(file.parentFile, file.name + ".tmp")
-        tmp.writeText(array.toString())
-        tmp.renameTo(file)
+        // A full phone must not stop the answer from showing: the tape stays in memory.
+        runCatching {
+            tmp.writeText(array.toString())
+            check(tmp.renameTo(file))
+        }.onFailure { runCatching { tmp.delete() } }
     }
 
     companion object {

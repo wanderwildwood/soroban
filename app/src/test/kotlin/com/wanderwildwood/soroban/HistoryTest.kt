@@ -30,4 +30,15 @@ class HistoryTest {
         assertEquals(emptyList<Line>(), History(file).lines.value)
         dir.deleteRecursively()
     }
+
+    @Test
+    fun aTapeThatCannotBeWrittenStaysInMemory() {
+        // The folder the tape would go in does not exist, as on a phone whose storage fails.
+        val file = File(Files.createTempDirectory("tape").toFile(), "gone/history.json")
+        val h = History(file)
+        h.add(Line("1+1", "2"))
+        assertEquals(listOf(Line("1+1", "2")), h.lines.value)
+        h.clear()
+        assertEquals(emptyList<Line>(), h.lines.value)
+    }
 }
