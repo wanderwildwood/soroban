@@ -30,18 +30,20 @@ object Numbers {
 
     /**
      * Text pasted or shared in, as tokens: "1,234.5" (or "1.234,5", whichever style is set),
-     * "-3", "2*3" and "10 / 4" all read; anything that is not part of a sum is dropped.
-     * Returns null when nothing usable is left.
+     * "-3", "2*3" and "10 / 4" all read; anything that is not part of a sum is dropped, words
+     * included ("12 apples" is 12). A decimal written the other way ("3.5" with the comma style
+     * set, "3,5" with the point) is still a decimal. Returns null when nothing usable is left.
      */
     fun parse(text: String, symbols: FormatterSymbols): String? {
         var s = text.trim()
         if (s.isEmpty()) return null
+        s = otherMark(s, symbols.fractional)
         // Grouping first, so "1.234,5" loses its point before the comma becomes one.
         if (symbols.grouping.isNotBlank()) s = s.replace(symbols.grouping, "")
         s = s.replace(" ", "").replace(" ", "").replace(" ", "")
         if (symbols.fractional != Token.PERIOD) s = s.replace(symbols.fractional, Token.PERIOD)
-        s = s.replace("mod", Token.Operator.MODULO)
         Token.sexyToUgly.forEach { (token, ugly) -> ugly.forEach { s = s.replace(it, token) } }
+        s = knownWords(s)
         val kept = StringBuilder()
         var i = 0
         while (i < s.length) {
@@ -54,5 +56,52 @@ object Numbers {
             }
         }
         return kept.toString().ifEmpty { null }
+    }
+
+    /**
+     * The decimal mark of the other style ("." when a comma is set, "," when a point is), read
+     * the way it was meant: once in a number and not followed by exactly three digits, as in
+     * "3.5" or "0,25", it is a decimal point and becomes [fractional]; otherwise ("1.234.567",
+     * "1,234", "1.234,5") it groups thousands and goes.
+     */
+    private fun otherMark(text: String, fractional: String): String {
+        val mark = if (fractional == Token.COMMA) Token.PERIOD else Token.COMMA
+        return Regex("[0-9]+(?:" + Regex.escape(mark) + "[0-9]+)+").replace(text) { m ->
+            val parts = m.value.split(mark)
+            val decimal = parts.size == 2 && parts[1].length != 3 &&
+                !text.startsWith(fractional, m.range.last + 1)
+            parts.joinToString(if (decimal) fractional else "")
+        }
+    }
+
+    /**
+     * Keeps a run of letters only when the whole run means something to the calculator: "mod",
+     * a function name followed by its bracket, e or π, or the E of 1.5E10. Any other word goes
+     * whole, so the e of "apples" and the mod of "Model" are not read as part of a sum.
+     */
+    private fun knownWords(s: String): String {
+        val inverse = Token.Func.ARSIN.removePrefix(Token.Func.SIN)
+        val out = StringBuilder()
+        var i = 0
+        while (i < s.length) {
+            if (!s[i].isLetter()) {
+                out.append(s[i])
+                i++
+                continue
+            }
+            var end = i
+            while (end < s.length && s[end].isLetter()) end++
+            val word = s.substring(i, end)
+            val bracket = s.startsWith(Token.Operator.LEFT_BRACKET, end) ||
+                s.startsWith(inverse + Token.Operator.LEFT_BRACKET, end)
+            when {
+                word == "mod" -> out.append(Token.Operator.MODULO)
+                word in Token.Func.all && bracket -> out.append(word)
+                word == Token.DisplayOnly.ENGINEERING_E -> out.append(word)
+                word.all { it.toString() in Token.Const.all } -> out.append(word)
+            }
+            i = end
+        }
+        return out.toString()
     }
 }

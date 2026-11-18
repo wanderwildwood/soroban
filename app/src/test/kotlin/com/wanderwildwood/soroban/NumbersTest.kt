@@ -57,6 +57,32 @@ class NumbersTest {
     }
 
     @Test
+    fun wordsInPastedTextAreDroppedWhole() {
+        assertEquals("12", Numbers.parse("12 apples", us))
+        assertEquals("5", Numbers.parse("5 miles", us))
+        assertEquals("3", Numbers.parse("3 feet", us))
+        assertEquals("5", Numbers.parse("Model 5", us))
+        assertEquals("2×e", Numbers.parse("2*e", us))
+        assertEquals("2π", Numbers.parse("2π", us))
+        assertEquals("ln(2)+log(100)", Numbers.parse("ln(2) + log(100)", us))
+        assertEquals("sin⁻¹(1)", Numbers.parse("arsin(1)", us))
+        assertEquals("1.5E10", Numbers.parse("1.5E10", us))
+    }
+
+    @Test
+    fun aDecimalWrittenTheOtherWayIsStillADecimal() {
+        assertEquals("3.5", Numbers.parse("3.5", de))
+        assertEquals("0.25", Numbers.parse("0.25", de))
+        assertEquals("3.5", Numbers.parse("3,5", us))
+        assertEquals("3.5", Numbers.parse("3.5", fr))
+        // Groups of three, or more than one mark, are still thousands.
+        assertEquals("1234", Numbers.parse("1.234", de))
+        assertEquals("1234", Numbers.parse("1,234", us))
+        assertEquals("1234567", Numbers.parse("1,234,567", NumberStyle.SPACE_POINT.symbols))
+        assertEquals("1234.5", Numbers.parse("1.234,5", fr))
+    }
+
+    @Test
     fun textWithNoNumberIsNothing() {
         assertNull(Numbers.parse("Ada Whitlock", us))
         assertNull(Numbers.parse("   ", us))
