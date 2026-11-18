@@ -46,6 +46,7 @@ import com.sadellie.unitto.feature.calculator.toFractionalString
 import com.wanderwildwood.soroban.Prefs
 import io.github.sadellie.evaluatto.Expression
 import io.github.sadellie.evaluatto.ExpressionException
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -92,6 +93,7 @@ class CalculatorViewModel(
   private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
   private var _calculationJob: Job? = null
+  private var _equalJob: Job? = null
   private val _inputKey = "CALCULATOR_INPUT"
   val input = savedStateHandle.getTextFieldState(_inputKey)
   private val _result = MutableStateFlow<CalculationResult>(CalculationResult.Empty)
@@ -176,12 +178,17 @@ class CalculatorViewModel(
 
   fun clearHistory() = viewModelScope.launch(Dispatchers.IO) { history.clear() }
 
-  fun onEqualClick() =
-    viewModelScope.launch {
+  fun onEqualClick() {
+    // A second = while the first is still working, or straight after it, does nothing.
+    if (_equalClicked.value || _equalJob?.isActive == true) return
+    val inputValue = input.text.toString()
+    if (!inputValue.isExpression()) return
+    // The preview of this same sum would only come in late and put the decimal back.
+    _calculationJob?.cancel()
+    _equalJob = viewModelScope.launch {
       val prefs = settings.value
-      if (_equalClicked.value) return@launch
-      val inputValue = input.text.toString()
-      if (!inputValue.isExpression()) return@launch
+      // Keys pressed while the answer was being worked out win: the old answer is dropped.
+      fun stale() = _equalClicked.value || input.text.toString() != inputValue
 
       var approximate = false
       val calculated =
@@ -191,11 +198,13 @@ class CalculatorViewModel(
                 approximate = answer.approximate
                 answer.text(prefs.precision, prefs.outputFormat)
               }
+          } catch (e: CancellationException) {
+            throw e
           } catch (e: ExpressionException.DivideByZero) {
-            _result.update { CalculationResult.DivideByZeroError }
+            if (!stale()) _result.update { CalculationResult.DivideByZeroError }
             return@launch
           } catch (e: Exception) {
-            _result.update { CalculationResult.Error }
+            if (!stale()) _result.update { CalculationResult.Error }
             return@launch
           }
           // replace minus symbols since it is not recognized by evaluatto
@@ -210,6 +219,8 @@ class CalculatorViewModel(
             calculate(inputValue, prefs.radians, KRoundingMode.DOWN).value.toFractionalString()
               .takeUnless { it.endsWith(Token.DisplayOnly.FRACTION + "1") }
               .orEmpty()
+          } catch (e: CancellationException) {
+            throw e
           } catch (e: Exception) {
             ""
           }
@@ -218,18 +229,22 @@ class CalculatorViewModel(
           ""
         }
 
+      if (stale()) return@launch
       withContext(Dispatchers.IO) { history.add(Line(expression = inputValue, result = calculated)) }
+      if (stale()) return@launch
 
       setEqualled(true)
       savedStateHandle[_inputKey] = calculated
       input.setTextAndPlaceCursorAtEnd(calculated)
       _result.update { CalculationResult.Success(fractional, approximate) }
     }
+  }
 
   private fun calculateInput() {
     _calculationJob?.cancel()
     _calculationJob =
       viewModelScope.launch {
+        if (_equalClicked.value) return@launch
         if (!input.text.toString().isExpression()) {
           _result.update { CalculationResult.Empty }
           return@launch
@@ -248,9 +263,13 @@ class CalculatorViewModel(
               calculated.text(prefs.precision, prefs.outputFormat).replace("-", Token.Operator.MINUS),
               calculated.approximate,
             )
+          } catch (e: CancellationException) {
+            throw e
           } catch (e: Exception) {
             CalculationResult.Empty
           }
+        // = may have been pressed while this was worked out; its fraction line stands.
+        if (_equalClicked.value) return@launch
         _result.update { newResult }
       }
   }
