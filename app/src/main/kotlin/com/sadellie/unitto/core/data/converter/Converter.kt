@@ -90,9 +90,13 @@ object Units {
  * the conversions are Unitto's own, and a currency's rate comes from [rate], which answers from
  * the rates kept on the phone or not at all.
  *
- * [value] is what was typed, and may be an expression ("12+3"), as in Unitto.
+ * [value] is what was typed, and may be an expression ("12+3"), as in Unitto. A pasted sin, cos
+ * or tan reads its angle as the calculator's setting does, in radians only when [radians] says so.
  */
-class Converter(private val rate: (fromId: String, toId: String) -> KBigDecimal?) {
+class Converter(
+  private val rate: (fromId: String, toId: String) -> KBigDecimal?,
+  private val radians: () -> Boolean = { true },
+) {
 
   fun convert(unitFrom: BasicUnit, unitTo: BasicUnit, value: String): ConverterResult =
     when {
@@ -226,7 +230,7 @@ class Converter(private val rate: (fromId: String, toId: String) -> KBigDecimal?
     return ConverterResult.PoundOunce(integral, fractionInOunces)
   }
 
-  private fun calculateInput(value: String): KBigDecimal = Expression(value).calculate()
+  private fun calculateInput(value: String): KBigDecimal = Expression(value, radianMode = radians()).calculate()
 }
 
 private val dayBasicUnit by lazy { KBigDecimal("86400000000000000000000") }

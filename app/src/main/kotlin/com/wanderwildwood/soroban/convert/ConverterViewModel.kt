@@ -68,14 +68,18 @@ class ConverterViewModel(
 
     val settings = prefs.settings
 
-    private val converter = Converter { from, to -> _rates.value.table?.rate(from, to) }
+    private val converter = Converter(
+        rate = { from, to -> _rates.value.table?.rate(from, to) },
+        radians = { settings.value.radians },
+    )
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             _rates.value = RatesView(table = loadRates())
         }
         viewModelScope.launch {
-            combine(input.observe(), _pair, _rates) { text, pair, _ -> text.toString() to pair }
+            // The settings too: degrees or radians changes what a pasted sin(30) is.
+            combine(input.observe(), _pair, _rates, settings) { text, pair, _, _ -> text.toString() to pair }
                 .collectLatest { (text, pair) -> _result.value = convert(text, pair.first, pair.second) }
         }
         viewModelScope.launch { input.observe().collectLatest { savedStateHandle[INPUT_KEY] = it.toString() } }
