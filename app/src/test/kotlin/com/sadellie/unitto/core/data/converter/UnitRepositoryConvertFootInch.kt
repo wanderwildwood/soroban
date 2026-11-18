@@ -24,7 +24,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class UnitRepositoryConvertFootInch {
-  private val converter = Converter { _, _ -> null }
+  private val converter = Converter(rate = { _, _ -> null })
 
   @Test
   fun convert_footInchOutput() {

@@ -44,12 +44,12 @@ class RatesTest {
     @Test
     fun currencyConvertsWithKeptRatesAndSaysSoWithout() {
         val t = RateTable.parse(sample)
-        val withRates = Converter { a, b -> t.rate(a, b) }
+        val withRates = Converter(rate = { a, b -> t.rate(a, b) })
         val r = withRates.convert(Units.byId(UnitID.currency_usd)!!, Units.byId(UnitID.currency_eur)!!, "100")
         assertTrue(r is ConverterResult.Default)
         assertEquals("86", (r as ConverterResult.Default).value.toFormattedString(5, OutputFormat.PLAIN))
 
-        val without = Converter { _, _ -> null }
+        val without = Converter(rate = { _, _ -> null })
         assertEquals(
             ConverterResult.Error.CurrencyError,
             without.convert(Units.byId(UnitID.currency_usd)!!, Units.byId(UnitID.currency_eur)!!, "100"),
