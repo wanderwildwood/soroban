@@ -304,11 +304,10 @@ object DarkMode {
         val context = app ?: return
         asker.execute {
             runCatching {
-                val holder = holder(context)
-                if (holder == Holder.UNSURE) return@runCatching
-                val cursor = if (holder == Holder.HOME) context.contentResolver.query(HOME, null, null, null, null) else null
-                if (cursor == null && holder == Holder.HOME) return@runCatching
+                val home = isHome(context) ?: return@runCatching
+                val cursor = if (home) context.contentResolver.query(HOME, null, null, null, null) else null
                 if (cursor == null) {
+                    if (home) return@runCatching
                     val p = prefs(context)
                     if (p.getBoolean(KEY_HOME, false)) {
                         p.edit().putBoolean(KEY_HOME, false).apply()
@@ -334,22 +333,20 @@ object DarkMode {
      * Whether the app that holds Home's provider is Home: its name, and signed with Home's release
      * certificate and nothing else. A name or an authority alone is not enough: on a phone without
      * Home any app can take them. A debuggable build of this app also hears Home signed with a debug key.
-     * Unsure when Home is installed but its provider or certificate cannot be read for the moment.
+     * Null when there is no telling just now: Home is installed but its provider is not to be found
+     * (as while Home is being updated), or its certificate cannot be read.
      */
-    private fun holder(context: Context): Holder {
+    private fun isHome(context: Context): Boolean? {
         val pm = context.packageManager
         val owner = HOME.authority?.let { pm.resolveContentProvider(it, 0) }?.packageName
-            ?: return if (installed(pm, HOME_PACKAGE)) Holder.UNSURE else Holder.NOT_HOME
-        if (owner != HOME_PACKAGE) return Holder.NOT_HOME
+            ?: return if (installed(pm, HOME_PACKAGE)) null else false
+        if (owner != HOME_PACKAGE) return false
         val debuggable = context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         val certs = if (debuggable) DEBUG_CERTS_SHA256 + HOME_CERT_SHA256 else setOf(HOME_CERT_SHA256)
         val signers = signers(pm, owner)
-        if (signers.isEmpty()) return Holder.UNSURE
-        return if (signers.all { it in certs }) Holder.HOME else Holder.NOT_HOME
+        if (signers.isEmpty()) return null
+        return signers.all { it in certs }
     }
-
-    /** Who holds Home's provider: Home itself, someone else or no one, or no telling just now. */
-    private enum class Holder { HOME, NOT_HOME, UNSURE }
 
     /** Whether [pkg] is installed; true when the package manager cannot say, so nothing is forgotten on a hiccup. */
     private fun installed(pm: PackageManager, pkg: String): Boolean = try {
