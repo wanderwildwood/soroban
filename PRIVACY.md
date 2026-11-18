@@ -74,6 +74,4 @@ If you are in the EU, the EEA or the UK, the GDPR gives you the right to:
 Similar laws elsewhere, such as the CCPA in California, give you the right to know, delete and correct, and to opt out of the sale or sharing of your data. Nothing from Abacus is sold or shared.
 
 Since Abacus keeps what it stores only on your phone, you can exercise most of these rights yourself: clear the tape in the app, clear the app's data in Android's settings, or uninstall the app, which deletes all of it. For anything you cannot do yourself, write to the address above.
-
-Abacus connects to jsDelivr and Cloudflare Pages. They are separate from this app and from its developer, and what they receive is covered by their own privacy policies; ask them about what they hold.
 <!-- /shared-about privacy section -->

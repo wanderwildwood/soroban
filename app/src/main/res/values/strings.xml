@@ -233,7 +233,7 @@
     <string name="privacy_contact_title">How to contact us</string>
     <string name="privacy_contact">Write to email@wanderthe.dev, about your data or anything else.</string>
     <string name="privacy_rights_title">Your rights</string>
-    <string name="privacy_rights">Under the GDPR you can ask to see the data held about you, to have it corrected or deleted, to limit or object to its use, to take a copy with you, to withdraw consent, and to complain to a data protection authority. Since the app keeps what it stores only on your phone, you can do most of this yourself: clear the tape in the app, clear the app\'s data in Android\'s settings, or uninstall the app. What jsDelivr and Cloudflare Pages receive is covered by their own privacy policies.</string>
+    <string name="privacy_rights">Under the GDPR you can ask to see the data held about you, to have it corrected or deleted, to limit or object to its use, to take a copy with you, to withdraw consent, and to complain to a data protection authority. Since the app keeps what it stores only on your phone, you can do most of this yourself: clear the tape in the app, clear the app\'s data in Android\'s settings, or uninstall the app.</string>
     <!-- /shared-about -->
     <string name="settings_dark">Dark mode</string>
     <string name="page_arrow_previous">Previous page</string>
