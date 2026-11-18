@@ -295,15 +295,19 @@ object DarkMode {
     }
 
     /**
-     * Asks Home what its switch says. With no Home on the phone (no answer, or the provider is held
-     * by an app that is not Home), Home's last word is forgotten: settings brought back from a
-     * backup made beside Home would otherwise keep the app dark on a phone without it.
+     * Asks Home what its switch says. With no Home on the phone (Home not installed, or the provider
+     * held by an app that is not Home), Home's last word is forgotten: settings brought back from a
+     * backup made beside Home would otherwise keep the app dark on a phone without it. When Home is
+     * there but gives no answer for a moment, as while it is being updated, its last word stands.
      */
     private fun askHome() {
         val context = app ?: return
         asker.execute {
             runCatching {
-                val cursor = if (isHome(context)) context.contentResolver.query(HOME, null, null, null, null) else null
+                val holder = holder(context)
+                if (holder == Holder.UNSURE) return@runCatching
+                val cursor = if (holder == Holder.HOME) context.contentResolver.query(HOME, null, null, null, null) else null
+                if (cursor == null && holder == Holder.HOME) return@runCatching
                 if (cursor == null) {
                     val p = prefs(context)
                     if (p.getBoolean(KEY_HOME, false)) {
@@ -330,15 +334,31 @@ object DarkMode {
      * Whether the app that holds Home's provider is Home: its name, and signed with Home's release
      * certificate and nothing else. A name or an authority alone is not enough: on a phone without
      * Home any app can take them. A debuggable build of this app also hears Home signed with a debug key.
+     * Unsure when Home is installed but its provider or certificate cannot be read for the moment.
      */
-    private fun isHome(context: Context): Boolean {
+    private fun holder(context: Context): Holder {
         val pm = context.packageManager
-        val owner = HOME.authority?.let { pm.resolveContentProvider(it, 0) }?.packageName ?: return false
-        if (owner != HOME_PACKAGE) return false
+        val owner = HOME.authority?.let { pm.resolveContentProvider(it, 0) }?.packageName
+            ?: return if (installed(pm, HOME_PACKAGE)) Holder.UNSURE else Holder.NOT_HOME
+        if (owner != HOME_PACKAGE) return Holder.NOT_HOME
         val debuggable = context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         val certs = if (debuggable) DEBUG_CERTS_SHA256 + HOME_CERT_SHA256 else setOf(HOME_CERT_SHA256)
         val signers = signers(pm, owner)
-        return signers.isNotEmpty() && signers.all { it in certs }
+        if (signers.isEmpty()) return Holder.UNSURE
+        return if (signers.all { it in certs }) Holder.HOME else Holder.NOT_HOME
+    }
+
+    /** Who holds Home's provider: Home itself, someone else or no one, or no telling just now. */
+    private enum class Holder { HOME, NOT_HOME, UNSURE }
+
+    /** Whether [pkg] is installed; true when the package manager cannot say, so nothing is forgotten on a hiccup. */
+    private fun installed(pm: PackageManager, pkg: String): Boolean = try {
+        pm.getPackageInfo(pkg, 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    } catch (e: RuntimeException) {
+        true
     }
 
     /** The SHA-256 of each certificate [pkg] is signed with, lower-case hex; none when it cannot be read. */
