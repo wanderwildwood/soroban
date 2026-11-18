@@ -41,4 +41,18 @@ class HistoryTest {
         h.clear()
         assertEquals(emptyList<Line>(), h.lines.value)
     }
+
+    @Test
+    fun clearingWhenTheTapeCannotBeWrittenStillForgetsIt() {
+        val dir = Files.createTempDirectory("tape").toFile()
+        val file = File(dir, "history.json")
+        val h = History(file)
+        h.add(Line("1+1", "2"))
+        // A folder where the temporary file would go makes every write fail, as on a full phone.
+        File(dir, "history.json.tmp").mkdir()
+        h.clear()
+        assertEquals(emptyList<Line>(), h.lines.value)
+        assertEquals(emptyList<Line>(), History(file).lines.value)
+        dir.deleteRecursively()
+    }
 }

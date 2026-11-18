@@ -36,8 +36,17 @@ class History internal constructor(private val file: File) {
         write(next)
     }
 
+    /**
+     * Clearing deletes the file rather than writing an empty one: a delete needs no free space,
+     * so on a full phone the old tape cannot survive to come back on the next start.
+     */
     @Synchronized
-    fun clear() = write(emptyList())
+    fun clear() {
+        state.value = emptyList()
+        runCatching { File(file.parentFile, file.name + ".tmp").delete() }
+        if (runCatching { file.delete() || !file.exists() }.getOrDefault(false)) return
+        write(emptyList())
+    }
 
     private fun write(lines: List<Line>) {
         state.value = lines
