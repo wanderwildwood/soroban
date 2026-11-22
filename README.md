@@ -101,6 +101,8 @@ For updates without doing this by hand, add this repository to
 
     https://github.com/wanderwildwood/soroban
 
+Questions, ideas, or just saying hello: the wander the dev Discord, <https://discord.gg/UMW8yJg7dQ>
+
 ## Credit
 
 A fork of [Unitto](https://github.com/sadellie/unitto) by Elshan Agaev, GNU General Public
