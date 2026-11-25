@@ -53,6 +53,11 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.platform.LocalConfiguration
 
 private val dateSaver = Saver<LocalDate, Long>(save = { it.toEpochDay() }, restore = { LocalDate.ofEpochDay(it) })
 
@@ -242,20 +247,44 @@ private fun DateDialog(initial: LocalDate, onPick: (LocalDate) -> Unit, onDismis
                 window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             }
         }
+        val ok = {
+            state.selectedDateMillis?.let { onPick(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) }
+            onDismiss()
+        }
+        val config = LocalConfiguration.current
         Surface(color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxSize()) {
-            Column(Modifier.fillMaxSize().padding(vertical = 16.dp)) {
-                DatePickerMMD(state = state, dateFormatter = formatter, title = null, headline = null, showModeToggle = false)
-                Spacer(Modifier.weight(1f))
-                Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
-                    OutlinedButtonMMD(onClick = onDismiss, modifier = Modifier.weight(1f).height(48.dp)) {
-                        TextMMD(text = stringResource(R.string.cancel), style = MaterialTheme.typography.bodySmall)
+            if (config.screenWidthDp > config.screenHeightDp) {
+                // Turned sideways the screen is too low for the calendar and the buttons under
+                // it, so the buttons stand beside it; the calendar scrolls if it is still taller.
+                Row(Modifier.fillMaxSize().padding(vertical = 8.dp)) {
+                    Column(Modifier.width(360.dp).verticalScroll(rememberScrollState())) {
+                        DatePickerMMD(state = state, dateFormatter = formatter, title = null, headline = null, showModeToggle = false)
                     }
-                    Spacer(Modifier.width(12.dp))
-                    ButtonMMD(onClick = {
-                        state.selectedDateMillis?.let { onPick(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) }
-                        onDismiss()
-                    }, modifier = Modifier.weight(1f).height(48.dp)) {
-                        TextMMD(text = stringResource(R.string.ok), style = MaterialTheme.typography.bodySmall)
+                    Column(
+                        Modifier.weight(1f).fillMaxHeight().padding(horizontal = 20.dp),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        ButtonMMD(onClick = ok, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+                            TextMMD(text = stringResource(R.string.ok), style = MaterialTheme.typography.bodySmall)
+                        }
+                        Spacer(Modifier.height(16.dp))
+                        OutlinedButtonMMD(onClick = onDismiss, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+                            TextMMD(text = stringResource(R.string.cancel), style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+                }
+            } else {
+                Column(Modifier.fillMaxSize().padding(vertical = 16.dp)) {
+                    DatePickerMMD(state = state, dateFormatter = formatter, title = null, headline = null, showModeToggle = false)
+                    Spacer(Modifier.weight(1f))
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                        OutlinedButtonMMD(onClick = onDismiss, modifier = Modifier.weight(1f).height(48.dp)) {
+                            TextMMD(text = stringResource(R.string.cancel), style = MaterialTheme.typography.bodySmall)
+                        }
+                        Spacer(Modifier.width(12.dp))
+                        ButtonMMD(onClick = ok, modifier = Modifier.weight(1f).height(48.dp)) {
+                            TextMMD(text = stringResource(R.string.ok), style = MaterialTheme.typography.bodySmall)
+                        }
                     }
                 }
             }
